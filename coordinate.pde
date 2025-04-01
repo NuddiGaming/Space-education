@@ -46,6 +46,7 @@ void drawAxes() { // Tegner axes
   line(0, -5000, 0, 5000);
 
   fill(255);
+  textSize(max(5, 25 / zoom));
   textAlign(CENTER, CENTER);
 
   for (float x = -5000; x <= 5000; x += 1000) { // Tegner labels ved hver 1000 meter
@@ -81,6 +82,7 @@ void drawHUD() { // Tegner HUD
 
   fill(255);
   textAlign(LEFT, TOP);
+  textSize(16);
   text("X: " + minX + "m - " + maxX + "m", 20, 20); // Displayer text i hjørnet 
   text("Y: " + minY + "m - " + maxY + "m", 20, 40); // Displayer text i hjørnet 
 }
