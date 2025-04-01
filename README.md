@@ -4,7 +4,5 @@
 Et af emnerne der ville være i stand til at få elevernes interesse tilbage, er raketfysik. Der er også manglende programmer der kan simulere raketter som er både realistiske, men også brugervenlige for folk der måske ikke har nok viden som omfatter raketfysikkens principper, men som gerne vil lære noget. Et af programmerne som allerede eksisterer, hedder Learn to fly 3, det er dog simpelt at anvende, men vi mener ikke at det er i nærheden af den realisme som der er brug for at lære de fysiske principper bag raketfysikken.²
 
 Kilder:
-
 1 - https://www.videnskabsklubben.dk/debatindlaeg/debatindlaeg-boerns-interesse-for-naturfag-skal-ogsaa-plejes-i-fritiden/ 
-
 2 - https://www.reddit.com/r/learntofly/comments/3mf5vu/learn_to_fly3_is_unrefined_physics_are/ 
