@@ -87,12 +87,6 @@ void drawHUD() { // Tegner HUD
   text("Y: " + minY + "m - " + maxY + "m", 20, 40); // Displayer text i hjørnet 
 }
 
-void drawShip(){ // Tegner skibet
-  noStroke();
-  fill(255);
-  rectMode(CENTER); // Tegner den i midten af locationen
-  rect(shipX, shipY, 10, 10); // Tegner selve skibet
-}
 
 void mouseWheel(MouseEvent event) { // Zoom funktion som bruger mouse wheel
   float zoomFactor = 1.1; // Hvor meget zoom ændre sig med

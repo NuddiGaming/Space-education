@@ -17,7 +17,7 @@ void draw() {
   // Bliver displayet på hele mappet:
   drawGrid(); 
   drawAxes();
-  drawShip();
+  tegnRaket(shipX,shipY,0,true);
 
   resetMatrix();
   
