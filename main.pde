@@ -14,11 +14,14 @@ void draw() {
   scale(zoom);
   translate(-camX, -camY);
 
-  drawGrid();
+  // Bliver displayet på hele mappet:
+  drawGrid(); 
   drawAxes();
   drawShip();
 
   resetMatrix();
+  
+  // Bliver displayet på skærmen:
   drawHUD();
 }
 

@@ -2,15 +2,15 @@ void drawGrid() { // Tegner grid
   float baseStep = 1000;
   float step = baseStep;
 
-  while (step * zoom > 200) {
+  while (step * zoom > 200) { // Sætter hvor mange linjer der skal være i vores grid
     step /= 2;
-    if (step < 1) {
+    if (step < 1) { // Sikre step ikke kommer under 1
       break;
     }
   }
-  while (step * zoom < 10) {
+  while (step * zoom < 10) { // Sætter hvor mange linjer der skal være i vores grid
     step *= 2;
-    if (step > 1000) {
+    if (step > 1000) { // Sikre step ikke kommer over 1000
       break;
     }
   }
@@ -19,23 +19,23 @@ void drawGrid() { // Tegner grid
   strokeWeight(gridStroke);
 
   for (float x = -5000; x <= 5000; x += step) {
-    if (x % 1000 == 0) {
+    if (x % 1000 == 0) { // Ændre til en anden farve stroke for hver 1000m linje
       stroke(150);
     } 
     else {
       stroke(50);
     }
-    line(x, -5000, x, 5000);
+    line(x, -5000, x, 5000); // Tegner gridline
   }
 
   for (float y = -5000; y <= 5000; y += step) {
-    if (y % 1000 == 0) {
+    if (y % 1000 == 0) { // Ændre til en anden farve stroke for hver 1000m linje
       stroke(150);
     } 
     else {
       stroke(50);
     }
-    line(-5000, y, 5000, y);
+    line(-5000, y, 5000, y); // Tegner gridline
   }
 }
 
@@ -48,14 +48,14 @@ void drawAxes() { // Tegner axes
   fill(255);
   textAlign(CENTER, CENTER);
 
-  for (float x = -5000; x <= 5000; x += 1000) {
+  for (float x = -5000; x <= 5000; x += 1000) { // Tegner labels ved hver 1000 meter
     if (x != 0) {
       strokeWeight(5);
       String label = int(x) + "m";
       text(label, x, -10);
     }
   }
-  for (float y = -5000; y <= 5000; y += 1000) {
+  for (float y = -5000; y <= 5000; y += 1000) { // Tegner labels ved hver 1000 meter
     if (y != 0) {
       strokeWeight(5);
       String label = int(y) + "m";
@@ -64,25 +64,25 @@ void drawAxes() { // Tegner axes
   }
 
   fill(255, 0, 0);
-  ellipse(0, 0, max(3, 10 / zoom), max(3, 10 / zoom));
+  ellipse(0, 0, max(3, 10 / zoom), max(3, 10 / zoom)); // Tegner en cirkle i midten af koordinat systemet
 }
 
 void drawHUD() { // Tegner HUD
   float halvWidth = width / (2 * zoom);
   float halvHeight = height / (2 * zoom);
 
-  float minX = int(camX - halvWidth);
-  float maxX = int(camX + halvWidth);
-  float minY = int(camY - halvHeight);
-  float maxY = int(camY + halvHeight);
+  float minX = int(camX - halvWidth); // udreger (cirka) hvor meget af gridet du kan se
+  float maxX = int(camX + halvWidth); // udreger (cirka) hvor meget af gridet du kan se
+  float minY = int(camY - halvHeight); // udreger (cirka) hvor meget af gridet du kan se
+  float maxY = int(camY + halvHeight); // udreger (cirka) hvor meget af gridet du kan se
 
   fill(0, 150);
   rect(10, 10, 250, 50);
 
   fill(255);
   textAlign(LEFT, TOP);
-  text("X: " + minX + "m - " + maxX + "m", 20, 20);
-  text("Y: " + minY + "m - " + maxY + "m", 20, 40);
+  text("X: " + minX + "m - " + maxX + "m", 20, 20); // Displayer text i hjørnet 
+  text("Y: " + minY + "m - " + maxY + "m", 20, 40); // Displayer text i hjørnet 
 }
 
 void drawShip(){ // Tegner skibet
