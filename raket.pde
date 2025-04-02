@@ -24,14 +24,41 @@ class Raket {
   //fysikken til raketen
   void fysik(){
     ArrayList<Kraft> krafter = new ArrayList<Kraft>();
+    //tjek om motoren brænder og hvis ja så tilføj motorkraften i krafter
     if(brænder){
-      krafter.add(new Kraft(100*sin(rot), -100*cos(rot), 0, 0));
+      krafter.add(new Kraft(motorKraft*sin(rot), -motorKraft*cos(rot), 0, 0));
     }
-    //krafter.add(new Kraft(0, 0.1*masse));
+    //primitiv tyngdekraft funktionalitet
+    float tyngdekraft = 0.1*masse;
+    krafter.add(new Kraft(0, tyngdekraft, mX, mY));
+    
+    //her tilføjes alle kræfter
     for(Kraft kraft : krafter){
-      vX += kraft.x/masse;
-      vY += kraft.y/masse;
+      //jeg finder vektoren der peger fra påvirkningspunktet til massemidtpunktet
+      float dX = (kraft.pX-mX) * cos(rot) - (kraft.pY-mY) * sin(rot);
+      float dY = (kraft.pX-mX) * sin(rot) + (kraft.pY-mY) * cos(rot);
+      //find distancen til massemidtpunkt
+      float dist = sqrt(pow(dX, 2) + pow(dY, 2));
+      //regn vinklen mellem kraftvektoren og vektoren der peger mod massemidtpunkt
+      float v = acos((kraft.x*dX + kraft.y*dY) / (kraft.størrelse()*dist));
+      //sikrer at v ikke er lig NaN
+      if(v != v){
+        v = 0;
+      }
+      //tilføj kraften på hastigheden
+      vX += kraft.x/masse*abs(cos(v));
+      vY += kraft.y/masse*abs(cos(v));
+      //find determinanten
+      float det = dX*kraft.y - dY*kraft.x;
+      
+      //hvis determinanten er negativ så er kraft vektoren med uret rundt om vektoren der peger mod massemidtpunktet og derfor skal raketen rotere mod uret rundt, basic stuff lol B)
+      if(det < 0){
+        rotHast += kraft.størrelse()/masse*abs(sin(v))/20;
+      } else{ //og hvis den er positiv så er det omvendt
+        rotHast -= kraft.størrelse()/masse*abs(sin(v))/20;
+      }
     }
+    //tilføj hastigheden på x og y
     x += vX;
     y += vY;
   }

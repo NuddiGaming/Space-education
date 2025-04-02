@@ -9,7 +9,7 @@ float camSpeed = 30;
 
 //grid
 int gridDist = 100;
-int gridSize = 100000;
+int gridSize = 5000;
 
 //raket
 Raket raket;
