@@ -1,6 +1,7 @@
 //Kamera position
 float camX = 0;
 float camY = 0;
+float camRot = 0;
 //Kamera zoom
 float zoom = 1;
 //Kamera hastighed
@@ -8,7 +9,7 @@ float camSpeed = 30;
 
 //grid
 int gridDist = 100;
-int gridSize = 10000;
+int gridSize = 100000;
 
 //raket
 Raket raket;
@@ -26,8 +27,8 @@ void draw(){
   //zoom
   translate(width/2, height/2);
   scale(zoom);
+  rotate(camRot);
   translate(0, 0);
-  
   //lav alt andet
   grafik();
   input();

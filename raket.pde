@@ -10,12 +10,13 @@ class Raket {
   
   float masse = 1000;
   
-  float motorKraft = 10;
+  float motorKraft = 1000;
   //hastighed
   float vX = 0;
   float vY = 0;
   //rotation
   float rot = 0;
+  float rotHast = 0;
   
   Raket(){
     println("Raket oprettet");
@@ -24,9 +25,9 @@ class Raket {
   void fysik(){
     ArrayList<Kraft> krafter = new ArrayList<Kraft>();
     if(brænder){
-      krafter.add(new Kraft(100*sin(rot), -100*cos(rot)));
+      krafter.add(new Kraft(100*sin(rot), -100*cos(rot), 0, 0));
     }
-    
+    //krafter.add(new Kraft(0, 0.1*masse));
     for(Kraft kraft : krafter){
       vX += kraft.x/masse;
       vY += kraft.y/masse;

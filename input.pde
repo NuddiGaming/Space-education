@@ -42,10 +42,11 @@ void input() {
     camY = lerp(camY, raket.y, 0.1);
   }
   if (j) {
-    raket.rot -= 0.03;
+    raket.rotHast -= 0.001;
   } else if (l) {
-    raket.rot += 0.03;
+    raket.rotHast += 0.001;
   }
+  raket.rot += raket.rotHast;
 }
 
 //input...
