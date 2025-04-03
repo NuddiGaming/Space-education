@@ -46,7 +46,21 @@ void tegnGrid() {
 }
 
 void hovedMenu() {
-  background(0);
+  scale(1/zoom);
+  fill(0, 150);
+  rect(-width/2, -height/2, width, height);
+}
+
+Knap hovedMenuStartKnap;
+Knap hovedMenuEditorKnap;
+
+void setupKnapper() {
+  hovedMenuStartKnap = new Knap(width/3,height/2, width/16, height/16, color(0),"Start",
+    10, color(150),color(255),color(0),0,hovedMenu);
+  knapper.add(hovedMenuStartKnap);
+   hovedMenuEditorKnap = new Knap(width/3*2,height/2, width/16, height/16, color(0),"Editor",
+    10, color(150),color(255),color(0),0,hovedMenu);
+  knapper.add(hovedMenuEditorKnap);
 }
 
 ArrayList<Stjerne> stjerner = new ArrayList<Stjerne>();
@@ -75,18 +89,18 @@ void setupStjerner(int antal) {
     int værdi=floor(random(2.999));
     color farve=color(255);
     // bruger det tilfældige tal til at finde en specifik farve mellem de tre kategorier
-    if(værdi==0){
+    if (værdi==0) {
       //Hvid
       farve=color(random(230, 255), random(230, 255), random(230, 255));
-    } else if (værdi==1){
+    } else if (værdi==1) {
       //Rød
       farve=color(random(230, 255), random(180, 200), random(180, 200));
-    } else if (værdi==2){
+    } else if (værdi==2) {
       //Blå
       farve=color(random(200, 220), random(200, 220), random(230, 255));
     }
     //Laver stjernen
-    Stjerne stjerne =new Stjerne(random(width), random(height), random(5),farve);
+    Stjerne stjerne =new Stjerne(random(width), random(height), random(5), farve);
     //Tilføjer stjernerne til en liste til brug når de skal tegnes
     stjerner.add(stjerne);
   }

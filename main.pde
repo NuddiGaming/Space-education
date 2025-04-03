@@ -28,6 +28,7 @@ void setup() {
   //lav raket
   raket = new Raket();
   setupStjerner(200);
+  setupKnapper();
 }
 
 void draw() {
@@ -39,12 +40,15 @@ void draw() {
       fysik();
     }
     if (skærm==hovedMenu) {
-      scale(1/zoom);
-      fill(0,150);
-      rect(-width/2,-height/2,width,height);
+      hovedMenu();
+      for (Knap k : knapper) {
+        k.tegn();
+      }
     }
   }
 }
+
+ArrayList<Knap> knapper = new ArrayList <Knap>();
 
 class Knap {
   //position af det øverste venstre hjørne af tekstfeltet
