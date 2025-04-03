@@ -8,7 +8,7 @@ float zoom = 1;
 float camSpeed = 30;
 
 //grid
-int gridDist = 10;
+int gridDist = 100;
 int gridSize = 5000;
 
 int skærm=0;

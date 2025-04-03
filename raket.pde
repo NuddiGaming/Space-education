@@ -1,6 +1,6 @@
 class Raket {
-  float højde = 300;
-  float bredde = 80;
+  float højde = 20;
+  float bredde = 5;
   //position
   float x = gridSize/2;
   float y = gridSize/2;
@@ -8,7 +8,7 @@ class Raket {
   float mX = 0;
   float mY = højde/2;
   
-  float masse = 1000;
+  float masse = 20000;
   
   float motorKraft = 1000;
   //hastighed
@@ -30,7 +30,7 @@ class Raket {
     }
     //primitiv tyngdekraft funktionalitet
     float tyngdekraft = 0.1*masse;
-    krafter.add(new Kraft(0, tyngdekraft, mX, mY));
+    //krafter.add(new Kraft(0, tyngdekraft, mX, mY));
     
     //her tilføjes alle kræfter
     for(Kraft kraft : krafter){
@@ -85,18 +85,18 @@ class Raket {
     //tegn vinger
     fill(50);
     beginShape();
-    vertex(0+mX, -højde*vingeProcent - højde*bundProcent*0.2+mY);
-    vertex(-bredde*0.5+mX, -højde*vingeProcent - højde*bundProcent*0.2+mY);
-    vertex(-bredde*0.8+mX, -højde*vingeProcent*0.25 - højde*bundProcent*0.2+mY);
-    vertex(-bredde*0.8+mX, -højde*bundProcent*0.2+mY);
-    vertex(0+mX, -højde*bundProcent*0.2+mY);
+    vertex(0+mX, -højde*vingeProcent + højde*0.1+mY);
+    vertex(-bredde*0.5+mX, -højde*vingeProcent + højde*0.1+mY);
+    vertex(-bredde*0.8+mX, -højde*vingeProcent*0.1 + højde*0.1+mY);
+    vertex(-bredde*0.8+mX, højde*0.1+mY);
+    vertex(-bredde*0.8+mX, højde*0.1+mY);
     endShape(CLOSE);
     beginShape();
-    vertex(0+mX, -højde*vingeProcent - højde*bundProcent*0.2+mY);
-    vertex(bredde*0.5+mX, -højde*vingeProcent - højde*bundProcent*0.2+mY);
-    vertex(bredde*0.8+mX, -højde*vingeProcent*0.25 - højde*bundProcent*0.2+mY);
-    vertex(bredde*0.8+mX, -højde*bundProcent*0.2+mY);
-    vertex(0+mX, -højde*bundProcent*0.2+mY);
+    vertex(0+mX, -højde*vingeProcent + højde*0.1+mY);
+    vertex(bredde*0.5+mX, -højde*vingeProcent + højde*0.1+mY);
+    vertex(bredde*0.8+mX, -højde*vingeProcent*0.1 + højde*0.1+mY);
+    vertex(bredde*0.8+mX, højde*0.1+mY);
+    vertex(bredde*0.8+mX, højde*0.1+mY);
     endShape(CLOSE);
     
     //tegn bunden
@@ -114,7 +114,7 @@ class Raket {
     
     //tegn shine
     stroke(240);
-    strokeWeight(5);
+    strokeWeight(bredde/8);
     line(bredde*0.35+mX, -højde*bundProcent - højde*abs(topProcent-bundProcent)*0.1+mY, bredde*0.35+mX, -højde*bundProcent - højde*abs(topProcent-bundProcent)*0.7+mY);
     stroke(0);
     strokeWeight(2);
@@ -136,10 +136,10 @@ class Raket {
     
     //tegn massemidtpunkt indikatoren
     fill(255, 255, 0);
-    circle(0, 0, 10);
+    circle(0, 0, bredde/3);
     fill(0);
-    arc(0, 0, 10, 10, 0, PI/2);
-    arc(0, 0, 10, 10, PI, 1.5*PI);
+    arc(0, 0, bredde/3, bredde/3, 0, PI/2);
+    arc(0, 0, bredde/3, bredde/3, PI, 1.5*PI);
     popMatrix();
   }
 }
