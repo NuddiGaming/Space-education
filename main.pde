@@ -16,7 +16,7 @@ int skærm=0;
 //raket
 Raket raket;
 
-void setup(){
+void setup() {
   fullScreen();
   //placer kamera i midten
   camX = gridSize/2;
@@ -25,7 +25,7 @@ void setup(){
   raket = new Raket();
 }
 
-void draw(){
+void draw() {
   //zoom
   translate(width/2, height/2);
   scale(zoom);
@@ -51,16 +51,18 @@ class Knap {
   //Størrelsen af teksten der vises
   int tekstSize;
   //Basis farve på knappen
-  color feltFarve;
+  color knapFarve;
   //Farven der vises når musen er placeret over knappen
-  color mouseOverFarve;
+  color hoverFarve;
+  //Farven der vises når der clickes på knappen
+  color clickFarve;
   //Værdi der bruges til at afrunde hjørnerne på knappen
   float rundhed;
   //Skærmen som tekst feltet er på
   int knapSkærm;
 
   Knap(float POSX, float POSY, float SIZEX, float SIZEY, color TEKSTFARVE, String TEKST,
-    int TEKSTSIZE, color FELTFARVE, color MOUSEOVERFARVE, float RUNDHED, int KNAPSKÆRM) {
+    int TEKSTSIZE, color KNAPFARVE, color HOVERFARVE,color CLICKFARVE ,float RUNDHED, int KNAPSKÆRM) {
     //Gemmer alle værdierne som der inputtes i constructoren
     posX=POSX;
     posY=POSY;
@@ -69,10 +71,11 @@ class Knap {
     tekstFarve=TEKSTFARVE;
     tekst=TEKST;
     tekstSize=TEKSTSIZE;
-    feltFarve=FELTFARVE;
+    knapFarve=KNAPFARVE;
     rundhed=RUNDHED;
     knapSkærm=KNAPSKÆRM;
-    mouseOverFarve=MOUSEOVERFARVE;
+    hoverFarve=HOVERFARVE;
+    clickFarve=CLICKFARVE;
   }
   void tegn() {
     //Tegnes kun hvis knappen er på den samme skærm som brugeren er
@@ -81,9 +84,13 @@ class Knap {
       rectMode(CORNER);
       //Skifter farven hvis musen er over knappen
       if (mouseOver()) {
-        fill(mouseOverFarve);
+        if (mousePressed) {
+          fill(clickFarve);
+        } else {
+          fill(hoverFarve);
+        }
       } else {
-        fill(feltFarve);
+        fill(knapFarve);
       }
       //Tegner selve knappen
       rect(posX, posY-camY, sizeX, sizeY, rundhed, rundhed, rundhed, rundhed);
