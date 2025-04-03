@@ -15,3 +15,7 @@ class Kraft{
     return sqrt(pow(x, 2)+pow(y, 2));
   }
 }
+
+class legeme{
+  
+}

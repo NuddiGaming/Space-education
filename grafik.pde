@@ -1,10 +1,10 @@
 //Alt vores grafik lol
-void grafik(){
-  tegnGrid();
+void grafik() {
+  //tegnGrid();
   raket.tegnRaket();
 }
 
-void tegnGrid(){
+void tegnGrid() {
   background(0);
   stroke(60);
   //lav alle de lodrette linjer
@@ -13,28 +13,25 @@ void tegnGrid(){
     if(x % (gridDist*10) == 0){
       strokeWeight(2);
     }
-    else{
-      strokeWeight(1);
-    }
-    line(x-camX, 0-camY, x-camX, gridSize-camY);
   }
   //lav alle de vandrette linjer
-  for(int y=0;y<=gridSize;y+=gridDist){
-    //hver 10'ene er tykkere
-    if(y % (gridDist*10) == 0){
-      strokeWeight(2);
+  for (float y=camY-height/2/zoom; y<=camY+height/2/zoom; y++) {
+    if (round(y) % round(gridDist/sqrt(zoom)) == 0) {
+      //hver 10'ene er tykkere
+      if (y % round(gridDist*10/sqrt(zoom)) == 0) {
+        strokeWeight(2);
+      } else {
+        strokeWeight(1);
+      }
+      line(-width/2/zoom, y-camY, width/2/zoom, y-camY);
     }
-    else{
-      strokeWeight(1);
-    }
-    line(0-camX, y-camY, gridSize-camX, y-camY);
   }
   //Lav linjerne der viser x og y aksen
   strokeWeight(3);
   stroke(0, 255, 0);
-  line(gridDist*round(gridSize/gridDist/2)-camX, 0-camY, gridDist*round(gridSize/gridDist/2)-camX, gridSize-camY);
+  //line(gridDist*round(gridSize/gridDist/2)-camX, 0-camY, gridDist*round(gridSize/gridDist/2)-camX, gridSize-camY);
   stroke(255, 0, 0);
-  line(0-camX, gridDist*round(gridSize/gridDist/2)-camY, gridSize-camX, gridDist*round(gridSize/gridDist/2)-camY);
+  //line(0-camX, gridDist*round(gridSize/gridDist/2)-camY, gridSize-camX, gridDist*round(gridSize/gridDist/2)-camY);
   strokeWeight(2);
   stroke(0);
 }

@@ -3,12 +3,12 @@ float camX = 0;
 float camY = 0;
 float camRot = 0;
 //Kamera zoom
-float zoom = 1;
+float zoom = 10;
 //Kamera hastighed
 float camSpeed = 30;
 
 //grid
-int gridDist = 10;
+int gridDist = 100;
 int gridSize = 5000;
 
 int skærm=0;
@@ -30,7 +30,6 @@ void draw(){
   translate(width/2, height/2);
   scale(zoom);
   rotate(camRot);
-  translate(0, 0);
   //lav alt andet
   grafik();
   input();
