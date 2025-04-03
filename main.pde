@@ -11,7 +11,11 @@ float camSpeed = 30;
 int gridDist = 10;
 int gridSize = 5000;
 
-int skærm=0;
+//statemachine med hvor man er henne i programmet
+int hovedMenu=0;
+int simulationKører=1;
+int simulationPauset=2;
+int skærm=hovedMenu;
 
 //raket
 Raket raket;
@@ -23,18 +27,23 @@ void setup() {
   camY = gridSize/2;
   //lav raket
   raket = new Raket();
+  setupStjerner(200);
 }
 
 void draw() {
-  //zoom
-  translate(width/2, height/2);
-  scale(zoom);
-  rotate(camRot);
-  translate(0, 0);
-  //lav alt andet
-  grafik();
-  input();
-  fysik();
+  if (skærm==simulationKører || skærm==simulationPauset || skærm==hovedMenu) {
+    //
+    simulationGrafik();
+    if (skærm==simulationKører) {
+      input();
+      fysik();
+    }
+    if (skærm==hovedMenu) {
+      scale(1/zoom);
+      fill(0,150);
+      rect(-width/2,-height/2,width,height);
+    }
+  }
 }
 
 class Knap {
@@ -62,7 +71,7 @@ class Knap {
   int knapSkærm;
 
   Knap(float POSX, float POSY, float SIZEX, float SIZEY, color TEKSTFARVE, String TEKST,
-    int TEKSTSIZE, color KNAPFARVE, color HOVERFARVE,color CLICKFARVE ,float RUNDHED, int KNAPSKÆRM) {
+    int TEKSTSIZE, color KNAPFARVE, color HOVERFARVE, color CLICKFARVE, float RUNDHED, int KNAPSKÆRM) {
     //Gemmer alle værdierne som der inputtes i constructoren
     posX=POSX;
     posY=POSY;

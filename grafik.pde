@@ -1,30 +1,36 @@
 //Alt vores grafik lol
-void grafik(){
-  tegnGrid();
+void simulationGrafik() {
+  background(0);
+  //Tegner stjernerne før zoom fordi deres størrelse ændres ikke ved en zoom på de størrelsesordner i brug i programmet
+  for (Stjerne S : stjerner) {
+    S.tegnStjerne();
+  }
+  //Zoom
+  translate(width/2, height/2);
+  scale(zoom);
+  rotate(camRot);
+  //tegnGrid();
   raket.tegnRaket();
 }
 
-void tegnGrid(){
-  background(0);
+void tegnGrid() {
   stroke(60);
   //lav alle de lodrette linjer
-  for(int x=0;x<=gridSize;x+=gridDist){
+  for (int x=0; x<=gridSize; x+=gridDist) {
     //hver 10'ene er tykkere
-    if(x % (gridDist*10) == 0){
+    if (x % (gridDist*10) == 0) {
       strokeWeight(2);
-    }
-    else{
+    } else {
       strokeWeight(1);
     }
     line(x-camX, 0-camY, x-camX, gridSize-camY);
   }
   //lav alle de vandrette linjer
-  for(int y=0;y<=gridSize;y+=gridDist){
+  for (int y=0; y<=gridSize; y+=gridDist) {
     //hver 10'ene er tykkere
-    if(y % (gridDist*10) == 0){
+    if (y % (gridDist*10) == 0) {
       strokeWeight(2);
-    }
-    else{
+    } else {
       strokeWeight(1);
     }
     line(0-camX, y-camY, gridSize-camX, y-camY);
@@ -37,4 +43,51 @@ void tegnGrid(){
   line(0-camX, gridDist*round(gridSize/gridDist/2)-camY, gridSize-camX, gridDist*round(gridSize/gridDist/2)-camY);
   strokeWeight(2);
   stroke(0);
+}
+
+void hovedMenu() {
+  background(0);
+}
+
+ArrayList<Stjerne> stjerner = new ArrayList<Stjerne>();
+
+class Stjerne {
+  float posX;
+  float posY;
+  float radius;
+  color farve;
+  Stjerne(float POSX, float POSY, float RADIUs, color FARVE) {
+    posX=POSX;
+    posY=POSY;
+    radius=RADIUs;
+    farve=FARVE;
+  }
+  void tegnStjerne() {
+    fill(farve);
+    circle(posX, posY, radius);
+  }
+}
+
+void setupStjerner(int antal) {
+  //Sørger for at man kan bestemme hvor mange stjerner der skal laves
+  for (int i=0; i<antal; i++) {
+    //vælger tilfældigt mellem tallene 0, 1 og 2
+    int værdi=floor(random(2.999));
+    color farve=color(255);
+    // bruger det tilfældige tal til at finde en specifik farve mellem de tre kategorier
+    if(værdi==0){
+      //Hvid
+      farve=color(random(230, 255), random(230, 255), random(230, 255));
+    } else if (værdi==1){
+      //Rød
+      farve=color(random(230, 255), random(180, 200), random(180, 200));
+    } else if (værdi==2){
+      //Blå
+      farve=color(random(200, 220), random(200, 220), random(230, 255));
+    }
+    //Laver stjernen
+    Stjerne stjerne =new Stjerne(random(width), random(height), random(5),farve);
+    //Tilføjer stjernerne til en liste til brug når de skal tegnes
+    stjerner.add(stjerne);
+  }
 }
