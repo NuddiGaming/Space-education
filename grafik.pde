@@ -8,10 +8,15 @@ void tegnGrid() {
   background(0);
   stroke(60);
   //lav alle de lodrette linjer
-  for(int x=0;x<=gridSize;x+=gridDist){
-    //hver 10'ene er tykkere
-    if(x % (gridDist*10) == 0){
-      strokeWeight(2);
+  for (float x=camX-width/2/zoom; x<=camX+width/2/zoom; x++) {
+    if (round(x) % round(gridDist/sqrt(zoom)) == 0) {
+      //hver 10'ene er tykkere
+      if (x % round(gridDist*10/sqrt(zoom)) == 0) {
+        strokeWeight(2);
+      } else {
+        strokeWeight(1);
+      }
+      line(x-camX, -height/2/zoom, x-camX, height/2/zoom);
     }
   }
   //lav alle de vandrette linjer
