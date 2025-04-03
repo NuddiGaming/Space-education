@@ -36,8 +36,8 @@ void draw() {
   rotate(camRot);
   //lav alt andet
   grafik();
-  input();
   fysik();
+  input();
 }
 
 class Knap {

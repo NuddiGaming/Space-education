@@ -38,8 +38,8 @@ void input() {
     camY += y;
   } else{
     //sæt kameraet på raketen
-    camX = lerp(camX, raket.x, 0.1);
-    camY = lerp(camY, raket.y, 0.1);
+    camX = raket.x;
+    camY = raket.y;
   }
   if (j) {
     raket.rotHast -= 0.1;

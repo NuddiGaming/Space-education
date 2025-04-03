@@ -10,7 +10,7 @@ class Raket {
   
   float masse = 20000;
   
-  float motorKraft = 1000000;
+  float motorKraft = 10000000;
   //hastighed
   float vX = 0;
   float vY = 0;
