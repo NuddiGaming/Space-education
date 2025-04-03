@@ -13,19 +13,23 @@ int gridSize = 5000;
 
 int skærm=0;
 
+float delta;
+float deltaTime;
+
+ArrayList<Legeme> legemer = new ArrayList<Legeme>();
+Legeme jorden = new Legeme(0, 6378000, 6378000, 5972*pow(10, 21), color(0, 0, 255));
 //raket
 Raket raket;
 
 void setup() {
   fullScreen();
-  //placer kamera i midten
-  camX = gridSize/2;
-  camY = gridSize/2;
   //lav raket
   raket = new Raket();
 }
 
 void draw() {
+  delta = (millis()-deltaTime)/1000;
+  deltaTime = millis();
   //zoom
   translate(width/2, height/2);
   scale(zoom);

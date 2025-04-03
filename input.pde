@@ -30,8 +30,8 @@ void input() {
     //sikrer at kameraet har samme hastighed lige meget hvilke knapper du trykker på
     float størrelse = sqrt(pow(x, 2)+pow(y, 2));
     if (størrelse > 0) {
-      x = x/størrelse*camSpeed;
-      y = y/størrelse*camSpeed;
+      x = x/størrelse*camSpeed*delta;
+      y = y/størrelse*camSpeed*delta;
     }
     //tilføj fart
     camX += x;
@@ -42,11 +42,10 @@ void input() {
     camY = lerp(camY, raket.y, 0.1);
   }
   if (j) {
-    raket.rotHast -= 0.001;
+    raket.rotHast -= 0.1;
   } else if (l) {
-    raket.rotHast += 0.001;
+    raket.rotHast += 0.1;
   }
-  raket.rot += raket.rotHast;
 }
 
 //input...

@@ -16,6 +16,22 @@ class Kraft{
   }
 }
 
-class legeme{
-  
+class Legeme{
+  float x;
+  float y;
+  float radius;
+  float masse;
+  color farve;
+  Legeme(float x, float y, float radius, float masse, color farve){
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.masse = masse;
+    this.farve = farve;
+    legemer.add(this);
+  }
+  void tegn(){
+    fill(farve);
+    circle(x-camX, y-camY, radius*2);
+  }
 }

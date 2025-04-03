@@ -1,16 +1,16 @@
 class Raket {
   float højde = 20;
   float bredde = 5;
-  //position
-  float x = gridSize/2;
-  float y = gridSize/2;
   //massemidpunkt position
   float mX = 0;
   float mY = højde/2;
+  //position
+  float x = -mX;
+  float y = -mY;
   
   float masse = 20000;
   
-  float motorKraft = 1000;
+  float motorKraft = 1000000;
   //hastighed
   float vX = 0;
   float vY = 0;
@@ -28,9 +28,17 @@ class Raket {
     if(brænder){
       krafter.add(new Kraft(motorKraft*sin(rot), -motorKraft*cos(rot), 0, 0));
     }
-    //primitiv tyngdekraft funktionalitet
-    float tyngdekraft = 0.1*masse;
-    //krafter.add(new Kraft(0, tyngdekraft, mX, mY));
+    //tyngdekraft funktionalitet
+    for(Legeme legeme : legemer){
+      float dX = abs(legeme.x-x);
+      float dY = abs(legeme.y-y);
+      float dist = sqrt(pow(dX, 2)+pow(dY, 2));
+      float tyngdekraft = g*legeme.masse*masse/pow(dist, 2);
+      float rX = dX/dist;
+      float rY = dY/dist;
+      println(tyngdekraft/masse);
+      krafter.add(new Kraft(rX*tyngdekraft, rY*tyngdekraft, mX, mY));
+    }
     
     //her tilføjes alle kræfter
     for(Kraft kraft : krafter){
@@ -46,21 +54,22 @@ class Raket {
         v = 0;
       }
       //tilføj kraften på hastigheden
-      vX += kraft.x/masse*abs(cos(v));
-      vY += kraft.y/masse*abs(cos(v));
+      vX += kraft.x/masse*abs(cos(v))*delta;
+      vY += kraft.y/masse*abs(cos(v))*delta;
       //find determinanten
       float det = dX*kraft.y - dY*kraft.x;
       
       //hvis determinanten er negativ så er kraft vektoren med uret rundt om vektoren der peger mod massemidtpunktet og derfor skal raketen rotere mod uret rundt, basic stuff lol B)
       if(det < 0){
-        rotHast += kraft.størrelse()/masse*abs(sin(v))/20;
+        rotHast += kraft.størrelse()/masse*abs(sin(v))/20*delta;
       } else{ //og hvis den er positiv så er det omvendt
-        rotHast -= kraft.størrelse()/masse*abs(sin(v))/20;
+        rotHast -= kraft.størrelse()/masse*abs(sin(v))/20*delta;
       }
     }
     //tilføj hastigheden på x og y
-    x += vX;
-    y += vY;
+    x += vX*delta;
+    y += vY*delta;
+    rot += rotHast*delta;
   }
   
   void tegnRaket() {

@@ -1,11 +1,12 @@
 //Alt vores grafik lol
 void grafik() {
+  background(0);
   //tegnGrid();
   raket.tegnRaket();
+  jorden.tegn();
 }
 
 void tegnGrid() {
-  background(0);
   stroke(60);
   //lav alle de lodrette linjer
   for (float x=camX-width/2/zoom; x<=camX+width/2/zoom; x++) {
