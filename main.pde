@@ -1,59 +1,38 @@
-float camX = 0, camY = 0;
-float zoom = 1.0;
-float shipX = 0, shipY = 0;
-//indledende skridt til statemachine
-int skærm=0;
+//Kamera position
+float camX = 0;
+float camY = 0;
+float camRot = 0;
+//Kamera zoom
+float zoom = 1;
+//Kamera hastighed
+float camSpeed = 30;
 
-void setup() {
+//grid
+int gridDist = 100;
+int gridSize = 5000;
+
+//raket
+Raket raket;
+
+void setup(){
   fullScreen();
-  textSize(16);
+  //placer kamera i midten
+  camX = gridSize/2;
+  camY = gridSize/2;
+  //lav raket
+  raket = new Raket();
 }
 
-void draw() {
-  background(0);
-
-  translate(width / 2, height / 2);
+void draw(){
+  //zoom
+  translate(width/2, height/2);
   scale(zoom);
-  translate(-camX, -camY);
-
-  // Bliver displayet på hele mappet:
-  drawGrid(); 
-  drawAxes();
-  tegnRaket(shipX,shipY,0,true,10);
-
-  resetMatrix();
-  
-  // Bliver displayet på skærmen:
-  drawHUD();
-}
-
-void keyPressed() { // Temp movement
-  float moveSpeed = 10; // Hvor hurtigt camera og skibet/racketen bevæger sig.
-  shipX = constrain(shipX, -5000, 5000); // Constrainer til mappet
-  shipY = constrain(shipY, -5000, 5000); // Constrainer til mappet
-  camX = constrain(camX, -5000, 5000); // Constrainer til mappet
-  camY = constrain(camY, -5000, 5000); // Constrainer til mappet
-  if (key == 'w') {
-    camY -= moveSpeed;
-    shipY -= moveSpeed;
-  }
-  if (key == 's') {
-    camY += moveSpeed;
-    shipY += moveSpeed;
-  }
-  if (key == 'a') {
-    camX -= moveSpeed;
-    shipX -= moveSpeed;
-  }
-  if (key == 'd') {
-    camX += moveSpeed;
-    shipX += moveSpeed;
-  }
-  if (key == 'r') { // Resetter camera til skibet/racketens location
-    camX = shipX;
-    camY = shipY;
-    zoom = 10;
-  }
+  rotate(camRot);
+  translate(0, 0);
+  //lav alt andet
+  grafik();
+  input();
+  fysik();
 }
 
 class Knap {
