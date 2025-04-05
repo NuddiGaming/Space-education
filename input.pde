@@ -36,15 +36,10 @@ void input() {
     //tilføj fart
     camX += x;
     camY += y;
-  } else{
-    //sæt kameraet på raketen
-    camX = raket.x;
-    camY = raket.y;
-  }
-  if (j) {
-    raket.rotHast -= 0.1;
-  } else if (l) {
-    raket.rotHast += 0.1;
+  } else {
+    //sæt kameraet på raketens massemidtpunkt
+    camX = raket.x-raket.rotationspunkt.x-((raket.massemidtpunkt.x-raket.rotationspunkt.x) * cos(raket.rot) - (raket.massemidtpunkt.y-raket.rotationspunkt.y) * sin(raket.rot));
+    camY = raket.y-raket.rotationspunkt.y-((raket.massemidtpunkt.x-raket.rotationspunkt.x) * sin(raket.rot) + (raket.massemidtpunkt.y-raket.rotationspunkt.y) * cos(raket.rot));
   }
 }
 
@@ -104,6 +99,8 @@ void keyReleased() {
 //ændre zoom værdien når man skrållar med musen
 void mouseWheel(MouseEvent event) {
   float e = -event.getCount();
-  zoom *= pow(1.1, e);
-  camSpeed /= pow(1.1, e);
+  if (zoom > 0.0001 && e == -1 || zoom < 1000 && e == 1) {
+    zoom *= pow(1.1, e);
+    camSpeed /= pow(1.1, e);
+  }
 }

@@ -1,34 +1,23 @@
 //Alt vores grafik lol
 void grafik() {
   background(0);
-  //tegnGrid();
+  tegnGrid();
   raket.tegnRaket();
-  jorden.tegn();
+  //jorden.tegn();
 }
 
 void tegnGrid() {
   stroke(60);
+  strokeWeight(2/zoom);
   //lav alle de lodrette linjer
   for (float x=camX-width/2/zoom; x<=camX+width/2/zoom; x++) {
-    if (round(x) % round(gridDist/sqrt(zoom)) == 0) {
-      //hver 10'ene er tykkere
-      if (x % round(gridDist*10/sqrt(zoom)) == 0) {
-        strokeWeight(2);
-      } else {
-        strokeWeight(1);
-      }
+    if (round(x) % ceil(gridDist/zoom) == 0) {
       line(x-camX, -height/2/zoom, x-camX, height/2/zoom);
     }
   }
   //lav alle de vandrette linjer
   for (float y=camY-height/2/zoom; y<=camY+height/2/zoom; y++) {
-    if (round(y) % round(gridDist/sqrt(zoom)) == 0) {
-      //hver 10'ene er tykkere
-      if (y % round(gridDist*10/sqrt(zoom)) == 0) {
-        strokeWeight(2);
-      } else {
-        strokeWeight(1);
-      }
+    if (round(y) % ceil(gridDist/zoom) == 0) {
       line(-width/2/zoom, y-camY, width/2/zoom, y-camY);
     }
   }
