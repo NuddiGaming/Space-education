@@ -46,41 +46,37 @@ void tegnGrid() {
 }
 
 void hovedMenu() {
-  scale(1/zoom);
+  //Gemmer den nuværende translation scale og rotation
+  pushMatrix(); 
+  //Går tilbage til den standard af disse
+  resetMatrix();
+  
+  //Gør baggrunden mørkere
   fill(0, 150);
-  rect(-width/2, -height/2, width, height);
+  rect(0, 0, width, height); 
+  
+  // Tegner knapperne baseret på absolutte koordinater
+  for (Knap k : knapper) {
+    if (k.knapSkærm == hovedMenu) {
+      k.tegnUdenTransform();
+    }
+  }
+  
+  popMatrix();  // Går tilbage til den tidligere translation scale og ratation
 }
 
 Knap hovedMenuStartKnap;
 Knap hovedMenuEditorKnap;
 
 void setupKnapper() {
-  hovedMenuStartKnap = new Knap(width/3,height/2, width/16, height/16, color(0),"Start",
-    10, color(150),color(255),color(0),0,hovedMenu);
+  hovedMenuStartKnap = new Knap(width/3,height/2, width/16, height/16, color(255,0,0),"Start",
+    10, color(255,0,0),color(255,0,0),color(0),0,hovedMenu);
   knapper.add(hovedMenuStartKnap);
-   hovedMenuEditorKnap = new Knap(width/3*2,height/2, width/16, height/16, color(0),"Editor",
-    10, color(150),color(255),color(0),0,hovedMenu);
+   hovedMenuEditorKnap = new Knap(width/3*2,height/2, width/16, height/16, color(255,0,0),"Editor",
+    10, color(255,0,0),color(255,0,0),color(0),0,hovedMenu);
   knapper.add(hovedMenuEditorKnap);
 }
 
-ArrayList<Stjerne> stjerner = new ArrayList<Stjerne>();
-
-class Stjerne {
-  float posX;
-  float posY;
-  float radius;
-  color farve;
-  Stjerne(float POSX, float POSY, float RADIUs, color FARVE) {
-    posX=POSX;
-    posY=POSY;
-    radius=RADIUs;
-    farve=FARVE;
-  }
-  void tegnStjerne() {
-    fill(farve);
-    circle(posX, posY, radius);
-  }
-}
 
 void setupStjerner(int antal) {
   //Sørger for at man kan bestemme hvor mange stjerner der skal laves
