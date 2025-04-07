@@ -1,9 +1,11 @@
 //Alt vores grafik lol
 void grafik() {
   background(0);
-  tegnGrid();
+  //tegnGrid();
   raket.tegnRaket();
   //jorden.tegn();
+  fill(255, 0, 0);
+  circle(raket.x-camX, raket.y-camY, 2);
 }
 
 void tegnGrid() {

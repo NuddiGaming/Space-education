@@ -38,8 +38,8 @@ void input() {
     camY += y;
   } else {
     //sæt kameraet på raketens massemidtpunkt
-    camX = raket.x-raket.rotationspunkt.x-((raket.massemidtpunkt.x-raket.rotationspunkt.x) * cos(raket.rot) - (raket.massemidtpunkt.y-raket.rotationspunkt.y) * sin(raket.rot));
-    camY = raket.y-raket.rotationspunkt.y-((raket.massemidtpunkt.x-raket.rotationspunkt.x) * sin(raket.rot) + (raket.massemidtpunkt.y-raket.rotationspunkt.y) * cos(raket.rot));
+    camX = raket.massemidtpunkt.rotate(raket.rotationspunkt, raket.rot).x+raket.x;
+    camY = raket.massemidtpunkt.rotate(raket.rotationspunkt, raket.rot).y+raket.y;
   }
 }
 
