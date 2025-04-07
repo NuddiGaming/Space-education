@@ -1,17 +1,17 @@
 //vores kraft class
-class Kraft{
+class Kraft {
   float x;
   float y;
   float pX = 0;
   float pY = 0;
-  Kraft(float x, float y, float pX, float pY){
+  Kraft(float x, float y, float pX, float pY) {
     this.x = x;
     this.y = y;
     this.pX = pX;
     this.pY = pY;
   }
   //størrelsen/længden af kraften
-  float størrelse(){
+  float størrelse() {
     return sqrt(pow(x, 2)+pow(y, 2));
   }
 }
@@ -41,6 +41,8 @@ class Knap {
   float rundhed;
   //Skærmen som tekst feltet er på
   int knapSkærm;
+
+  boolean tegner=false;
 
   Knap(float POSX, float POSY, float SIZEX, float SIZEY, color TEKSTFARVE, String TEKST,
     int TEKSTSIZE, color KNAPFARVE, color HOVERFARVE, color CLICKFARVE, float RUNDHED, int KNAPSKÆRM) {
@@ -83,8 +85,7 @@ class Knap {
         fill(tekstFarve);
         //Skriver teksten
         text(tekst, posX+sizeX/2, posY+sizeY/2);
-      }
-      else {
+      } else {
         //Tegner selve knappen
         rect(posX-camX, posY-camY, sizeX, sizeY, rundhed, rundhed, rundhed, rundhed);
         //Skifter farven på teksten
@@ -104,33 +105,56 @@ class Knap {
   }
   //funktion til at tegne knapper uden camX og camY
   void tegnUdenTransform() {
-  // Handle hover and click colors
-  if (mouseOverUdenTransform()) {
-    if (mousePressed) {
-      fill(clickFarve);
+    //Gemmer den nuværende translation scale og rotation
+    pushMatrix();
+    //Går tilbage til den standard af disse
+    resetMatrix();
+    // bestemmer farven ved musOver og klick
+    tegner=true;
+    if (mouseOverUdenTransform()) {
+      tegner=false;
+      if (mousePressed) {
+        fill(clickFarve);
+      } else {
+        fill(hoverFarve);
+      }
     } else {
-      fill(hoverFarve);
+      fill(knapFarve);
     }
-  } else {
-    fill(knapFarve);
-  }
-  
-  // Tegner den selve knappen
-  rectMode(CORNER);
-  rect(posX, posY, sizeX, sizeY, rundhed, rundhed, rundhed, rundhed);
-  
-  // Skriver teksten
-  textAlign(CENTER, CENTER);
-  fill(tekstFarve);
-  textSize(tekstSize);
-  text(tekst, posX + sizeX/2, posY + sizeY/2);
-}
 
-//Funktion til at bestemme om musen er over en knap uden translation scale og rotation
-boolean mouseOverUdenTransform() {
-  return (posX < mouseX && mouseX < (posX + sizeX) && 
-          posY < mouseY && mouseY < (posY + sizeY));
-}
+    // Tegner den selve knappen
+    rectMode(CORNER);
+    rect(posX, posY, sizeX, sizeY, rundhed, rundhed, rundhed, rundhed);
+
+    // Skriver teksten
+    textAlign(CENTER, CENTER);
+    fill(tekstFarve);
+    textSize(tekstSize);
+    text(tekst, posX + sizeX/2, posY + sizeY/2);
+    // Går tilbage til den tidligere translation scale og rotation
+    popMatrix();
+  }
+
+  //Funktion til at bestemme om musen er over en knap uden translation scale og rotation
+  boolean mouseOverUdenTransform() {
+    if (knapSkærm==skærm) {
+      if (!tegner) {
+        //Gemmer den nuværende translation scale og rotation
+        pushMatrix();
+        //Går tilbage til den standard af disse
+        resetMatrix();
+      }
+      if (posX < mouseX && mouseX < (posX + sizeX) &&
+        posY < mouseY && mouseY < (posY + sizeY)) {
+        if (!tegner) {
+          // Går tilbage til den tidligere translation scale og rotation
+          popMatrix();
+        }
+        return(true);
+      }
+    }
+    return(false);
+  }
 }
 
 ArrayList<Stjerne> stjerner = new ArrayList<Stjerne>();

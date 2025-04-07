@@ -36,7 +36,7 @@ void input() {
     //tilføj fart
     camX += x;
     camY += y;
-  } else{
+  } else {
     //sæt kameraet på raketen
     camX = lerp(camX, raket.x, 0.1);
     camY = lerp(camY, raket.y, 0.1);
@@ -75,6 +75,13 @@ void keyPressed() {
   if (key == 'r') {
     følgerRaket = !følgerRaket;
   }
+  if (key == 'p') {
+    if (skærm==simulationKører) {
+      skærm=simulationPauset;
+    } else if (skærm==simulationPauset) {
+      skærm=simulationKører;
+    }
+  }
 }
 
 //mere input...
@@ -107,4 +114,10 @@ void mouseWheel(MouseEvent event) {
   float e = -event.getCount();
   zoom *= pow(1.1, e);
   camSpeed /= pow(1.1, e);
+}
+
+void mousePressed(){
+ if(hovedMenuStartKnap.mouseOverUdenTransform()){
+   skærm=simulationKører;
+ }
 }

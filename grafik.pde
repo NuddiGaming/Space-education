@@ -9,7 +9,7 @@ void simulationGrafik() {
   translate(width/2, height/2);
   scale(zoom);
   rotate(camRot);
-  //tegnGrid();
+  tegnGrid();
   raket.tegnRaket();
 }
 
@@ -55,25 +55,19 @@ void hovedMenu() {
   fill(0, 150);
   rect(0, 0, width, height); 
   
-  // Tegner knapperne baseret på absolutte koordinater
-  for (Knap k : knapper) {
-    if (k.knapSkærm == hovedMenu) {
-      k.tegnUdenTransform();
-    }
-  }
-  
-  popMatrix();  // Går tilbage til den tidligere translation scale og ratation
+  // Går tilbage til den tidligere translation scale og rotation
+  popMatrix();
 }
 
 Knap hovedMenuStartKnap;
 Knap hovedMenuEditorKnap;
 
 void setupKnapper() {
-  hovedMenuStartKnap = new Knap(width/3,height/2, width/16, height/16, color(255,0,0),"Start",
-    10, color(255,0,0),color(255,0,0),color(0),0,hovedMenu);
+  hovedMenuStartKnap = new Knap(width/3,height/2, width/16, height/16, color(0,0,0),"Start",
+    10, color(0,255,0),color(255,0,0),color(0,0,255),0,hovedMenu);
   knapper.add(hovedMenuStartKnap);
-   hovedMenuEditorKnap = new Knap(width/3*2,height/2, width/16, height/16, color(255,0,0),"Editor",
-    10, color(255,0,0),color(255,0,0),color(0),0,hovedMenu);
+   hovedMenuEditorKnap = new Knap(width/3*2,height/2, width/16, height/16, color(0,0,0),"Editor",
+    10, color(0,255,0),color(255,0,0),color(0,0,255),0,hovedMenu);
   knapper.add(hovedMenuEditorKnap);
 }
 

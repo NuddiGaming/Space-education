@@ -46,4 +46,10 @@ void draw() {
     //laver hovedmenuen
     hovedMenu();       
   }
+  // Tegner knapperne baseret på absolutte koordinater
+  for (Knap k : knapper) {
+    if (k.knapSkærm == hovedMenu && skærm==hovedMenu) {
+      k.tegnUdenTransform();
+    }
+  }
 }
