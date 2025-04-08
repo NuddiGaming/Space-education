@@ -19,7 +19,7 @@ int skærm=hovedMenu;
 
 //raket
 Raket raket;
-//textfields.add(new Textfield(width/2, height/2, 200, 50, color(255,0,0), color(0,255,0), color(0,0,255), color(255,255,0), 20, "Indtast navn", "", 10, 0, false));
+
 
 void setup() {
   fullScreen();
@@ -30,22 +30,23 @@ void setup() {
   raket = new Raket();
   setupStjerner(200);
   setupKnapper();
+  textfields.add(new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, "Indtast navn", "", 10, 0, false));
 }
 
 void draw() {
   if (skærm == simulationKører || skærm == simulationPauset) {
     simulationGrafik();
+    input();
     //gør så selve simulation kun kører når den skal
     if (skærm == simulationKører) {
-      input();
+
       fysik();
     }
-  } 
-  else if (skærm == hovedMenu) {
+  } else if (skærm == hovedMenu) {
     //Tegner grafikken i baggrunden
-    simulationGrafik(); 
+    simulationGrafik();
     //laver hovedmenuen
-    hovedMenu();       
+    hovedMenu();
   }
   // Tegner knapperne baseret på absolutte koordinater
   for (Knap k : knapper) {
@@ -53,7 +54,7 @@ void draw() {
       k.tegnUdenTransform();
     }
   }
-  for(Textfield field : textfields){
+  for (Textfield field : textfields) {
     field.tegnPåSkærm();
   }
 }

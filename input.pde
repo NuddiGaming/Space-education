@@ -43,12 +43,14 @@ void input() {
     camX = lerp(camX, raket.x, 0.1);
     camY = lerp(camY, raket.y, 0.1);
   }
-  if (j) {
-    raket.rotHast -= 0.001;
-  } else if (l) {
-    raket.rotHast += 0.001;
+  if (skærm==simulationKører) {
+    if (j) {
+      raket.rotHast -= 0.001;
+    } else if (l) {
+      raket.rotHast += 0.001;
+    }
+    raket.rot += raket.rotHast;
   }
-  raket.rot += raket.rotHast;
 }
 
 //input...
@@ -57,22 +59,23 @@ void keyPressed() {
     // Tjekker om det er slet man klikker på
     if (key == BACKSPACE && activeField.tekst.length() > 0) {
       activeField.tekst = activeField.tekst.substring(0, activeField.tekst.length() - 1);
-    } 
+    }
     // Normale tryk. Skal være normale keys, ikke backspace og ikke enter.
     else if (key != CODED && key != BACKSPACE && key != ENTER) {
       activeField.tekst += key;
-  if (key == 'p') {
-    if (skærm==simulationKører) {
-      skærm=simulationPauset;
-      if(brænder){
-       pauseBrænder=true; 
-      }
-    } else if (skærm==simulationPauset) {
-      skærm=simulationKører;
-      pauseBrænder=false;
     }
-  }
-  else{
+  } else {
+    if (key == 'p') {
+      if (skærm==simulationKører) {
+        skærm=simulationPauset;
+        if (brænder) {
+          pauseBrænder=true;
+        }
+      } else if (skærm==simulationPauset) {
+        skærm=simulationKører;
+        pauseBrænder=false;
+      }
+    }
     if (key == 'w') {
       w = true;
     }
@@ -99,7 +102,6 @@ void keyPressed() {
     }
   }
 }
-
 //mere input...
 void keyReleased() {
   if (key == 'w') {
@@ -125,7 +127,10 @@ void keyReleased() {
   }
 }
 
-void mousePressed(){
+void mousePressed() {
+  if (hovedMenuStartKnap.mouseOverUdenTransform()) {
+    skærm=simulationKører;
+  }
   for (Textfield field : textfields) {
     if (field.mouseOver()) {
       if (activeField != null) {
@@ -146,10 +151,4 @@ void mouseWheel(MouseEvent event) {
   float e = -event.getCount();
   zoom *= pow(1.1, e);
   camSpeed /= pow(1.1, e);
-}
-
-void mousePressed(){
- if(hovedMenuStartKnap.mouseOverUdenTransform()){
-   skærm=simulationKører;
- }
 }
