@@ -31,9 +31,11 @@ class Raket {
 
   //listen med alle grafik punkter
   ArrayList<Punkt> grafikPunkter = new ArrayList<Punkt>();
-  //listen med alle grafik punkter til hoved
+  //lister med alle grafik punkter til hoved og flammer
   ArrayList<Punkt> hovedPunkter = new ArrayList<Punkt>();
-  int hovedPunktMængde = 20;
+  ArrayList<Punkt> flamme1Punkter = new ArrayList<Punkt>();
+  ArrayList<Punkt> flamme2Punkter = new ArrayList<Punkt>();
+  int grafikPunktMængde = 20;
   //de basale punkter til collision og grafik.
   Punkt hovedTop = new Punkt(0, -højde);
   Punkt højreSideTop = new Punkt(bredde/2, -højde*topProcent);
@@ -46,6 +48,9 @@ class Raket {
   Punkt højreSideBundEnde = new Punkt(bredde*0.4, 0);
   Punkt venstreSideBundStart = new Punkt(-bredde/2, -højde*bundProcent);
   Punkt venstreSideBundEnde = new Punkt(-bredde*0.4, 0);
+  Punkt shine1 = new Punkt(bredde*0.35, -højde*bundProcent - højde*abs(topProcent-bundProcent)*0.1);
+  Punkt shine2 = new Punkt(bredde*0.35, -højde*bundProcent - højde*abs(topProcent-bundProcent)*0.7);
+  Punkt rude = new Punkt(0, -højde*bundProcent - højde*abs(topProcent-bundProcent)*(4.0/5.0));
   Punkt collisionsPunkt;
   Raket() {
     println("Raket oprettet");
@@ -91,9 +96,13 @@ class Raket {
         collisionPunkter.add(new Punkt(venstreVingeEnde.x+l1.længdeX()*i/punktMængde, venstreVingeEnde.y+l1.a()*l1.længdeX()*i/punktMængde));
       }
     }
-    for (int i=0; i<=hovedPunktMængde; i++) {
-      Punkt a = new Punkt(hovedTop.x+cos(PI*i/hovedPunktMængde)*bredde/2, -højde*topProcent-sin(PI*i/hovedPunktMængde)*højde*(1-topProcent));
+    for (int i=0; i<=grafikPunktMængde; i++) {
+      Punkt a = new Punkt(hovedTop.x+cos(PI*i/grafikPunktMængde)*bredde/2, -højde*topProcent-sin(PI*i/grafikPunktMængde)*højde*(1-topProcent));
+      Punkt b = new Punkt(cos(-PI*i/grafikPunktMængde)*bredde*0.4, -sin(-PI*i/grafikPunktMængde)*bredde*1);
+      Punkt c = new Punkt(cos(-PI*i/grafikPunktMængde)*bredde*0.25, -sin(-PI*i/grafikPunktMængde)*bredde*0.6);
       hovedPunkter.add(a);
+      flamme1Punkter.add(b);
+      flamme2Punkter.add(c);
       grafikPunkter.add(a);
     }
     grafikPunkter.add(hovedTop);
@@ -131,12 +140,11 @@ class Raket {
     for (Legeme legeme : legemer) {
       float dX = abs(legeme.x-(massemidtpunkt.rotate(rotationspunkt, rot).x+x));
       float dY = abs(legeme.y-(massemidtpunkt.rotate(rotationspunkt, rot).y+y));
-      println(dX, dY);
       float dist = sqrt(pow(dX, 2)+pow(dY, 2));
       float tyngdekraft = g*legeme.masse*masse/pow(dist, 2);
       float rX = dX/dist;
       float rY = dY/dist;
-      Kraft gravity = new Kraft(rX*tyngdekraft, rY*tyngdekraft, new Punkt(massemidtpunkt.x, massemidtpunkt.y));
+      Kraft gravity = new Kraft(rX*tyngdekraft, rY*tyngdekraft, massemidtpunkt);
       krafter.add(gravity);
       //collisionen mellem legemer
       for (Punkt p : collisionPunkter) {
@@ -167,27 +175,44 @@ class Raket {
     if (collisionsPunkt != null) {
       collisionsPunkt.x = sumX/m;
       collisionsPunkt.y = sumY/m;
-      rotationspunkt = new Punkt(collisionsPunkt.x, collisionsPunkt.y);
+      Linje l2 = new Linje(rotationspunkt, collisionsPunkt);
+      Punkt oldPos = massemidtpunkt.rotate(rotationspunkt, rot);
+      if (rotationspunkt != collisionsPunkt) {
+        rotationspunkt = new Punkt(collisionsPunkt.x, collisionsPunkt.y);
+      }
+      Punkt newPos = massemidtpunkt.rotate(rotationspunkt, rot);
+      float dX = oldPos.x-newPos.x;
+      float dY = oldPos.y-newPos.y;
+      x += dX;
+      y += dY;
       Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), collisionsPunkt);
-      float kraft = masse*sqrt(pow(vX, 2)+pow(vY, 2))/delta;
+      float rVX = pow(l2.længdeX(), 2)*rot+vX;
+      float rVY = pow(l2.længdeY(), 2)*rot+vY;
+      float v = sqrt(pow(rVX, 2)+pow(rVY, 2));
+      float kraft = masse*pow(v, 2)*10;
       float kX = l1.længdeX()/l1.længde()*kraft;
       float kY = l1.længdeY()/l1.længde()*kraft;
+      println(kX, kY);
       tilføjKraft(new Kraft(kX, kY, collisionsPunkt));
-      println(vY);
-    } else {
+    } else if (rotationspunkt != massemidtpunkt) {
+      Punkt oldPos = massemidtpunkt.rotate(rotationspunkt, rot);
       rotationspunkt = massemidtpunkt;
+      Punkt newPos = massemidtpunkt.rotate(rotationspunkt, rot);
+      float dX = oldPos.x-newPos.x;
+      float dY = oldPos.y-newPos.y;
+      x += dX;
+      y += dY;
     }
     //tilføj hastigheden på x og y
     x += vX*delta;
     y += vY*delta;
-    roter(rotHast*delta);
+    rot += rotHast*delta;
   }
 
   void tilføjKraft(Kraft kraft) {
     //jeg finder vektoren der peger fra påvirkningspunktet til massemidtpunktet
     Punkt a = new Punkt(kraft.p.x, kraft.p.y);
-    Punkt b = new Punkt(massemidtpunkt.x-kraft.p.x, massemidtpunkt.y-kraft.p.y);
-    Linje l = new Linje(a, b);
+    Linje l = new Linje(a, massemidtpunkt);
     l = l.rotate(rotationspunkt, rot);
     Punkt d = new Punkt(l.længdeX(), l.længdeY());
     //find distancen til massemidtpunkt
@@ -203,24 +228,13 @@ class Raket {
     vY += kraft.y/masse*abs(cos(v))*delta;
     //find determinanten
     float det = d.x*kraft.y - d.y*kraft.x;
-
+    Linje l1 = new Linje(rotationspunkt, kraft.p);
     //hvis determinanten er negativ så er kraft vektoren med uret rundt om vektoren der peger mod massemidtpunktet og derfor skal raketen rotere mod uret rundt, basic stuff lol B)
     if (det < 0) {
-      rotHast += kraft.størrelse()/masse*abs(sin(v))/20*delta;
+      rotHast += kraft.størrelse()/masse/l1.længde()*abs(sin(v))*delta;
     } else { //og hvis den er positiv så er det omvendt
-      rotHast -= kraft.størrelse()/masse*abs(sin(v))/20*delta;
+      rotHast -= kraft.størrelse()/masse/l1.længde()*abs(sin(v))*delta;
     }
-  }
-  
-  void roter(float v){
-    println(grafikPunkter.get(0).x);
-    for(int i=0;i<collisionPunkter.size();i++){
-      collisionPunkter.get(i).rotateFull(rotationspunkt, v); 
-    }
-    for(int i=0;i<grafikPunkter.size();i++){
-      grafikPunkter.get(i).rotateFull(rotationspunkt, v); 
-    }
-    massemidtpunkt.rotateFull(rotationspunkt, v);
   }
 
   void tegnRaket() {
@@ -235,62 +249,71 @@ class Raket {
     fill(255, 0, 0);
     beginShape();
     for (Punkt p : hovedPunkter) {
-      vertex(p.x, p.y);
+      vertex(p.rotate(rotationspunkt, rot).x, p.rotate(rotationspunkt, rot).y);
     }
     endShape(CLOSE);
     //tegn vinger
     fill(50);
     beginShape();
-    vertex(venstreVingeStart.x, venstreVingeStart.y);
-    vertex(venstreVingeEnde.x, venstreVingeEnde.y);
-    vertex(0, venstreVingeStart.y*0.8);
-    vertex(højreVingeEnde.x, højreVingeEnde.y);
-    vertex(højreVingeStart.x, højreVingeStart.y);
+    vertex(venstreVingeStart.rotate(rotationspunkt, rot).x, venstreVingeStart.rotate(rotationspunkt, rot).y);
+    vertex(venstreVingeEnde.rotate(rotationspunkt, rot).x, venstreVingeEnde.rotate(rotationspunkt, rot).y);
+    Punkt v = new Punkt(0, venstreVingeStart.y*0.8).rotate(rotationspunkt, rot);
+    vertex(v.x, v.y);
+    vertex(højreVingeEnde.rotate(rotationspunkt, rot).x, højreVingeEnde.rotate(rotationspunkt, rot).y);
+    vertex(højreVingeStart.rotate(rotationspunkt, rot).x, højreVingeStart.rotate(rotationspunkt, rot).y);
     endShape(CLOSE);
 
     //tegn bunden
     fill(75);
     beginShape();
-    vertex(venstreSideBundStart.x, venstreSideBundStart.y);
-    vertex(venstreSideBundEnde.x, venstreSideBundEnde.y);
-    vertex(højreSideBundEnde.x, højreSideBundEnde.y);
-    vertex(højreSideBundStart.x, højreSideBundStart.y);
+    vertex(venstreSideBundStart.rotate(rotationspunkt, rot).x, venstreSideBundStart.rotate(rotationspunkt, rot).y);
+    vertex(venstreSideBundEnde.rotate(rotationspunkt, rot).x, venstreSideBundEnde.rotate(rotationspunkt, rot).y);
+    vertex(højreSideBundEnde.rotate(rotationspunkt, rot).x, højreSideBundEnde.rotate(rotationspunkt, rot).y);
+    vertex(højreSideBundStart.rotate(rotationspunkt, rot).x, højreSideBundStart.rotate(rotationspunkt, rot).y);
     endShape(CLOSE);
 
     //tegn hoved delen
     fill(150);
     beginShape();
-    vertex(højreSideTop.x, højreSideTop.y);
-    vertex(højreSideBundStart.x, højreSideBundStart.y);
-    vertex(venstreSideBundStart.x, venstreSideBundStart.y);
-    vertex(venstreSideTop.x, venstreSideTop.y);
+    vertex(højreSideTop.rotate(rotationspunkt, rot).x, højreSideTop.rotate(rotationspunkt, rot).y);
+    vertex(højreSideBundStart.rotate(rotationspunkt, rot).x, højreSideBundStart.rotate(rotationspunkt, rot).y);
+    vertex(venstreSideBundStart.rotate(rotationspunkt, rot).x, venstreSideBundStart.rotate(rotationspunkt, rot).y);
+    vertex(venstreSideTop.rotate(rotationspunkt, rot).x, venstreSideTop.rotate(rotationspunkt, rot).y);
     endShape(CLOSE);
 
     //tegn shine
     stroke(240);
     strokeWeight(bredde/8);
-    line(bredde*0.35, -højde*bundProcent - højde*abs(topProcent-bundProcent)*0.1, bredde*0.35, -højde*bundProcent - højde*abs(topProcent-bundProcent)*0.7);
+    line(shine1.rotate(rotationspunkt, rot).x, shine1.rotate(rotationspunkt, rot).y, shine2.rotate(rotationspunkt, rot).x, shine2.rotate(rotationspunkt, rot).y);
     stroke(0);
     strokeWeight(2);
     noStroke();
 
     //tegn rude
     fill(100, 100, 255);
-    circle(0, -højde*bundProcent - højde*abs(topProcent-bundProcent)*(4.0/5.0), bredde*0.4);
+    circle(rude.rotate(rotationspunkt, rot).x, rude.rotate(rotationspunkt, rot).y, bredde*0.4);
 
     //tegn flammer hvis moteren brænder
     if (brænder) {
       //tegner ydre exhaust
       fill(252, 164, 48);
-      arc(0, 0, bredde*0.8, bredde*2, 0, PI);
+      beginShape();
+      for (Punkt p : flamme1Punkter) {
+        vertex(p.rotate(rotationspunkt, rot).x, p.rotate(rotationspunkt, rot).y);
+      }
+      endShape(CLOSE);
       //tegner indre exhaust
       fill(245, 215, 24);
-      arc(0, 0, bredde*0.5, bredde*1.2, 0, PI);
+      beginShape();
+      for (Punkt p : flamme2Punkter) {
+        vertex(p.rotate(rotationspunkt, rot).x, p.rotate(rotationspunkt, rot).y);
+      }
+      endShape(CLOSE);
     }
 
     fill(0, 255, 0);
     for (Punkt p : collisionPunkter) {
-      circle(p.x, p.y, bredde/10);
+      circle(p.rotate(rotationspunkt, rot).x, p.rotate(rotationspunkt, rot).y, bredde/10);
     }
 
     fill(255, 255, 0);
@@ -301,10 +324,10 @@ class Raket {
     }
     //tegn massemidtpunkt indikatoren
     fill(255, 255, 0);
-    circle(massemidtpunkt.x, massemidtpunkt.y, bredde/5);
+    circle(massemidtpunkt.rotate(rotationspunkt, rot).x, massemidtpunkt.rotate(rotationspunkt, rot).y, bredde/5);
     fill(0);
-    arc(massemidtpunkt.x, massemidtpunkt.y, bredde/5, bredde/5, 0, PI/2);
-    arc(massemidtpunkt.x, massemidtpunkt.y, bredde/5, bredde/5, PI, 1.5*PI);
+    arc(massemidtpunkt.rotate(rotationspunkt, rot).x, massemidtpunkt.rotate(rotationspunkt, rot).y, bredde/5, bredde/5, 0, PI/2);
+    arc(massemidtpunkt.rotate(rotationspunkt, rot).x, massemidtpunkt.rotate(rotationspunkt, rot).y, bredde/5, bredde/5, PI, 1.5*PI);
     popMatrix();
   }
 }
