@@ -7,6 +7,8 @@ boolean l = false;
 
 boolean brænder = false;
 
+boolean pauseBrænder=false;
+
 boolean følgerRaket = true;
 
 //alt vores input lol
@@ -78,8 +80,12 @@ void keyPressed() {
   if (key == 'p') {
     if (skærm==simulationKører) {
       skærm=simulationPauset;
+      if(brænder){
+       pauseBrænder=true; 
+      }
     } else if (skærm==simulationPauset) {
       skærm=simulationKører;
+      pauseBrænder=false;
     }
   }
 }

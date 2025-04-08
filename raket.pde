@@ -125,7 +125,7 @@ class Raket {
     circle(0+mX, -højde*bundProcent - højde*abs(topProcent-bundProcent)*(4.0/5.0)+mY, bredde*0.4);
     
     //tegn flammer hvis moteren brænder
-    if (brænder && skærm==simulationKører) {
+    if ((brænder && skærm==simulationKører)||pauseBrænder) {
       //tegner ydre exhaust
       fill(252, 164, 48);
       arc(0+mX, 0+mY, bredde*0.8, bredde*2, 0, PI);
