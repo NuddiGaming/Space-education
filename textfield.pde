@@ -37,6 +37,40 @@ class Textfield {
         fill(baggrundsFarve);
       }
       stroke(outlineFarve);
+      rect(posX, posY-camY, sizeX, sizeY, rundhed);
+      textAlign(CENTER, CENTER);
+      fill(tekstFarve);
+      textSize(tekstSize);
+      // Teksten som står i feltet
+      String displayedText;
+      if (active) {
+        displayedText = tekst;
+      } 
+      else {
+        if (tekst.isEmpty()) {
+          displayedText = startTekst;
+        } 
+        else {
+          displayedText = tekst;
+        }
+      }
+      text(displayedText, posX + sizeX / 2, posY-camY + sizeY / 2);
+    }
+  }
+  
+  void tegnPåSkærm() {
+  pushMatrix();
+  resetMatrix();
+  if (textfieldSkærm == skærm) { // Tjekker skærm
+      rectMode(CORNER);
+      // Sætte den rigtige farve ud fra om det er active
+      if (active){
+        fill(activeFarve);
+      }
+      else{
+        fill(baggrundsFarve);
+      }
+      stroke(outlineFarve);
       rect(posX, posY, sizeX, sizeY, rundhed);
       textAlign(CENTER, CENTER);
       fill(tekstFarve);
@@ -56,6 +90,7 @@ class Textfield {
       }
       text(displayedText, posX + sizeX / 2, posY + sizeY / 2);
     }
+    popMatrix();
   }
 
   // Tjekker om mus er over knap

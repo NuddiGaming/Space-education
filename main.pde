@@ -23,9 +23,11 @@ void setup() {
   camY = gridSize/2;
   //lav raket
   raket = new Raket();
+  //textfields.add(new Textfield(width/2, height/2, 200, 50, color(255,0,0), color(0,255,0), color(0,0,255), color(255,255,0), 20, "Indtast navn", "", 10, 0, false));
 }
 
 void draw() {
+  background(0);
   //zoom
   translate(width/2, height/2);
   scale(zoom);
@@ -35,7 +37,7 @@ void draw() {
   input();
   fysik();
   for(Textfield field : textfields){
-    field.tegn();
+    field.tegnPåSkærm();
   }
 }
 

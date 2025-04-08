@@ -51,30 +51,6 @@ void input() {
 
 //input...
 void keyPressed() {
-  if (key == 'w') {
-    w = true;
-  }
-  if (key == 'a') {
-    a = true;
-  }
-  if (key == 's') {
-    s = true;
-  }
-  if (key == 'd') {
-    d = true;
-  }
-  if (key == ' ') {
-    brænder = true;
-  }
-  if (key == 'j') {
-    j = true;
-  }
-  if (key == 'l') {
-    l = true;
-  }
-  if (key == 'r') {
-    følgerRaket = !følgerRaket;
-  }
   if (activeField != null) {
     // Tjekker om det er slet man klikker på
     if (key == BACKSPACE && activeField.tekst.length() > 0) {
@@ -83,6 +59,32 @@ void keyPressed() {
     // Normale tryk. Skal være normale keys, ikke backspace og ikke enter.
     else if (key != CODED && key != BACKSPACE && key != ENTER) {
       activeField.tekst += key;
+    }
+  }
+  else{
+    if (key == 'w') {
+      w = true;
+    }
+    if (key == 'a') {
+      a = true;
+    }
+    if (key == 's') {
+      s = true;
+    }
+    if (key == 'd') {
+      d = true;
+    }
+    if (key == ' ') {
+      brænder = true;
+    }
+    if (key == 'j') {
+      j = true;
+    }
+    if (key == 'l') {
+      l = true;
+    }
+    if (key == 'r') {
+      følgerRaket = !følgerRaket;
     }
   }
 }
