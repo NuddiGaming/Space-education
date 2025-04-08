@@ -34,6 +34,9 @@ void draw() {
   grafik();
   input();
   fysik();
+  for(Textfield field : textfields){
+    field.tegn();
+  }
 }
 
 class Knap {

@@ -75,6 +75,16 @@ void keyPressed() {
   if (key == 'r') {
     følgerRaket = !følgerRaket;
   }
+  if (activeField != null) {
+    // Tjekker om det er slet man klikker på
+    if (key == BACKSPACE && activeField.tekst.length() > 0) {
+      activeField.tekst = activeField.tekst.substring(0, activeField.tekst.length() - 1);
+    } 
+    // Normale tryk. Skal være normale keys, ikke backspace og ikke enter.
+    else if (key != CODED && key != BACKSPACE && key != ENTER) {
+      activeField.tekst += key;
+    }
+  }
 }
 
 //mere input...
@@ -99,6 +109,22 @@ void keyReleased() {
   }
   if (key == 'l') {
     l = false;
+  }
+}
+
+void mousePressed(){
+  for (Textfield field : textfields) {
+    if (field.mouseOver()) {
+      if (activeField != null) {
+        activeField.deactivate(); // Deactivater alle felter hvis 'activeField' ikke er sat
+      }
+      field.activate(); // Activater det field man klikker på
+      return;
+    }
+  }
+  if (activeField != null) {
+    activeField.deactivate();
+    activeField = null;
   }
 }
 
