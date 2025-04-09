@@ -1,6 +1,6 @@
 //Kamera position
-float camX = 0;
-float camY = 0;
+double camX = 0;
+double camY = 0;
 float camRot = 0;
 //Kamera zoom
 float zoom = 10;
@@ -96,13 +96,13 @@ class Knap {
         fill(knapFarve);
       }
       //Tegner selve knappen
-      rect(posX, posY-camY, sizeX, sizeY, rundhed, rundhed, rundhed, rundhed);
+      rect((float)(posX-camX), (float)(posY-camY), sizeX, sizeY, rundhed);
       //Sørger for at tekst tegnes med udgangspunkt i centrum af knappen
       textAlign(CENTER, CENTER);
       //Skifter farven på teksten
       fill(tekstFarve);
       //Skriver teksten
-      text(tekst, posX+sizeX/2, posY-camY+sizeY/2);
+      text(tekst, (float)(posX+sizeX/2), (float)(posY-camY+sizeY/2));
     }
   }
   //funktion der returnerer sand når musen er over knappen men ellers falsk

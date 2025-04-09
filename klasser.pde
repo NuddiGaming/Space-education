@@ -1,16 +1,16 @@
 //vores kraft class
 class Kraft {
-  float x;
-  float y;
+  double x;
+  double y;
   Punkt p;
-  Kraft(float x, float y, Punkt p) {
+  Kraft(double x, double y, Punkt p) {
     this.x = x;
     this.y = y;
     this.p = p;
   }
   //størrelsen/længden af kraften
-  float størrelse() {
-    return sqrt(pow(x, 2)+pow(y, 2));
+  double størrelse() {
+    return Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
   }
   Kraft rotate(Punkt rP, float v){
     return new Kraft((x-rP.x)*cos(v) - (y-rP.y)*sin(v)+rP.x, (x-rP.x)*sin(v) + (y-rP.y)*cos(v)+rP.y, p);
@@ -19,18 +19,18 @@ class Kraft {
 
 //en punkt class til math :)
 class Punkt {
-  float x;
-  float y;
-  Punkt(float x, float y) {
+  double x;
+  double y;
+  Punkt(double x, double y) {
     this.x = x;
     this.y = y;
   }
-  Punkt rotate(Punkt p, float v) {
-    return new Punkt((x-p.x)*cos(v) - (y-p.y)*sin(v)+p.x, (x-p.x)*sin(v) + (y-p.y)*cos(v)+p.y);
+  Punkt rotate(Punkt p, double v) {
+    return new Punkt((x-p.x)*Math.cos(v) - (y-p.y)*Math.sin(v)+p.x, (x-p.x)*Math.sin(v) + (y-p.y)*Math.cos(v)+p.y);
   }
-  void rotateFull(Punkt p, float v){
-    x = (x-p.x)*cos(v) - (y-p.y)*sin(v)+p.x;
-    y = (x-p.x)*sin(v) + (y-p.y)*cos(v)+p.y;
+  void rotateFull(Punkt p, double v){
+    x = (x-p.x)*Math.cos(v) - (y-p.y)*Math.sin(v)+p.x;
+    y = (x-p.x)*Math.sin(v) + (y-p.y)*Math.cos(v)+p.y;
   }
 }
 
@@ -42,45 +42,42 @@ class Linje {
     this.p1 = p1;
     this.p2 = p2;
   }
-  void tegn(){
-    line(p1.x+raket.rotationspunkt.x, p1.y+raket.rotationspunkt.y, p2.x+raket.rotationspunkt.x, p2.y+raket.rotationspunkt.y);
-  }
-  Linje rotate(Punkt p, float v){
+  Linje rotate(Punkt p, double v){
     return new Linje(p1.rotate(p, v), p2.rotate(p, v));
   }
-  float længdeX(){
+  double længdeX(){
     return p2.x-p1.x;
   }
-  float længdeY(){
+  double længdeY(){
     return p2.y-p1.y;
   }
-  float længde(){
-    return sqrt(pow(længdeX(), 2)+pow(længdeY(), 2));
+  double længde(){
+    return Math.sqrt(Math.pow(længdeX(), 2)+Math.pow(længdeY(), 2));
   }
-  float a(){
+  double a(){
     return længdeY()/længdeX();
   }
-  float b(){
+  double b(){
     return p1.y-a()*p1.x;
   }
 }
 
 //Skæringspunkt mellem 2 linjer
 Punkt skæringspunkt(Linje l1, Linje l2) {
-  float x;
-  float y;
+  double x;
+  double y;
   //check om der er lodrette linjer
   if (l1.p2.x != l1.p1.x && l2.p2.x != l2.p1.x) {
-    float a1 = l1.a();
-    float a2 = l2.a();
-    float b1 = l1.b();
-    float b2 = l2.b();
+    double a1 = l1.a();
+    double a2 = l2.a();
+    double b1 = l1.b();
+    double b2 = l2.b();
     //regn x og y ud på skæringspunkt
     x = -((b1-b2)/(a1-a2));
     y = a1*x+b1;
   } else { //hvis der er lodrette linjer
-    float a;
-    float b;
+    double a;
+    double b;
     //check om det er linje 1 der er lodret
     if (l1.p2.x == l1.p1.x) {
       x = l1.p2.x;
@@ -99,12 +96,12 @@ Punkt skæringspunkt(Linje l1, Linje l2) {
 
 //Legeme class til planeter/måner/whatever der skal have tyngdekraft
 class Legeme {
-  float x;
-  float y;
-  float radius;
-  float masse;
+  double x;
+  double y;
+  double radius;
+  double masse;
   color farve;
-  Legeme(float x, float y, float radius, float masse, color farve) {
+  Legeme(double x, double y, double radius, double masse, color farve) {
     this.x = x;
     this.y = y;
     this.radius = radius;
@@ -114,6 +111,6 @@ class Legeme {
   }
   void tegn() {
     fill(farve);
-    circle(x-camX, y-camY, radius*2);
+    circle((float)(x-camX), (float)(y-camY), (float)radius*2);
   }
 }

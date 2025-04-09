@@ -1,28 +1,28 @@
 class Raket {
-  float højde = 20;
-  float bredde = 5;
+  double højde = 20;
+  double bredde = 5;
   //hvor stor en procentdel hver del fylder af højden
-  float topProcent = 0.8;
-  float bundProcent = 0.1;
-  float vingeProcent = 0.3;
-  float vingeProcentHøjde = 0.4;
-  float vingeProcentBredde = 0.4;
+  double topProcent = 0.8;
+  double bundProcent = 0.1;
+  double vingeProcent = 0.3;
+  double vingeProcentHøjde = 0.4;
+  double vingeProcentBredde = 0.4;
   //massemidpunkt position
   Punkt massemidtpunkt = new Punkt(0, -højde/2);
   Punkt rotationspunkt = new Punkt(massemidtpunkt.x, massemidtpunkt.y);
   //position
-  float x = 0;
-  float y = -10;
+  double x = 0;
+  double y = -10;
 
-  float masse = 20000;
+  double masse = 20000;
 
-  float motorKraft = 1000000;
+  double motorKraft = 1000000;
   //hastighed
-  float vX = 0;
-  float vY = 0;
+  double vX = 0;
+  double vY = 0;
   //rotation
-  float rot = 0;
-  float rotHast = 0;
+  double rot = 0;
+  double rotHast = 0;
 
   int punktMængde = 4;
 
@@ -48,9 +48,9 @@ class Raket {
   Punkt højreSideBundEnde = new Punkt(bredde*0.4, 0);
   Punkt venstreSideBundStart = new Punkt(-bredde/2, -højde*bundProcent);
   Punkt venstreSideBundEnde = new Punkt(-bredde*0.4, 0);
-  Punkt shine1 = new Punkt(bredde*0.35, -højde*bundProcent - højde*abs(topProcent-bundProcent)*0.1);
-  Punkt shine2 = new Punkt(bredde*0.35, -højde*bundProcent - højde*abs(topProcent-bundProcent)*0.7);
-  Punkt rude = new Punkt(0, -højde*bundProcent - højde*abs(topProcent-bundProcent)*(4.0/5.0));
+  Punkt shine1 = new Punkt(bredde*0.35, -højde*bundProcent - højde*Math.abs(topProcent-bundProcent)*0.1);
+  Punkt shine2 = new Punkt(bredde*0.35, -højde*bundProcent - højde*Math.abs(topProcent-bundProcent)*0.7);
+  Punkt rude = new Punkt(0, -højde*bundProcent - højde*Math.abs(topProcent-bundProcent)*(4.0/5.0));
   Punkt collisionsPunkt;
   Raket() {
     println("Raket oprettet");
@@ -129,21 +129,22 @@ class Raket {
     ArrayList<Kraft> krafter = new ArrayList<Kraft>();
     //tjek om motoren brænder og hvis ja så tilføj motorkraften i krafter
     if (brænder) {
-      krafter.add(new Kraft(motorKraft*sin(rot), -motorKraft*cos(rot), new Punkt(0, 0)));
+      krafter.add(new Kraft(motorKraft*Math.sin(rot), -motorKraft*Math.cos(rot), new Punkt(0, 0)));
     }
     collisionsPunkt = null;
-    float sumX = 0;
-    float sumY = 0;
+    double sumX = 0;
+    double sumY = 0;
     int m = 0;
     Legeme collisionsLegeme = null;
+    Punkt closestPoint = massemidtpunkt;
     //tyngdekraft funktionalitet og collision med legemer
     for (Legeme legeme : legemer) {
-      float dX = abs(legeme.x-(massemidtpunkt.rotate(rotationspunkt, rot).x+x));
-      float dY = abs(legeme.y-(massemidtpunkt.rotate(rotationspunkt, rot).y+y));
-      float dist = sqrt(pow(dX, 2)+pow(dY, 2));
-      float tyngdekraft = g*legeme.masse*masse/pow(dist, 2);
-      float rX = dX/dist;
-      float rY = dY/dist;
+      double dX = Math.abs(legeme.x-(massemidtpunkt.rotate(rotationspunkt, rot).x+x));
+      double dY = Math.abs(legeme.y-(massemidtpunkt.rotate(rotationspunkt, rot).y+y));
+      double dist = Math.sqrt(Math.pow(dX, 2)+Math.pow(dY, 2));
+      double tyngdekraft = g*legeme.masse*masse/Math.pow(dist, 2);
+      double rX = dX/dist;
+      double rY = dY/dist;
       Kraft gravity = new Kraft(rX*tyngdekraft, rY*tyngdekraft, massemidtpunkt);
       krafter.add(gravity);
       //collisionen mellem legemer
@@ -152,12 +153,14 @@ class Raket {
         pCopy = pCopy.rotate(new Punkt(rotationspunkt.x, rotationspunkt.y), rot);
         pCopy.x += x;
         pCopy.y += y;
-        if (sqrt(pow(pCopy.x-legeme.x, 2)+pow(pCopy.y-legeme.y, 2)) <= legeme.radius) {
+        if (Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2)) <= legeme.radius) {
+          if (Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2)) < Math.sqrt(Math.pow(closestPoint.x-legeme.x, 2)+Math.pow(closestPoint.y-legeme.y, 2))) {
+            closestPoint = pCopy;
+          }
           fill(255, 0, 0);
           if (collisionsLegeme == null) {
             collisionsLegeme = legeme;
             collisionsPunkt = new Punkt(0, 0);
-            krafter.remove(gravity);
           }
           sumX += p.x;
           sumY += p.y;
@@ -165,7 +168,7 @@ class Raket {
         } else {
           fill(255);
         }
-        circle(pCopy.x-camX, pCopy.y-camY, 1);
+        //circle((float)(pCopy.x-camX), (float)(pCopy.y-camY), 1);
       }
     }
     //her tilføjes alle kræfter
@@ -181,25 +184,23 @@ class Raket {
         rotationspunkt = new Punkt(collisionsPunkt.x, collisionsPunkt.y);
       }
       Punkt newPos = massemidtpunkt.rotate(rotationspunkt, rot);
-      float dX = oldPos.x-newPos.x;
-      float dY = oldPos.y-newPos.y;
+      double dX = oldPos.x-newPos.x;
+      double dY = oldPos.y-newPos.y;
       x += dX;
       y += dY;
       Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), collisionsPunkt);
-      float rVX = pow(l2.længdeX(), 2)*rot+vX;
-      float rVY = pow(l2.længdeY(), 2)*rot+vY;
-      float v = sqrt(pow(rVX, 2)+pow(rVY, 2));
-      float kraft = masse*pow(v, 2)*10;
-      float kX = l1.længdeX()/l1.længde()*kraft;
-      float kY = l1.længdeY()/l1.længde()*kraft;
-      println(kX, kY);
+      double v = rotHast*l2.længde()+Math.sqrt(Math.pow(vX, 2)+Math.pow(vY, 2));
+      double kraft = masse*v;
+      double kX = l1.længdeX()/l1.længde()*kraft;
+      double kY = l1.længdeY()/l1.længde()*kraft;
       tilføjKraft(new Kraft(kX, kY, collisionsPunkt));
+      rotHast*=0.99;
     } else if (rotationspunkt != massemidtpunkt) {
       Punkt oldPos = massemidtpunkt.rotate(rotationspunkt, rot);
       rotationspunkt = massemidtpunkt;
       Punkt newPos = massemidtpunkt.rotate(rotationspunkt, rot);
-      float dX = oldPos.x-newPos.x;
-      float dY = oldPos.y-newPos.y;
+      double dX = oldPos.x-newPos.x;
+      double dY = oldPos.y-newPos.y;
       x += dX;
       y += dY;
     }
@@ -207,6 +208,25 @@ class Raket {
     x += vX*delta;
     y += vY*delta;
     rot += rotHast*delta;
+    if (collisionsLegeme != null) {
+      for (Punkt p : collisionPunkter) {
+        Punkt pCopy = new Punkt(p.x, p.y);
+        pCopy = pCopy.rotate(new Punkt(rotationspunkt.x, rotationspunkt.y), rot);
+        pCopy.x += x;
+        pCopy.y += y;
+        if (Math.sqrt(Math.pow(pCopy.x-collisionsLegeme.x, 2)+Math.pow(pCopy.y-collisionsLegeme.y, 2)) <= collisionsLegeme.radius) {
+          if (Math.sqrt(Math.pow(pCopy.x-collisionsLegeme.x, 2)+Math.pow(pCopy.y-collisionsLegeme.y, 2)) < Math.sqrt(Math.pow(closestPoint.x-collisionsLegeme.x, 2)+Math.pow(closestPoint.y-collisionsLegeme.y, 2))) {
+            closestPoint = pCopy;
+          }
+        }
+      }
+      double distToCenter = Math.sqrt(Math.pow(closestPoint.x-collisionsLegeme.x, 2)+Math.pow(closestPoint.y-collisionsLegeme.y, 2));
+      double offset = distToCenter-collisionsLegeme.radius;
+      Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), closestPoint);
+      double v = Math.acos((0*l1.længdeX() + 1*l1.længdeY()) / (l1.længde()*1));
+      x += -Math.sin(v)*offset*0.99;
+      y += -Math.cos(v)*offset*0.99;
+    }
   }
 
   void tilføjKraft(Kraft kraft) {
@@ -216,24 +236,23 @@ class Raket {
     l = l.rotate(rotationspunkt, rot);
     Punkt d = new Punkt(l.længdeX(), l.længdeY());
     //find distancen til massemidtpunkt
-    float dist = sqrt(pow(d.x, 2) + pow(d.y, 2));
+    double dist = Math.sqrt(Math.pow(d.x, 2) + Math.pow(d.y, 2));
     //regn vinklen mellem kraftvektoren og vektoren der peger mod massemidtpunkt
-    float v = acos((kraft.x*d.x + kraft.y*d.y) / (kraft.størrelse()*dist));
+    double v = Math.acos((kraft.x*d.x + kraft.y*d.y) / (kraft.størrelse()*dist));
     //sikrer at v ikke er lig NaN
     if (v != v) {
       v = 0;
     }
     //tilføj kraften på hastigheden
-    vX += kraft.x/masse*abs(cos(v))*delta;
-    vY += kraft.y/masse*abs(cos(v))*delta;
+    vX += kraft.x/masse*Math.abs(Math.cos(v))*delta;
+    vY += kraft.y/masse*Math.abs(Math.cos(v))*delta;
     //find determinanten
-    float det = d.x*kraft.y - d.y*kraft.x;
-    Linje l1 = new Linje(rotationspunkt, kraft.p);
+    double det = d.x*kraft.y - d.y*kraft.x;
     //hvis determinanten er negativ så er kraft vektoren med uret rundt om vektoren der peger mod massemidtpunktet og derfor skal raketen rotere mod uret rundt, basic stuff lol B)
     if (det < 0) {
-      rotHast += kraft.størrelse()/masse/l1.længde()*abs(sin(v))*delta;
+      rotHast += kraft.størrelse()/masse/5*Math.abs(Math.sin(v))*delta;
     } else { //og hvis den er positiv så er det omvendt
-      rotHast -= kraft.størrelse()/masse/l1.længde()*abs(sin(v))*delta;
+      rotHast -= kraft.størrelse()/masse/5*Math.abs(Math.sin(v))*delta;
     }
   }
 
@@ -241,7 +260,7 @@ class Raket {
     pushMatrix();
 
     //flyt raket position til 0, 0
-    translate(x-camX, y-camY);
+    translate((float)(x-camX), (float)(y-camY));
 
     noStroke();
 
@@ -249,49 +268,49 @@ class Raket {
     fill(255, 0, 0);
     beginShape();
     for (Punkt p : hovedPunkter) {
-      vertex(p.rotate(rotationspunkt, rot).x, p.rotate(rotationspunkt, rot).y);
+      vertex((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y);
     }
     endShape(CLOSE);
     //tegn vinger
     fill(50);
     beginShape();
-    vertex(venstreVingeStart.rotate(rotationspunkt, rot).x, venstreVingeStart.rotate(rotationspunkt, rot).y);
-    vertex(venstreVingeEnde.rotate(rotationspunkt, rot).x, venstreVingeEnde.rotate(rotationspunkt, rot).y);
+    vertex((float)venstreVingeStart.rotate(rotationspunkt, rot).x, (float)venstreVingeStart.rotate(rotationspunkt, rot).y);
+    vertex((float)venstreVingeEnde.rotate(rotationspunkt, rot).x, (float)venstreVingeEnde.rotate(rotationspunkt, rot).y);
     Punkt v = new Punkt(0, venstreVingeStart.y*0.8).rotate(rotationspunkt, rot);
-    vertex(v.x, v.y);
-    vertex(højreVingeEnde.rotate(rotationspunkt, rot).x, højreVingeEnde.rotate(rotationspunkt, rot).y);
-    vertex(højreVingeStart.rotate(rotationspunkt, rot).x, højreVingeStart.rotate(rotationspunkt, rot).y);
+    vertex((float)v.x, (float)v.y);
+    vertex((float)højreVingeEnde.rotate(rotationspunkt, rot).x, (float)højreVingeEnde.rotate(rotationspunkt, rot).y);
+    vertex((float)højreVingeStart.rotate(rotationspunkt, rot).x, (float)højreVingeStart.rotate(rotationspunkt, rot).y);
     endShape(CLOSE);
 
     //tegn bunden
     fill(75);
     beginShape();
-    vertex(venstreSideBundStart.rotate(rotationspunkt, rot).x, venstreSideBundStart.rotate(rotationspunkt, rot).y);
-    vertex(venstreSideBundEnde.rotate(rotationspunkt, rot).x, venstreSideBundEnde.rotate(rotationspunkt, rot).y);
-    vertex(højreSideBundEnde.rotate(rotationspunkt, rot).x, højreSideBundEnde.rotate(rotationspunkt, rot).y);
-    vertex(højreSideBundStart.rotate(rotationspunkt, rot).x, højreSideBundStart.rotate(rotationspunkt, rot).y);
+    vertex((float)venstreSideBundStart.rotate(rotationspunkt, rot).x, (float)venstreSideBundStart.rotate(rotationspunkt, rot).y);
+    vertex((float)venstreSideBundEnde.rotate(rotationspunkt, rot).x, (float)venstreSideBundEnde.rotate(rotationspunkt, rot).y);
+    vertex((float)højreSideBundEnde.rotate(rotationspunkt, rot).x, (float)højreSideBundEnde.rotate(rotationspunkt, rot).y);
+    vertex((float)højreSideBundStart.rotate(rotationspunkt, rot).x, (float)højreSideBundStart.rotate(rotationspunkt, rot).y);
     endShape(CLOSE);
 
     //tegn hoved delen
     fill(150);
     beginShape();
-    vertex(højreSideTop.rotate(rotationspunkt, rot).x, højreSideTop.rotate(rotationspunkt, rot).y);
-    vertex(højreSideBundStart.rotate(rotationspunkt, rot).x, højreSideBundStart.rotate(rotationspunkt, rot).y);
-    vertex(venstreSideBundStart.rotate(rotationspunkt, rot).x, venstreSideBundStart.rotate(rotationspunkt, rot).y);
-    vertex(venstreSideTop.rotate(rotationspunkt, rot).x, venstreSideTop.rotate(rotationspunkt, rot).y);
+    vertex((float)højreSideTop.rotate(rotationspunkt, rot).x, (float)højreSideTop.rotate(rotationspunkt, rot).y);
+    vertex((float)højreSideBundStart.rotate(rotationspunkt, rot).x, (float)højreSideBundStart.rotate(rotationspunkt, rot).y);
+    vertex((float)venstreSideBundStart.rotate(rotationspunkt, rot).x, (float)venstreSideBundStart.rotate(rotationspunkt, rot).y);
+    vertex((float)venstreSideTop.rotate(rotationspunkt, rot).x, (float)venstreSideTop.rotate(rotationspunkt, rot).y);
     endShape(CLOSE);
 
     //tegn shine
     stroke(240);
-    strokeWeight(bredde/8);
-    line(shine1.rotate(rotationspunkt, rot).x, shine1.rotate(rotationspunkt, rot).y, shine2.rotate(rotationspunkt, rot).x, shine2.rotate(rotationspunkt, rot).y);
+    strokeWeight((float)bredde/8);
+    line((float)shine1.rotate(rotationspunkt, rot).x, (float)shine1.rotate(rotationspunkt, rot).y, (float)shine2.rotate(rotationspunkt, rot).x, (float)shine2.rotate(rotationspunkt, rot).y);
     stroke(0);
     strokeWeight(2);
     noStroke();
 
     //tegn rude
     fill(100, 100, 255);
-    circle(rude.rotate(rotationspunkt, rot).x, rude.rotate(rotationspunkt, rot).y, bredde*0.4);
+    circle((float)rude.rotate(rotationspunkt, rot).x, (float)rude.rotate(rotationspunkt, rot).y, (float)bredde*0.4);
 
     //tegn flammer hvis moteren brænder
     if (brænder) {
@@ -299,35 +318,32 @@ class Raket {
       fill(252, 164, 48);
       beginShape();
       for (Punkt p : flamme1Punkter) {
-        vertex(p.rotate(rotationspunkt, rot).x, p.rotate(rotationspunkt, rot).y);
+        vertex((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y);
       }
       endShape(CLOSE);
       //tegner indre exhaust
       fill(245, 215, 24);
       beginShape();
       for (Punkt p : flamme2Punkter) {
-        vertex(p.rotate(rotationspunkt, rot).x, p.rotate(rotationspunkt, rot).y);
+        vertex((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y);
       }
       endShape(CLOSE);
     }
 
     fill(0, 255, 0);
     for (Punkt p : collisionPunkter) {
-      circle(p.rotate(rotationspunkt, rot).x, p.rotate(rotationspunkt, rot).y, bredde/10);
+      //circle((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y, (float)bredde/10);
     }
-
-    fill(255, 255, 0);
-    circle(0, 0, 1);
     fill(0, 255, 255);
     if (collisionsPunkt != null) {
-      circle(collisionsPunkt.x, collisionsPunkt.y, 1);
+      //circle((float)collisionsPunkt.x, (float)collisionsPunkt.y, 1);
     }
     //tegn massemidtpunkt indikatoren
     fill(255, 255, 0);
-    circle(massemidtpunkt.rotate(rotationspunkt, rot).x, massemidtpunkt.rotate(rotationspunkt, rot).y, bredde/5);
+    circle((float)massemidtpunkt.rotate(rotationspunkt, rot).x, (float)massemidtpunkt.rotate(rotationspunkt, rot).y, (float)bredde/5);
     fill(0);
-    arc(massemidtpunkt.rotate(rotationspunkt, rot).x, massemidtpunkt.rotate(rotationspunkt, rot).y, bredde/5, bredde/5, 0, PI/2);
-    arc(massemidtpunkt.rotate(rotationspunkt, rot).x, massemidtpunkt.rotate(rotationspunkt, rot).y, bredde/5, bredde/5, PI, 1.5*PI);
+    arc((float)massemidtpunkt.rotate(rotationspunkt, rot).x, (float)massemidtpunkt.rotate(rotationspunkt, rot).y, (float)bredde/5, (float)bredde/5, 0, PI/2);
+    arc((float)massemidtpunkt.rotate(rotationspunkt, rot).x, (float)massemidtpunkt.rotate(rotationspunkt, rot).y, (float)bredde/5, (float)bredde/5, PI, 1.5*PI);
     popMatrix();
   }
 }

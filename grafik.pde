@@ -4,23 +4,21 @@ void grafik() {
   tegnGrid();
   raket.tegnRaket();
   jorden.tegn();
-  fill(255, 0, 0);
-  circle(raket.x-camX, raket.y-camY, 2);
 }
 
 void tegnGrid() {
   stroke(60);
   strokeWeight(2/zoom);
   //lav alle de lodrette linjer
-  for (float x=camX-width/2/zoom; x<=camX+width/2/zoom; x++) {
-    if (round(x) % ceil(gridDist/zoom) == 0) {
-      line(x-camX, -height/2/zoom, x-camX, height/2/zoom);
+  for (double x=camX-width/2/zoom; x<=camX+width/2/zoom; x++) {
+    if (Math.round(x) % ceil(gridDist/zoom) == 0) {
+      line((float)(x-camX), -height/2/zoom, (float)(x-camX), height/2/zoom);
     }
   }
   //lav alle de vandrette linjer
-  for (float y=camY-height/2/zoom; y<=camY+height/2/zoom; y++) {
-    if (round(y) % ceil(gridDist/zoom) == 0) {
-      line(-width/2/zoom, y-camY, width/2/zoom, y-camY);
+  for (double y=camY-height/2/zoom; y<=camY+height/2/zoom; y++) {
+    if (Math.round(y) % ceil(gridDist/zoom) == 0) {
+      line(-width/2/zoom, (float)(y-camY), width/2/zoom, (float)(y-camY));
     }
   }
   //Lav linjerne der viser x og y aksen
