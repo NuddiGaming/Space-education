@@ -12,7 +12,7 @@ class Raket {
   Punkt rotationspunkt = new Punkt(massemidtpunkt.x, massemidtpunkt.y);
   //position
   double x = 0;
-  double y = -384400000+måne.radius+10;
+  double y = 0;
 
   double masse = 20000;
 
@@ -21,7 +21,7 @@ class Raket {
   double vX = 0;
   double vY = 0;
   //rotation
-  double rot = PI;
+  double rot = 0;
   double rotHast = 0;
 
   int punktMængde = 10;
@@ -197,6 +197,8 @@ class Raket {
       println(l1.længdeY());
       tilføjKraft(new Kraft(kX, kY, collisionsPunkt));
       rotHast *= 0.99;
+      vY *= 0.99;
+      vX *= 0.99;
     } else if (rotationspunkt != massemidtpunkt) {
       Punkt oldPos = massemidtpunkt.rotate(rotationspunkt, rot);
       rotationspunkt = massemidtpunkt;

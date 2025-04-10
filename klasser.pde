@@ -262,10 +262,10 @@ class Legeme {
   double masse;
   color farve;
   Legeme(double x, double y, double radius, double masse, color farve) {
-    this.x = x;
-    this.y = y;
-    this.radius = radius;
-    this.masse = masse;
+    this.x = x/scale;
+    this.y = y/scale;
+    this.radius = radius/scale;
+    this.masse = masse/Math.pow(scale, 2);
     this.farve = farve;
     legemer.add(this);
   }
