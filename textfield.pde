@@ -30,10 +30,9 @@ class Textfield {
     if (textfieldSkærm == skærm) { // Tjekker skærm
       rectMode(CORNER);
       // Sætte den rigtige farve ud fra om det er active
-      if (active){
+      if (active) {
         fill(activeFarve);
-      }
-      else{
+      } else {
         fill(baggrundsFarve);
       }
       stroke(outlineFarve);
@@ -45,29 +44,26 @@ class Textfield {
       String displayedText;
       if (active) {
         displayedText = tekst;
-      } 
-      else {
+      } else {
         if (tekst.isEmpty()) {
           displayedText = startTekst;
-        } 
-        else {
+        } else {
           displayedText = tekst;
         }
       }
       text(displayedText, posX + sizeX / 2, posY-camY + sizeY / 2);
     }
   }
-  
+
   void tegnPåSkærm() {
-  pushMatrix();
-  resetMatrix();
-  if (textfieldSkærm == skærm) { // Tjekker skærm
+    pushMatrix();
+    resetMatrix();
+    if (textfieldSkærm == skærm) { // Tjekker skærm
       rectMode(CORNER);
       // Sætte den rigtige farve ud fra om det er active
-      if (active){
+      if (active) {
         fill(activeFarve);
-      }
-      else{
+      } else {
         fill(baggrundsFarve);
       }
       stroke(outlineFarve);
@@ -79,12 +75,10 @@ class Textfield {
       String displayedText;
       if (active) {
         displayedText = tekst;
-      } 
-      else {
+      } else {
         if (tekst.isEmpty()) {
           displayedText = startTekst;
-        } 
-        else {
+        } else {
           displayedText = tekst;
         }
       }

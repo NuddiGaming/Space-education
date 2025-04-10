@@ -30,7 +30,7 @@ void setup() {
   raket = new Raket();
   setupStjerner(200);
   setupKnapper();
-  textfields.add(new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, "Indtast navn", "", 10, 0, false));
+  //textfields.add(new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, "Indtast navn", "", 10, 0, false));
 }
 
 void draw() {
@@ -51,6 +51,9 @@ void draw() {
   // Tegner knapperne baseret på absolutte koordinater
   for (Knap k : knapper) {
     if (k.knapSkærm == hovedMenu && skærm==hovedMenu) {
+      k.tegnUdenTransform();
+    }
+    if(k.knapSkærm==simulationKører &&(skærm==simulationKører || skærm==simulationPauset)){
       k.tegnUdenTransform();
     }
   }
