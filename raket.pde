@@ -16,7 +16,7 @@ class Raket {
 
   double masse = 20000;
 
-  double motorKraft = 10000000;
+  double motorKraft = 1000000;
   //hastighed
   double vX = 0;
   double vY = 0;
