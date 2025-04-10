@@ -92,6 +92,21 @@ void keyPressed() {
     if (key == 'r') {
       følgerRaket = !følgerRaket;
     }
+    if (key == '1'){
+      timestep=1;
+    }
+    else if (key == '2'){
+      timestep=5;
+    }
+    else if (key == '3'){
+      timestep=10;
+    }
+    else if (key == '4'){
+      timestep=100;
+    }
+    else if (key == '5'){
+      timestep=1000;
+    }
   }
 }
 //mere input...

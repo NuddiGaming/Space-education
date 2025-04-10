@@ -16,7 +16,7 @@ class Raket {
 
   double masse = 20000;
 
-  double motorKraft = 1000000000;
+  double motorKraft = 1000000;
   //hastighed
   double vX = 0;
   double vY = 0;
@@ -227,7 +227,7 @@ class Raket {
       x += -Math.sin(v)*offset*0.99;
       y += -Math.cos(v)*offset*0.99;
     }
-    println(y);
+    //println(y);
   }
 
   void tilføjKraft(Kraft kraft) {

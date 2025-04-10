@@ -1,11 +1,14 @@
+// Oprettelse JSONArray
+JSONArray jsonArray = new JSONArray();
+
 //Kamera position
-double camX = 0;
-double camY = 0;
+float camX = 0;
+float camY = 0;
 float camRot = 0;
 //Kamera zoom
 float zoom = 10;
 //Kamera hastighed
-float camSpeed = 30;
+float camSpeed = 5;
 
 //grid
 int gridDist = 100;
@@ -17,37 +20,32 @@ int simulationKører=1;
 int simulationPauset=2;
 int skærm=hovedMenu;
 
-float delta;
-float deltaTime;
-float timestep = 1;
-
-ArrayList<Legeme> legemer = new ArrayList<Legeme>();
-Legeme jorden = new Legeme(0, 6378000, 6378000, 5.972*Math.pow(10, 24), color(0, 0, 255));
-Legeme måne = new Legeme(0, -384400000, 1737400, 7.347*Math.pow(10, 22), color(100, 100, 100));
 //raket
 Raket raket;
 
 
 void setup() {
   fullScreen();
+  //placer kamera i midten
+  camX = gridSize/2;
+  camY = gridSize/2;
   //lav raket
   raket = new Raket();
   setupStjerner(200);
   setupKnapper();
   textfields.add(new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, "Indtast navn", "", 10, 0, false));
+  prepareExitHandler(); // Opsætter exit handler
 }
 
 void draw() {
   if (skærm == simulationKører || skærm == simulationPauset) {
     simulationGrafik();
+    input();
     //gør så selve simulation kun kører når den skal
     if (skærm == simulationKører) {
-      delta = (millis()-deltaTime)/1000*timestep;
-      deltaTime = millis();
-      println(timestep);
+
       fysik();
     }
-    input();
   } else if (skærm == hovedMenu) {
     //Tegner grafikken i baggrunden
     simulationGrafik();
@@ -63,4 +61,20 @@ void draw() {
   for (Textfield field : textfields) {
     field.tegnPåSkærm();
   }
+  
+}
+
+
+// Exit handler til at gemme data til JSON fil når man lukker programmet
+private void prepareExitHandler () {
+  Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+    public void run () {
+      System.out.println("SHUTDOWN HOOK");
+      JSONObject json = new JSONObject();
+      jsonArray.append(json);
+      saveJSONArray(jsonArray, "data.json");
+      println("Data gemt!");
+    }
+  }
+  ));
 }
