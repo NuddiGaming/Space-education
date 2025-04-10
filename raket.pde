@@ -52,7 +52,7 @@ class Raket {
   Punkt shine2 = new Punkt(bredde*0.35, -højde*bundProcent - højde*Math.abs(topProcent-bundProcent)*0.7);
   Punkt rude = new Punkt(0, -højde*bundProcent - højde*Math.abs(topProcent-bundProcent)*(4.0/5.0));
   Punkt collisionsPunkt;
-Kraft resulterendeKraft=new Kraft(0, 0, 0, 0);
+  Kraft resulterendeKraft=new Kraft(0, 0,new Punkt(0,0));
 
   Raket() {
     println("Raket oprettet");

@@ -18,8 +18,6 @@ class Kraft {
   void reset() {
     x=0;
     y=0;
-    pX=0;
-    pY=0;
   }
 }
 
