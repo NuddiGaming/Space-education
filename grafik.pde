@@ -1,9 +1,10 @@
 //Alt vores grafik lol
 void grafik() {
   background(0);
-  tegnGrid();
+  //tegnGrid();
   raket.tegnRaket();
   jorden.tegn();
+  måne.tegn();
 }
 
 void tegnGrid() {

@@ -16,7 +16,7 @@ class Raket {
 
   double masse = 20000;
 
-  double motorKraft = 1000000;
+  double motorKraft = 1000000000;
   //hastighed
   double vX = 0;
   double vY = 0;
@@ -24,7 +24,7 @@ class Raket {
   double rot = 0;
   double rotHast = 0;
 
-  int punktMængde = 4;
+  int punktMængde = 10;
 
   //listen med alle collision punkter
   ArrayList<Punkt> collisionPunkter = new ArrayList<Punkt>();
@@ -121,9 +121,9 @@ class Raket {
   void fysik() {
     //rotation input
     if (j) {
-      raket.rotHast -= 0.1;
+      raket.rotHast -= 0.05;
     } else if (l) {
-      raket.rotHast += 0.1;
+      raket.rotHast += 0.05;
     }
 
     ArrayList<Kraft> krafter = new ArrayList<Kraft>();
@@ -194,7 +194,7 @@ class Raket {
       double kX = l1.længdeX()/l1.længde()*kraft;
       double kY = l1.længdeY()/l1.længde()*kraft;
       tilføjKraft(new Kraft(kX, kY, collisionsPunkt));
-      rotHast*=0.99;
+      rotHast *= 0.99;
     } else if (rotationspunkt != massemidtpunkt) {
       Punkt oldPos = massemidtpunkt.rotate(rotationspunkt, rot);
       rotationspunkt = massemidtpunkt;
@@ -227,6 +227,7 @@ class Raket {
       x += -Math.sin(v)*offset*0.99;
       y += -Math.cos(v)*offset*0.99;
     }
+    println(y);
   }
 
   void tilføjKraft(Kraft kraft) {
