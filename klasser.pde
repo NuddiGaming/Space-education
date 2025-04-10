@@ -9,8 +9,11 @@ class Kraft {
     this.p = p;
   }
   //størrelsen/længden af kraften
-  float størrelse() {
-    return sqrt(pow(x, 2)+pow(y, 2));
+  double størrelse() {
+    return Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
+  }
+  Kraft rotate(Punkt rP, float v) {
+    return new Kraft((x-rP.x)*cos(v) - (y-rP.y)*sin(v)+rP.x, (x-rP.x)*sin(v) + (y-rP.y)*cos(v)+rP.y, p);
   }
 }
 
@@ -85,11 +88,11 @@ class Knap {
         text(tekst, posX+sizeX/2, posY+sizeY/2);
       } else {
         //Tegner selve knappen
-        rect(posX-camX, posY-camY, sizeX, sizeY, rundhed, rundhed, rundhed, rundhed);
+        rect((float)(posX-camX), (float)(posY-camY), sizeX, sizeY, rundhed, rundhed, rundhed, rundhed);
         //Skifter farven på teksten
         fill(tekstFarve);
         //Skriver teksten
-        text(tekst, posX+sizeX/2-camX, posY+sizeY/2-camY);
+        text(tekst, (float)(posX+sizeX/2-camX), (float)(posY+sizeY/2-camY));
       }
     }
   }
@@ -171,11 +174,6 @@ class Stjerne {
   void tegnStjerne() {
     fill(farve);
     circle(posX, posY, radius);
-  double størrelse() {
-    return Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
-  }
-  Kraft rotate(Punkt rP, float v){
-    return new Kraft((x-rP.x)*cos(v) - (y-rP.y)*sin(v)+rP.x, (x-rP.x)*sin(v) + (y-rP.y)*cos(v)+rP.y, p);
   }
 }
 
@@ -190,7 +188,7 @@ class Punkt {
   Punkt rotate(Punkt p, double v) {
     return new Punkt((x-p.x)*Math.cos(v) - (y-p.y)*Math.sin(v)+p.x, (x-p.x)*Math.sin(v) + (y-p.y)*Math.cos(v)+p.y);
   }
-  void rotateFull(Punkt p, double v){
+  void rotateFull(Punkt p, double v) {
     x = (x-p.x)*Math.cos(v) - (y-p.y)*Math.sin(v)+p.x;
     y = (x-p.x)*Math.sin(v) + (y-p.y)*Math.cos(v)+p.y;
   }
@@ -204,22 +202,22 @@ class Linje {
     this.p1 = p1;
     this.p2 = p2;
   }
-  Linje rotate(Punkt p, double v){
+  Linje rotate(Punkt p, double v) {
     return new Linje(p1.rotate(p, v), p2.rotate(p, v));
   }
-  double længdeX(){
+  double længdeX() {
     return p2.x-p1.x;
   }
-  double længdeY(){
+  double længdeY() {
     return p2.y-p1.y;
   }
-  double længde(){
+  double længde() {
     return Math.sqrt(Math.pow(længdeX(), 2)+Math.pow(længdeY(), 2));
   }
-  double a(){
+  double a() {
     return længdeY()/længdeX();
   }
-  double b(){
+  double b() {
     return p1.y-a()*p1.x;
   }
 }

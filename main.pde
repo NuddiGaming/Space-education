@@ -39,13 +39,13 @@ void setup() {
 void draw() {
   if (skærm == simulationKører || skærm == simulationPauset) {
     simulationGrafik();
-    input();
     //gør så selve simulation kun kører når den skal
     if (skærm == simulationKører) {
       delta = (millis()-deltaTime)/1000;
       deltaTime = millis();
       fysik();
     }
+    input();
   } else if (skærm == hovedMenu) {
     //Tegner grafikken i baggrunden
     simulationGrafik();
