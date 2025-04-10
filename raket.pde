@@ -12,16 +12,16 @@ class Raket {
   Punkt rotationspunkt = new Punkt(massemidtpunkt.x, massemidtpunkt.y);
   //position
   double x = 0;
-  double y = -10;
+  double y = -384400000+måne.radius+10;
 
   double masse = 20000;
 
-  double motorKraft = 1000000000;
+  double motorKraft = 10000000;
   //hastighed
   double vX = 0;
   double vY = 0;
   //rotation
-  double rot = 0;
+  double rot = PI;
   double rotHast = 0;
 
   int punktMængde = 10;
@@ -139,8 +139,8 @@ class Raket {
     Punkt closestPoint = massemidtpunkt;
     //tyngdekraft funktionalitet og collision med legemer
     for (Legeme legeme : legemer) {
-      double dX = Math.abs(legeme.x-(massemidtpunkt.rotate(rotationspunkt, rot).x+x));
-      double dY = Math.abs(legeme.y-(massemidtpunkt.rotate(rotationspunkt, rot).y+y));
+      double dX = legeme.x-(massemidtpunkt.rotate(rotationspunkt, rot).x+x);
+      double dY = legeme.y-(massemidtpunkt.rotate(rotationspunkt, rot).y+y);
       double dist = Math.sqrt(Math.pow(dX, 2)+Math.pow(dY, 2));
       double tyngdekraft = g*legeme.masse*masse/Math.pow(dist, 2);
       double rX = dX/dist;
@@ -153,7 +153,8 @@ class Raket {
         pCopy = pCopy.rotate(new Punkt(rotationspunkt.x, rotationspunkt.y), rot);
         pCopy.x += x;
         pCopy.y += y;
-        if (Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2)) <= legeme.radius) {
+        double legemeDist = Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2));
+        if (legemeDist <= legeme.radius) {
           if (Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2)) < Math.sqrt(Math.pow(closestPoint.x-legeme.x, 2)+Math.pow(closestPoint.y-legeme.y, 2))) {
             closestPoint = pCopy;
           }
@@ -188,11 +189,12 @@ class Raket {
       double dY = oldPos.y-newPos.y;
       x += dX;
       y += dY;
-      Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), collisionsPunkt);
+      Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), new Punkt(collisionsPunkt.x+x, collisionsPunkt.y+y));
       double v = rotHast*l2.længde()+Math.sqrt(Math.pow(vX, 2)+Math.pow(vY, 2));
       double kraft = masse*v;
       double kX = l1.længdeX()/l1.længde()*kraft;
       double kY = l1.længdeY()/l1.længde()*kraft;
+      println(l1.længdeY());
       tilføjKraft(new Kraft(kX, kY, collisionsPunkt));
       rotHast *= 0.99;
     } else if (rotationspunkt != massemidtpunkt) {
@@ -227,7 +229,6 @@ class Raket {
       x += -Math.sin(v)*offset*0.99;
       y += -Math.cos(v)*offset*0.99;
     }
-    println(y);
   }
 
   void tilføjKraft(Kraft kraft) {
