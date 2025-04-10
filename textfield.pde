@@ -37,7 +37,7 @@ class Textfield {
         fill(baggrundsFarve);
       }
       stroke(outlineFarve);
-      rect(posX, posY-camY, sizeX, sizeY, rundhed);
+      rect(posX, (float)(posY-camY), sizeX, sizeY, rundhed);
       textAlign(CENTER, CENTER);
       fill(tekstFarve);
       textSize(tekstSize);
@@ -54,7 +54,7 @@ class Textfield {
           displayedText = tekst;
         }
       }
-      text(displayedText, posX + sizeX / 2, posY-camY + sizeY / 2);
+      text(displayedText, posX + sizeX / 2, (float)(posY-camY + sizeY / 2));
     }
   }
   
