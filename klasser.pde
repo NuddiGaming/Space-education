@@ -15,6 +15,12 @@ class Kraft {
   Kraft rotate(Punkt rP, float v) {
     return new Kraft((x-rP.x)*cos(v) - (y-rP.y)*sin(v)+rP.x, (x-rP.x)*sin(v) + (y-rP.y)*cos(v)+rP.y, p);
   }
+  void reset() {
+    x=0;
+    y=0;
+    pX=0;
+    pY=0;
+  }
 }
 
 ArrayList<Knap> knapper = new ArrayList <Knap>();
@@ -153,6 +159,53 @@ class Knap {
         }
         return(true);
       }
+    }
+    return(false);
+  }
+}
+
+class PauseKnap extends Knap {
+  PauseKnap(float POSX, float POSY, float SIZEX, float SIZEY, color TEKSTFARVE, String TEKST,
+    int TEKSTSIZE, color KNAPFARVE, color HOVERFARVE, color CLICKFARVE, float RUNDHED, int KNAPSKÆRM) {
+    super(POSX, POSY, SIZEX, SIZEY, TEKSTFARVE, TEKST, TEKSTSIZE, KNAPFARVE, HOVERFARVE, CLICKFARVE, RUNDHED, KNAPSKÆRM);
+  }
+  @Override
+    void tegnUdenTransform() {
+    //Gemmer den nuværende translation scale og rotation
+    pushMatrix();
+    //Går tilbage til den standard af disse
+    resetMatrix();
+    strokeCap(SQUARE);
+    strokeWeight(sizeX/3);
+    tegner=true;
+    if (mouseOverUdenTransform()) {
+      tegner=false;
+      stroke(hoverFarve);
+    } else {
+      stroke(knapFarve);
+    }
+    line(posX+sizeX/5, posY, posX+sizeX/5, posY+sizeY);
+    line(posX+sizeX/5*4, posY, posX+sizeX/5*4, posY+sizeY);
+
+    // Går tilbage til den tidligere translation scale og rotation
+    popMatrix();
+  }
+  @Override
+    //Funktion til at bestemme om musen er over en knap uden translation scale og rotation
+    boolean mouseOverUdenTransform() {
+    if (!tegner) {
+      //Gemmer den nuværende translation scale og rotation
+      pushMatrix();
+      //Går tilbage til den standard af disse
+      resetMatrix();
+    }
+    if (posX < mouseX && mouseX < (posX + sizeX) &&
+      posY < mouseY && mouseY < (posY + sizeY)) {
+      if (!tegner) {
+        // Går tilbage til den tidligere translation scale og rotation
+        popMatrix();
+      }
+      return(true);
     }
     return(false);
   }

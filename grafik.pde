@@ -13,6 +13,7 @@ void simulationGrafik() {
   raket.tegnRaket();
   jorden.tegn();
   måne.tegn();
+  tegnHud();
 }
 
 void tegnGrid() {
@@ -56,6 +57,7 @@ void hovedMenu() {
 
 Knap hovedMenuStartKnap;
 Knap hovedMenuEditorKnap;
+PauseKnap SimulationsHovedMenuKnap;
 
 void setupKnapper() {
   hovedMenuStartKnap = new Knap(width/3,height/2, width/16, height/16, color(0,0,0),"Start",
@@ -64,6 +66,9 @@ void setupKnapper() {
    hovedMenuEditorKnap = new Knap(width/3*2,height/2, width/16, height/16, color(0,0,0),"Editor",
     10, color(0,255,0),color(255,0,0),color(0,0,255),0,hovedMenu);
   knapper.add(hovedMenuEditorKnap);
+  SimulationsHovedMenuKnap = new PauseKnap(height/50,height/50, width/16, width/16, color(0,0,0),"",
+    10, color(255),color(0,255,0),color(0,0,255),0,simulationKører);
+  knapper.add(SimulationsHovedMenuKnap);
 }
 
 
@@ -89,4 +94,39 @@ void setupStjerner(int antal) {
     //Tilføjer stjernerne til en liste til brug når de skal tegnes
     stjerner.add(stjerne);
   }
+}
+
+void tegnHud(){
+  //Gemmer den nuværende translation scale og rotation
+  pushMatrix(); 
+  //Går tilbage til den standard af disse
+  resetMatrix();
+  tegnHudDel("Hastighed","m/s",sqrt(pow(raket.vX,2)+pow(raket.vY,2)),width/4*3,height-height/20*4);
+  tegnHudDel("MotorKraft","%",int(brænder)*100,width/4*3,height-height/20*3);
+  if(raket.resulterendeKraft!=null){
+    tegnHudDel("Resulterende kraft","m/s^2",raket.resulterendeKraft.størrelse(),width/4*3,height-height/20*2);
+  } else{
+    tegnHudDel("Resulterende kraft","m/s^2",9.82,width/4*3,height-height/20*2);
+  }
+   tegnHudDel("Tids scaling","s/s",1,width/4*3,height-height/20*1);
+  
+  popMatrix();
+}
+
+void tegnHudDel(String Titel,String enhed, float værdi,float posX,float posY){
+  rectMode(CORNER);
+  fill(60);
+  stroke(30);
+  strokeWeight(3);
+  rect(posX,posY,width/4,height/20,5,5,0,0);
+  textAlign(CORNER,CENTER);
+  textSize(30);
+  fill(0);
+  text(Titel+": "+int(værdi)+enhed,posX+10,posY+height/40);
+  /*
+  noStroke();
+  fill(110);
+  rect(posX+2,posY+3,width/4-4,height/60,1,0,0,0);
+  */
+  
 }

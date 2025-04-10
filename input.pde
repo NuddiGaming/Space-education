@@ -138,6 +138,9 @@ void mousePressed() {
   if (hovedMenuStartKnap.mouseOverUdenTransform()) {
     skærm=simulationKører;
   }
+  if(SimulationsHovedMenuKnap.mouseOverUdenTransform() && ((skærm==simulationKører)||(skærm==simulationPauset))){
+    skærm=hovedMenu;
+  }
   for (Textfield field : textfields) {
     if (field.mouseOver()) {
       if (activeField != null) {
