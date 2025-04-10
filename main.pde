@@ -1,6 +1,6 @@
 //Kamera position
-float camX = 0;
-float camY = 0;
+double camX = 0;
+double camY = 0;
 float camRot = 0;
 //Kamera zoom
 float zoom = 10;
@@ -17,15 +17,18 @@ int simulationKører=1;
 int simulationPauset=2;
 int skærm=hovedMenu;
 
+float delta;
+float deltaTime;
+
+ArrayList<Legeme> legemer = new ArrayList<Legeme>();
+Legeme jorden = new Legeme(0, 6378000, 6378000, 5.972*Math.pow(10, 24), color(0, 0, 255));
+Legeme måne = new Legeme(0, -384400000, 1737400, 7.347*Math.pow(10, 22), color(100, 100, 100));
 //raket
 Raket raket;
 
 
 void setup() {
   fullScreen();
-  //placer kamera i midten
-  camX = gridSize/2;
-  camY = gridSize/2;
   //lav raket
   raket = new Raket();
   setupStjerner(200);
@@ -39,7 +42,8 @@ void draw() {
     input();
     //gør så selve simulation kun kører når den skal
     if (skærm == simulationKører) {
-
+      delta = (millis()-deltaTime)/1000;
+      deltaTime = millis();
       fysik();
     }
   } else if (skærm == hovedMenu) {

@@ -32,24 +32,16 @@ void input() {
     //sikrer at kameraet har samme hastighed lige meget hvilke knapper du trykker på
     float størrelse = sqrt(pow(x, 2)+pow(y, 2));
     if (størrelse > 0) {
-      x = x/størrelse*camSpeed;
-      y = y/størrelse*camSpeed;
+      x = x/størrelse*camSpeed*delta;
+      y = y/størrelse*camSpeed*delta;
     }
     //tilføj fart
     camX += x;
     camY += y;
   } else {
-    //sæt kameraet på raketen
-    camX = lerp(camX, raket.x, 0.1);
-    camY = lerp(camY, raket.y, 0.1);
-  }
-  if (skærm==simulationKører) {
-    if (j) {
-      raket.rotHast -= 0.001;
-    } else if (l) {
-      raket.rotHast += 0.001;
-    }
-    raket.rot += raket.rotHast;
+    //sæt kameraet på raketens massemidtpunkt
+    camX = raket.massemidtpunkt.rotate(raket.rotationspunkt, raket.rot).x+raket.x;
+    camY = raket.massemidtpunkt.rotate(raket.rotationspunkt, raket.rot).y+raket.y;
   }
 }
 
@@ -149,6 +141,8 @@ void mousePressed() {
 //ændre zoom værdien når man skrållar med musen
 void mouseWheel(MouseEvent event) {
   float e = -event.getCount();
-  zoom *= pow(1.1, e);
-  camSpeed /= pow(1.1, e);
+  if (zoom > 0.0001 && e == -1 || zoom < 1000 && e == 1) {
+    zoom *= pow(1.1, e);
+    camSpeed /= pow(1.1, e);
+  }
 }
