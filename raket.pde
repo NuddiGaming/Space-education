@@ -12,7 +12,7 @@ class Raket {
   Punkt rotationspunkt = new Punkt(massemidtpunkt.x, massemidtpunkt.y);
   //position
   double x = 0;
-  double y = 0;
+  double y = -100;
 
   double masse = 20000;
 
@@ -194,7 +194,6 @@ class Raket {
       double kraft = masse*v;
       double kX = l1.længdeX()/l1.længde()*kraft;
       double kY = l1.længdeY()/l1.længde()*kraft;
-      println(l1.længdeY());
       tilføjKraft(new Kraft(kX, kY, collisionsPunkt));
       rotHast *= 0.99;
       vY *= 0.99;
@@ -224,12 +223,14 @@ class Raket {
           }
         }
       }
-      double distToCenter = Math.sqrt(Math.pow(closestPoint.x-collisionsLegeme.x, 2)+Math.pow(closestPoint.y-collisionsLegeme.y, 2));
-      double offset = distToCenter-collisionsLegeme.radius;
       Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), closestPoint);
-      double v = Math.acos((0*l1.længdeX() + 1*l1.længdeY()) / (l1.længde()*1));
-      x += -Math.sin(v)*offset*0.99;
-      y += -Math.cos(v)*offset*0.99;
+      double sX = l1.længdeX()/l1.længde()*collisionsLegeme.x+collisionsLegeme.x;
+      double sY = l1.længdeY()/l1.længde()*collisionsLegeme.y+collisionsLegeme.y;
+      Punkt p = new Punkt(sX, sY);
+      Linje l2 = new Linje(closestPoint, p);
+      println(l2.længdeX(), l2.længdeY());
+      x += l2.længdeX();
+      y += l2.længdeY();
     }
   }
 

@@ -46,7 +46,6 @@ void draw() {
     if (skærm == simulationKører) {
       delta = (millis()-deltaTime)/1000*timestep;
       deltaTime = millis();
-      println(timestep);
       fysik();
     }
     input();
