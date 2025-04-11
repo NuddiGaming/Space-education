@@ -52,6 +52,8 @@ class Raket {
   Punkt shine2 = new Punkt(bredde*0.35, -højde*bundProcent - højde*Math.abs(topProcent-bundProcent)*0.7);
   Punkt rude = new Punkt(0, -højde*bundProcent - højde*Math.abs(topProcent-bundProcent)*(4.0/5.0));
   Punkt collisionsPunkt;
+  Kraft resulterendeKraft=new Kraft(0, 0,new Punkt(0,0));
+
   Raket() {
     println("Raket oprettet");
     //Punkter til collision... Dette tog lang tid at lave. :(
@@ -172,9 +174,12 @@ class Raket {
         //circle((float)(pCopy.x-camX), (float)(pCopy.y-camY), 1);
       }
     }
+    resulterendeKraft.reset();
     //her tilføjes alle kræfter
     for (Kraft kraft : krafter) {
       tilføjKraft(kraft);
+      resulterendeKraft.x+=kraft.x;
+      resulterendeKraft.x+=kraft.y;
     }
     if (collisionsPunkt != null) {
       collisionsPunkt.x = sumX/m;
@@ -343,6 +348,7 @@ class Raket {
     if (collisionsPunkt != null) {
       //circle((float)collisionsPunkt.x, (float)collisionsPunkt.y, 1);
     }
+
     //tegn massemidtpunkt indikatoren
     fill(255, 255, 0);
     circle((float)massemidtpunkt.rotate(rotationspunkt, rot).x, (float)massemidtpunkt.rotate(rotationspunkt, rot).y, (float)bredde/5);
