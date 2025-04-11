@@ -42,10 +42,10 @@ void setup() {
 void draw() {
   if (skærm == simulationKører || skærm == simulationPauset) {
     simulationGrafik();
+    delta = (millis()-deltaTime)/1000*timestep;
+      deltaTime = millis();
     //gør så selve simulation kun kører når den skal
     if (skærm == simulationKører) {
-      delta = (millis()-deltaTime)/1000*timestep;
-      deltaTime = millis();
       println(timestep);
       fysik();
     }

@@ -223,6 +223,7 @@ class Stjerne {
     farve=FARVE;
   }
   void tegnStjerne() {
+    noStroke();
     fill(farve);
     circle(posX, posY, radius);
   }
