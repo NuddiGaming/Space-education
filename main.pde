@@ -69,4 +69,5 @@ void draw() {
   for (Textfield field : textfields) {
     field.tegnPåSkærm();
   }
+  println("vX: "+raket.vX+"   vY: "+raket.vY);
 }

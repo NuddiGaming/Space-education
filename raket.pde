@@ -179,7 +179,7 @@ class Raket {
     for (Kraft kraft : krafter) {
       tilføjKraft(kraft);
       resulterendeKraft.x+=kraft.x;
-      resulterendeKraft.x+=kraft.y;
+      resulterendeKraft.y+=kraft.y;
     }
     if (collisionsPunkt != null) {
       collisionsPunkt.x = sumX/m;
