@@ -12,7 +12,7 @@ class Raket {
   Punkt rotationspunkt = new Punkt(massemidtpunkt.x, massemidtpunkt.y);
   //position
   double x = 0;
-  double y = -100;
+  double y = -2;
 
   double masse = 20000;
 

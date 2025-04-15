@@ -104,11 +104,11 @@ void tegnHud(){
   tegnHudDel("Hastighed","m/s",(float)(Math.sqrt(Math.pow(raket.vX,2)+Math.pow(raket.vY,2))),width/4*3,height-height/20*4);
   tegnHudDel("MotorKraft","%",int(brænder)*100,width/4*3,height-height/20*3);
   if(raket.resulterendeKraft!=null){
-    tegnHudDel("Resulterende kraft","m/s^2",(float)(raket.resulterendeKraft.størrelse()),width/4*3,height-height/20*2);
+    tegnHudDel("Resulterende kraft","N",(float)(raket.resulterendeKraft.størrelse()),width/4*3,height-height/20*2);
   } else{
-    tegnHudDel("Resulterende kraft","m/s^2",9.82,width/4*3,height-height/20*2);
+    tegnHudDel("Resulterende kraft","N",9.82,width/4*3,height-height/20*2);
   }
-   tegnHudDel("Tids scaling","s/s",1,width/4*3,height-height/20*1);
+   tegnHudDel("Tids scaling","s/s",timestep,width/4*3,height-height/20*1);
   
   popMatrix();
 }
