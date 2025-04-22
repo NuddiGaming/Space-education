@@ -17,6 +17,8 @@ class Raket {
   double masse = 20000;
 
   double motorKraft = 1000000;
+
+  double brændMængde = 0;
   //hastighed
   double vX = 0;
   double vY = 0;
@@ -24,7 +26,7 @@ class Raket {
   double rot = 0;
   double rotHast = 0;
 
-  int punktMængde = 100;
+  int punktMængde = 10;
 
   //listen med alle collision punkter
   ArrayList<Punkt> collisionPunkter = new ArrayList<Punkt>();
@@ -52,7 +54,7 @@ class Raket {
   Punkt shine2 = new Punkt(bredde*0.35, -højde*bundProcent - højde*Math.abs(topProcent-bundProcent)*0.7);
   Punkt rude = new Punkt(0, -højde*bundProcent - højde*Math.abs(topProcent-bundProcent)*(4.0/5.0));
   Punkt collisionsPunkt;
-  Kraft resulterendeKraft=new Kraft(0, 0,new Punkt(0,0));
+  Kraft resulterendeKraft=new Kraft(0, 0, new Punkt(0, 0));
 
   Raket() {
     println("Raket oprettet");
@@ -130,9 +132,7 @@ class Raket {
 
     ArrayList<Kraft> krafter = new ArrayList<Kraft>();
     //tjek om motoren brænder og hvis ja så tilføj motorkraften i krafter
-    if (brænder) {
-      krafter.add(new Kraft(motorKraft*Math.sin(rot), -motorKraft*Math.cos(rot), new Punkt(0, 0)));
-    }
+    krafter.add(new Kraft(motorKraft*brændMængde*Math.sin(rot), -motorKraft*brændMængde*Math.cos(rot), new Punkt(0, 0)));
     collisionsPunkt = null;
     double sumX = 0;
     double sumY = 0;
@@ -323,22 +323,22 @@ class Raket {
     circle((float)rude.rotate(rotationspunkt, rot).x, (float)rude.rotate(rotationspunkt, rot).y, (float)bredde*0.4);
 
     //tegn flammer hvis moteren brænder
-    if ((brænder && skærm==simulationKører)||pauseBrænder) {
-      //tegner ydre exhaust
-      fill(252, 164, 48);
-      beginShape();
-      for (Punkt p : flamme1Punkter) {
-        vertex((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y);
-      }
-      endShape(CLOSE);
-      //tegner indre exhaust
-      fill(245, 215, 24);
-      beginShape();
-      for (Punkt p : flamme2Punkter) {
-        vertex((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y);
-      }
-      endShape(CLOSE);
+    //tegner ydre exhaust
+    fill(252, 164, 48);
+    beginShape();
+    for (Punkt p : flamme1Punkter) {
+      Punkt pCopy = new Punkt(p.x, p.y*brændMængde);
+      vertex((float)pCopy.rotate(rotationspunkt, rot).x, (float)pCopy.rotate(rotationspunkt, rot).y);
     }
+    endShape(CLOSE);
+    //tegner indre exhaust
+    fill(245, 215, 24);
+    beginShape();
+    for (Punkt p : flamme2Punkter) {
+      Punkt pCopy = new Punkt(p.x, p.y*brændMængde);
+      vertex((float)pCopy.rotate(rotationspunkt, rot).x, (float)pCopy.rotate(rotationspunkt, rot).y);
+    }
+    endShape(CLOSE);
 
     fill(0, 255, 0);
     for (Punkt p : collisionPunkter) {

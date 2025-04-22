@@ -102,7 +102,7 @@ void tegnHud(){
   //Går tilbage til den standard af disse
   resetMatrix();
   tegnHudDel("Hastighed","m/s",(float)(Math.sqrt(Math.pow(raket.vX,2)+Math.pow(raket.vY,2))),width/4*3,height-height/20*4);
-  tegnHudDel("MotorKraft","%",int(brænder)*100,width/4*3,height-height/20*3);
+  tegnHudDel("MotorKraft","%",(float)(raket.brændMængde*100),width/4*3,height-height/20*3);
   if(raket.resulterendeKraft!=null){
     tegnHudDel("Resulterende kraft","N",(float)(raket.resulterendeKraft.størrelse()),width/4*3,height-height/20*2);
   } else{

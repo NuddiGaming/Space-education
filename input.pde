@@ -4,10 +4,8 @@ boolean s = false;
 boolean d = false;
 boolean j = false;
 boolean l = false;
-
-boolean brænder = false;
-
-boolean pauseBrænder=false;
+boolean shift = false;
+boolean ctrl = false;
 
 boolean følgerRaket = true;
 
@@ -43,6 +41,16 @@ void input() {
     camX = raket.massemidtpunkt.rotate(raket.rotationspunkt, raket.rot).x+raket.x;
     camY = raket.massemidtpunkt.rotate(raket.rotationspunkt, raket.rot).y+raket.y;
   }
+  if (skærm == simulationKører) {
+    if (shift) {
+      raket.brændMængde += 1*delta;
+      if (raket.brændMængde > 1) raket.brændMængde = 1;
+    }
+    if (ctrl) {
+      raket.brændMængde -= 1*delta;
+      if (raket.brændMængde < 0) raket.brændMængde = 0;
+    }
+  }
 }
 
 //input...
@@ -60,12 +68,8 @@ void keyPressed() {
     if (key == 'p') {
       if (skærm==simulationKører) {
         skærm=simulationPauset;
-        if (brænder) {
-          pauseBrænder=true;
-        }
       } else if (skærm==simulationPauset) {
         skærm=simulationKører;
-        pauseBrænder=false;
       }
     }
     if (key == 'w') {
@@ -81,7 +85,16 @@ void keyPressed() {
       d = true;
     }
     if (key == ' ') {
-      brænder = true;
+      raket.brændMængde = 1;
+    }
+    if (key == 'x') {
+      raket.brændMængde = 0;
+    }
+    if (keyCode == CONTROL) {
+      ctrl = true;
+    }
+    if (keyCode == SHIFT) {
+      shift = true;
     }
     if (key == 'j') {
       j = true;
@@ -92,19 +105,15 @@ void keyPressed() {
     if (key == 'r') {
       følgerRaket = !følgerRaket;
     }
-    if (key == '1'){
+    if (key == '1') {
       timestep=1;
-    }
-    else if (key == '2'){
+    } else if (key == '2') {
       timestep=5;
-    }
-    else if (key == '3'){
+    } else if (key == '3') {
       timestep=10;
-    }
-    else if (key == '4'){
+    } else if (key == '4') {
       timestep=100;
-    }
-    else if (key == '5'){
+    } else if (key == '5') {
       timestep=1000;
     }
   }
@@ -123,8 +132,11 @@ void keyReleased() {
   if (key == 'd') {
     d = false;
   }
-  if (key == ' ') {
-    brænder = false;
+  if (keyCode == CONTROL) {
+    ctrl = false;
+  }
+  if (keyCode == SHIFT) {
+    shift = false;
   }
   if (key == 'j') {
     j = false;
@@ -138,7 +150,7 @@ void mousePressed() {
   if (hovedMenuStartKnap.mouseOverUdenTransform()) {
     skærm=simulationKører;
   }
-  if(SimulationsHovedMenuKnap.mouseOverUdenTransform() && ((skærm==simulationKører)||(skærm==simulationPauset))){
+  if (SimulationsHovedMenuKnap.mouseOverUdenTransform() && ((skærm==simulationKører)||(skærm==simulationPauset))) {
     skærm=hovedMenu;
   }
   for (Textfield field : textfields) {
