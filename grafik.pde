@@ -50,6 +50,10 @@ void hovedMenu() {
   //Gør baggrunden mørkere
   fill(0, 150);
   rect(0, 0, width, height); 
+  fill(255);
+  textSize(100);
+  textAlign(CENTER);
+  text("space simulator",width/2,height/7);
   
   // Går tilbage til den tidligere translation scale og rotation
   popMatrix();
@@ -57,18 +61,22 @@ void hovedMenu() {
 
 Knap hovedMenuStartKnap;
 Knap hovedMenuEditorKnap;
-PauseKnap SimulationsHovedMenuKnap;
+PauseKnap simulationsHovedMenuKnap;
+PauseKnap editorTilbageKnap;
 
 void setupKnapper() {
-  hovedMenuStartKnap = new Knap(width/3,height/2, width/16, height/16, color(0,0,0),"Start",
-    10, color(0,255,0),color(255,0,0),color(0,0,255),0,hovedMenu);
+  hovedMenuStartKnap = new Knap(width/3-width/16,height/2-height/5, width/8, height/8, color(0,0,0),"Start",
+    40, color(0,255,0),color(255,0,0),color(0,0,255),0,hovedMenu);
   knapper.add(hovedMenuStartKnap);
-   hovedMenuEditorKnap = new Knap(width/3*2,height/2, width/16, height/16, color(0,0,0),"Editor",
-    10, color(0,255,0),color(255,0,0),color(0,0,255),0,hovedMenu);
+   hovedMenuEditorKnap = new Knap(width/3*2-width/16,height/2-height/5, width/8, height/8, color(0,0,0),"Editor",
+    40, color(0,255,0),color(255,0,0),color(0,0,255),0,hovedMenu);
   knapper.add(hovedMenuEditorKnap);
-  SimulationsHovedMenuKnap = new PauseKnap(height/50,height/50, width/16, width/16, color(0,0,0),"",
+  simulationsHovedMenuKnap = new PauseKnap(height/50,height/50, width/16, width/16, color(0,0,0),"",
     10, color(255),color(0,255,0),color(0,0,255),0,simulationKører);
-  knapper.add(SimulationsHovedMenuKnap);
+  knapper.add(simulationsHovedMenuKnap);
+  editorTilbageKnap = new PauseKnap(height/50,height/50, width/16, width/16, color(0,0,0),"",
+    10, color(255),color(0,255,0),color(0,0,255),0,editorSkærm);
+  knapper.add(editorTilbageKnap);
 }
 
 
@@ -123,10 +131,22 @@ void tegnHudDel(String Titel,String enhed, float værdi,float posX,float posY){
   textSize(30);
   fill(0);
   text(Titel+": "+int(værdi)+enhed,posX+10,posY+height/40);
-  /*
-  noStroke();
-  fill(110);
-  rect(posX+2,posY+3,width/4-4,height/60,1,0,0,0);
-  */
+}
+
+void editorSkærm(){
+  //Gemmer den nuværende translation scale og rotation
+  pushMatrix(); 
+  //Går tilbage til den standard af disse
+  resetMatrix();
   
+  //Gør baggrunden mørkere
+  fill(0, 150);
+  rect(0, 0, width, height); 
+  fill(255);
+  textSize(100);
+  textAlign(CENTER);
+  text("Raket editor",width/2,height/7);
+  
+  // Går tilbage til den tidligere translation scale og rotation
+  popMatrix();
 }

@@ -169,24 +169,33 @@ class PauseKnap extends Knap {
   }
   @Override
     void tegnUdenTransform() {
-    //Gemmer den nuværende translation scale og rotation
-    pushMatrix();
-    //Går tilbage til den standard af disse
-    resetMatrix();
-    strokeCap(SQUARE);
-    strokeWeight(sizeX/3);
-    tegner=true;
-    if (mouseOverUdenTransform()) {
+    if (knapSkærm==skærm) {
+      //Gemmer den nuværende translation scale og rotation
+      pushMatrix();
+      //Går tilbage til den standard af disse
+      resetMatrix();
+      rectMode(CORNER);
+      noStroke();
+      //Tegner selve knappen
+      translate(posX, posY);
+      tegner=true;
+      if (mouseOverUdenTransform()) {
+        fill(hoverFarve);
+      } else {
+        fill(knapFarve);
+      }
       tegner=false;
-      stroke(hoverFarve);
-    } else {
-      stroke(knapFarve);
+      noStroke();
+      beginShape();
+      vertex(height/15, 0);
+      vertex(height/15, height/17*2);
+      vertex(0, height/17);
+      endShape(CLOSE);
+      arc(height/15, height/17*2, height/15*2, height/25*4, PI/2*3, PI*2);
+      fill(0);
+      arc(height/15, height/17*2, height/15*2, height/31*2, PI/2*3, PI*2);
+      popMatrix();
     }
-    line(posX+sizeX/5, posY, posX+sizeX/5, posY+sizeY);
-    line(posX+sizeX/5*4, posY, posX+sizeX/5*4, posY+sizeY);
-
-    // Går tilbage til den tidligere translation scale og rotation
-    popMatrix();
   }
   @Override
     //Funktion til at bestemme om musen er over en knap uden translation scale og rotation
