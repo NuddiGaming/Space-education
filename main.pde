@@ -12,6 +12,8 @@ float camSpeed = 5;
 //Scale
 float scale;
 
+double scale=100;
+
 //grid
 int gridDist = 100;
 int gridSize = 5000;
@@ -27,7 +29,7 @@ float deltaTime;
 float timestep = 1;
 
 ArrayList<Legeme> legemer = new ArrayList<Legeme>();
-Legeme jorden = new Legeme(0, 6378000, 6378000, 5.972*Math.pow(10, 24), color(0, 0, 255));
+Legeme jorden = new Legeme(0, 6378000, 6378000, 5.972*Math.pow(10, 24), color(0, 150, 50));
 Legeme måne = new Legeme(0, -384400000, 1737400, 7.347*Math.pow(10, 22), color(100, 100, 100));
 //raket
 Raket raket;
@@ -49,11 +51,10 @@ void draw() {
   }
   if (skærm == simulationKører || skærm == simulationPauset) {
     simulationGrafik();
+    delta = (millis()-deltaTime)/1000*timestep;
+    deltaTime = millis();
     //gør så selve simulation kun kører når den skal
     if (skærm == simulationKører) {
-      delta = (millis()-deltaTime)/1000*timestep;
-      deltaTime = millis();
-      println(timestep);
       fysik();
     }
     input();
@@ -68,10 +69,14 @@ void draw() {
     if (k.knapSkærm == hovedMenu && skærm==hovedMenu) {
       k.tegnUdenTransform();
     }
+    if(k.knapSkærm==simulationKører &&(skærm==simulationKører || skærm==simulationPauset)){
+      k.tegnUdenTransform();
+    }
   }
   for (Textfield field : textfields) {
     field.tegnPåSkærm();
   }
+  println("vX: "+raket.vX+"   vY: "+raket.vY);
 }
 
 
