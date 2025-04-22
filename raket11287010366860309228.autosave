@@ -12,7 +12,7 @@ class Raket {
   Punkt rotationspunkt = new Punkt(massemidtpunkt.x, massemidtpunkt.y);
   //position
   double x = 0;
-  double y = -2;
+  double y = -100;
 
   double masse = 20000;
 
@@ -24,7 +24,7 @@ class Raket {
   double rot = 0;
   double rotHast = 0;
 
-  int punktMængde = 100;
+  int punktMængde = 10;
 
   //listen med alle collision punkter
   ArrayList<Punkt> collisionPunkter = new ArrayList<Punkt>();
@@ -179,7 +179,7 @@ class Raket {
     for (Kraft kraft : krafter) {
       tilføjKraft(kraft);
       resulterendeKraft.x+=kraft.x;
-      resulterendeKraft.y+=kraft.y;
+      resulterendeKraft.x+=kraft.y;
     }
     if (collisionsPunkt != null) {
       collisionsPunkt.x = sumX/m;
@@ -229,13 +229,13 @@ class Raket {
         }
       }
       Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), closestPoint);
-      double sX = l1.længdeX()/l1.længde()*collisionsLegeme.radius+collisionsLegeme.x;
-      double sY = l1.længdeY()/l1.længde()*collisionsLegeme.radius+collisionsLegeme.y;
+      double sX = l1.længdeX()/l1.længde()*collisionsLegeme.x+collisionsLegeme.x;
+      double sY = l1.længdeY()/l1.længde()*collisionsLegeme.y+collisionsLegeme.y;
       Punkt p = new Punkt(sX, sY);
       Linje l2 = new Linje(closestPoint, p);
-      println(l1.længdeX()/l1.længde()*collisionsLegeme.radius, sX);
-      x += l2.længdeX()*0.99;
-      y += l2.længdeY()*0.99;
+      println(l2.længdeX(), l2.længdeY());
+      x += l2.længdeX();
+      y += l2.længdeY();
     }
   }
 
