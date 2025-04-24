@@ -23,9 +23,9 @@ float delta;
 float deltaTime;
 float timestep = 1;
 
+JSONObject scenario;
+
 ArrayList<Legeme> legemer = new ArrayList<Legeme>();
-Legeme jorden = new Legeme(0, 6378000, 6378000, 5.972*Math.pow(10, 24), color(0, 150, 50));
-Legeme måne = new Legeme(0, -384400000, 1737400, 7.347*Math.pow(10, 22), color(100, 100, 100));
 //raket
 Raket raket;
 
@@ -36,6 +36,7 @@ void setup() {
   raket = new Raket();
   setupStjerner(200);
   setupKnapper();
+  loadScenario("save");
   //textfields.add(new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, "Indtast navn", "", 10, 0, false));
 }
 

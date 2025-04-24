@@ -274,51 +274,21 @@ class Linje {
   }
 }
 
-//Skæringspunkt mellem 2 linjer
-Punkt skæringspunkt(Linje l1, Linje l2) {
-  double x;
-  double y;
-  //check om der er lodrette linjer
-  if (l1.p2.x != l1.p1.x && l2.p2.x != l2.p1.x) {
-    double a1 = l1.a();
-    double a2 = l2.a();
-    double b1 = l1.b();
-    double b2 = l2.b();
-    //regn x og y ud på skæringspunkt
-    x = -((b1-b2)/(a1-a2));
-    y = a1*x+b1;
-  } else { //hvis der er lodrette linjer
-    double a;
-    double b;
-    //check om det er linje 1 der er lodret
-    if (l1.p2.x == l1.p1.x) {
-      x = l1.p2.x;
-      a = l2.a();
-      b = l2.b();
-    } else { //hvis det er linje 2
-      x = l2.p2.x;
-      a = l1.a();
-      b = l1.b();
-    }
-    //regn y ud.
-    y = a*x+b;
-  }
-  return new Punkt(x, y);
-}
-
 //Legeme class til planeter/måner/whatever der skal have tyngdekraft
 class Legeme {
+  String navn;
   double x;
   double y;
   double radius;
   double masse;
   color farve;
-  Legeme(double x, double y, double radius, double masse, color farve) {
+  Legeme(String navn, double x, double y, double radius, double masse, color farve) {
     this.x = x/scale;
     this.y = y/scale;
     this.radius = radius/scale;
     this.masse = masse/Math.pow(scale, 2);
     this.farve = farve;
+    this.navn = navn;
     legemer.add(this);
   }
   void tegn() {

@@ -5,15 +5,22 @@ void simulationGrafik() {
   for (Stjerne S : stjerner) {
     S.tegnStjerne();
   }
+  pushMatrix();
   //Zoom
   translate(width/2, height/2);
   scale(zoom);
   rotate(camRot);
   //tegnGrid();
-  jorden.tegn();
-  måne.tegn();
+  for(Legeme legeme : legemer){
+    legeme.tegn();
+  }
   raket.tegnRaket();
   tegnHud();
+  popMatrix();
+  resetMatrix();
+  if(zoom < 0.8){
+    tegnPil(new Punkt(width/2, height/2), 100, 30, 30, raket.rot, color(255, 0, 0, (1-(zoom-0.1)/(0.8-0.1))*255));
+  }
 }
 
 void tegnGrid() {

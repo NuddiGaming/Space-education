@@ -116,6 +116,9 @@ void keyPressed() {
     } else if (key == '5') {
       timestep=1000;
     }
+    if (key == '0'){
+      saveScenario("save");
+    }
   }
 }
 //mere input...
