@@ -20,13 +20,18 @@ int simulationPauset=2;
 int editorSkærm=3;
 int skærm=hovedMenu;
 
+Legeme VisesIMenu;
+int menuX;
+int menuY;
+boolean visMenu;
+
 float delta;
 float deltaTime;
 float timestep = 1;
 
 ArrayList<Legeme> legemer = new ArrayList<Legeme>();
-Legeme jorden = new Legeme(0, 6378000, 6378000, 5.972*Math.pow(10, 24), color(0, 150, 50));
-Legeme måne = new Legeme(0, -384400000, 1737400, 7.347*Math.pow(10, 22), color(100, 100, 100));
+Legeme jorden = new Legeme(0, 6378000, 6378000, 5.972*Math.pow(10, 24), color(0, 150, 50),"jorden");
+Legeme måne = new Legeme(0, -384400000, 1737400, 7.347*Math.pow(10, 22), color(100, 100, 100),"månen");
 //raket
 Raket raket;
 
@@ -82,5 +87,4 @@ void draw() {
   for (Textfield field : textfields) {
     field.tegnPåSkærm();
   }
-  println("vX: "+raket.vX+"   vY: "+raket.vY);
 }

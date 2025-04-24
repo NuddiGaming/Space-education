@@ -131,6 +131,9 @@ void keyReleased() {
 }
 
 void mousePressed() {
+  if (jorden.mouseOver()) {
+    println("yes");
+  }
   if (hovedMenuStartKnap.mouseOverUdenTransform()) {
     skærm=simulationKører;
   }
@@ -139,6 +142,8 @@ void mousePressed() {
   }
   if (hovedMenuEditorKnap.mouseOverUdenTransform()) {
     skærm=editorSkærm;
+  }
+  if (skærm==editorSkærm) {
   }
   for (Textfield field : textfields) {
     if (field.mouseOver()) {

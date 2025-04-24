@@ -322,16 +322,40 @@ class Legeme {
   double radius;
   double masse;
   color farve;
-  Legeme(double x, double y, double radius, double masse, color farve) {
+  String navn;
+  Textfield masseField, radiusField, navnField;
+  Legeme(double x, double y, double radius, double masse, color farve, String navn) {
     this.x = x/scale;
     this.y = y/scale;
     this.radius = radius/scale;
     this.masse = masse/Math.pow(scale, 2);
     this.farve = farve;
+    this.navn=navn;
+    
+    masseField= new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20,(String)(float)masse, 10, 0, false);
+    
+    radiusField= new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, str((float)(radius)), 10, 0, false);
+    
+    navnField= new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, navn, 10, 0, false);
     legemer.add(this);
   }
   void tegn() {
     fill(farve);
     circle((float)(x-camX), (float)(y-camY), (float)radius*2);
+  }
+
+  boolean mouseOver() {
+    double mx = mouseX - width / 2;
+    double my = mouseY - height / 2;
+    double cosR = cos(-camRot);
+    double sinR = sin(-camRot);
+    double rotx = mx * cosR - my * sinR;
+    double roty = mx * sinR + my * cosR;
+    double worldMouseX = rotx / (scale * zoom) + camX;
+    double worldMouseY = roty / (scale * zoom) + camY;
+    double dx = (float)x - worldMouseX;
+    double dy = (float)y - worldMouseY;
+    double afstand = Math.sqrt(dx * dx + dy * dy);
+    return afstand <= radius;
   }
 }

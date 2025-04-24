@@ -5,10 +5,10 @@ class Textfield {
   float posX, posY, sizeX, sizeY, rundhed;
   color tekstFarve, activeFarve, outlineFarve, baggrundsFarve;
   int tekstSize, textfieldSkærm;
-  String startTekst, tekst;
+  String tekst;
   boolean active;
 
-  Textfield(float posX, float posY, float sizeX, float sizeY, color tekstFarve, color activeFarve, color outlineFarve, color baggrundsFarve, int tekstSize, String startTekst, String tekst, float rundhed, int textfieldSkærm, boolean active) {
+  Textfield(float posX, float posY, float sizeX, float sizeY, color tekstFarve, color activeFarve, color outlineFarve, color baggrundsFarve, int tekstSize, String tekst, float rundhed, int textfieldSkærm, boolean active) {
     this.posX = posX;
     this.posY = posY;
     this.sizeX = sizeX;
@@ -18,7 +18,6 @@ class Textfield {
     this.outlineFarve = outlineFarve;
     this.baggrundsFarve = baggrundsFarve;
     this.tekstSize = tekstSize;
-    this.startTekst = startTekst;
     this.tekst = tekst;
     this.rundhed = rundhed;
     this.textfieldSkærm = textfieldSkærm;
@@ -42,15 +41,8 @@ class Textfield {
       textSize(tekstSize);
       // Teksten som står i feltet
       String displayedText;
-      if (active) {
-        displayedText = tekst;
-      } else {
-        if (tekst.isEmpty()) {
-          displayedText = startTekst;
-        } else {
-          displayedText = tekst;
-        }
-      }
+      displayedText = tekst;
+
       text(displayedText, posX + sizeX / 2, (float)(posY-camY + sizeY / 2));
     }
   }
@@ -73,15 +65,7 @@ class Textfield {
       textSize(tekstSize);
       // Teksten som står i feltet
       String displayedText;
-      if (active) {
-        displayedText = tekst;
-      } else {
-        if (tekst.isEmpty()) {
-          displayedText = startTekst;
-        } else {
-          displayedText = tekst;
-        }
-      }
+      displayedText = tekst;
       text(displayedText, posX + sizeX / 2, posY + sizeY / 2);
     }
     popMatrix();

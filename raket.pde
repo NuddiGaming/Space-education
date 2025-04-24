@@ -233,7 +233,7 @@ class Raket {
       double sY = l1.længdeY()/l1.længde()*collisionsLegeme.radius+collisionsLegeme.y;
       Punkt p = new Punkt(sX, sY);
       Linje l2 = new Linje(closestPoint, p);
-      println(l1.længdeX()/l1.længde()*collisionsLegeme.radius, sX);
+      //println(l1.længdeX()/l1.længde()*collisionsLegeme.radius, sX);
       x += l2.længdeX()*0.99;
       y += l2.længdeY()*0.99;
     }
@@ -356,5 +356,8 @@ class Raket {
     arc((float)massemidtpunkt.rotate(rotationspunkt, rot).x, (float)massemidtpunkt.rotate(rotationspunkt, rot).y, (float)bredde/5, (float)bredde/5, 0, PI/2);
     arc((float)massemidtpunkt.rotate(rotationspunkt, rot).x, (float)massemidtpunkt.rotate(rotationspunkt, rot).y, (float)bredde/5, (float)bredde/5, PI, 1.5*PI);
     popMatrix();
+  }
+  boolean mouseOver(){
+    return true;
   }
 }
