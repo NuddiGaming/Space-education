@@ -84,10 +84,10 @@ void keyPressed() {
     if (key == 'd') {
       d = true;
     }
-    if (key == ' ') {
+    if (key == ' ' && skærm == simulationKører) {
       raket.brændMængde = 1;
     }
-    if (key == 'x') {
+    if (key == 'x' && skærm == simulationKører) {
       raket.brændMængde = 0;
     }
     if (keyCode == CONTROL) {

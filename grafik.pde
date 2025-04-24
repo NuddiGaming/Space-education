@@ -10,9 +10,9 @@ void simulationGrafik() {
   scale(zoom);
   rotate(camRot);
   //tegnGrid();
-  raket.tegnRaket();
   jorden.tegn();
   måne.tegn();
+  raket.tegnRaket();
   tegnHud();
 }
 

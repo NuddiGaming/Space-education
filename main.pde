@@ -7,7 +7,7 @@ float zoom = 10;
 //Kamera hastighed
 float camSpeed = 30;
 
-double scale=100;
+double scale=1;
 
 //grid
 int gridDist = 100;
