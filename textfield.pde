@@ -1,6 +1,3 @@
-ArrayList<Textfield> textfields = new ArrayList<Textfield>();
-Textfield activeField = null; // Holder styr på hvilket felt der er aktivt
-
 class Textfield {
   float posX, posY, sizeX, sizeY, rundhed;
   color tekstFarve, activeFarve, outlineFarve, baggrundsFarve;

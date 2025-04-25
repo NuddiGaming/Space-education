@@ -25,6 +25,9 @@ int menuX;
 int menuY;
 boolean visMenu;
 
+ArrayList<Textfield> textfields = new ArrayList<Textfield>();
+Textfield activeField = null; // Holder styr på hvilket felt der er aktivt
+
 float delta;
 float deltaTime;
 float timestep = 1;

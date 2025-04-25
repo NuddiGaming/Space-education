@@ -145,18 +145,20 @@ void mousePressed() {
   }
   if (skærm==editorSkærm) {
   }
-  for (Textfield field : textfields) {
-    if (field.mouseOver()) {
-      if (activeField != null) {
-        activeField.deactivate(); // Deactivater alle felter hvis 'activeField' ikke er sat
+  if (visMenu) {
+    for (Textfield field : textfields) {
+      if (field.mouseOver()) {
+        if (activeField != null) {
+          activeField.deactivate(); // Deactivater alle felter hvis 'activeField' ikke er sat
+        }
+        field.activate(); // Activater det field man klikker på
+        return;
       }
-      field.activate(); // Activater det field man klikker på
-      return;
     }
-  }
-  if (activeField != null) {
-    activeField.deactivate();
-    activeField = null;
+    if (activeField != null) {
+      activeField.deactivate();
+      activeField = null;
+    }
   }
 }
 

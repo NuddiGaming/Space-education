@@ -332,11 +332,11 @@ class Legeme {
     this.farve = farve;
     this.navn=navn;
     
-    masseField= new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20,(String)(float)masse, 10, 0, false);
+    masseField= new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20,Double.toString(masse), 10, editorSkærm, false);
     
-    radiusField= new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, str((float)(radius)), 10, 0, false);
+    radiusField= new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, Double.toString(radius), 10, editorSkærm, false);
     
-    navnField= new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, navn, 10, 0, false);
+    navnField= new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, navn, 10, editorSkærm, false);
     legemer.add(this);
   }
   void tegn() {

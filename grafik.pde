@@ -132,13 +132,10 @@ void startMenu(Legeme legeme){
  VisesIMenu=legeme;
  legeme.navnField.posX=menuX+width/100;
  legeme.navnField.posY=menuY+width/100;
- legeme.navnField.active=true;
  legeme.masseField.posX=menuX+width/100;
  legeme.masseField.posY=menuY+2*height/100+legeme.masseField.sizeY;
- legeme.masseField.active=true;
  legeme.radiusField.posX=menuX+width/100;
  legeme.radiusField.posY=menuY+3*height/100+legeme.radiusField.sizeY;
- legeme.radiusField.active=true;
 }
 
 void tegnMenu(Legeme legeme){
@@ -146,6 +143,6 @@ void tegnMenu(Legeme legeme){
  resetMatrix();
  
  //rect(menuX,menuY,
- 
+ legeme
  popMatrix();
 }
