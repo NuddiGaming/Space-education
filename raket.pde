@@ -11,8 +11,8 @@ class Raket {
   Punkt massemidtpunkt = new Punkt(0, -højde/2);
   Punkt rotationspunkt = new Punkt(massemidtpunkt.x, massemidtpunkt.y);
   //position
-  double x = 0;
-  double y = -2;
+  double x = jorden.radius+20;
+  double y = jorden.radius;
 
   double masse = 20000;
 
@@ -173,6 +173,15 @@ class Raket {
         }
         //circle((float)(pCopy.x-camX), (float)(pCopy.y-camY), 1);
       }
+      float zoomDist = (float) legeme.radius + (float) legeme.radius/1200;
+      if (dist <= zoomDist){
+        zoomConstrain = true;
+        zoomLegeme = legeme;
+        pupDist = dist;
+      }
+      else if(dist > zoomDist && zoomLegeme == legeme){
+        zoomConstrain = false;
+      }
     }
     resulterendeKraft.reset();
     //her tilføjes alle kræfter
@@ -233,7 +242,6 @@ class Raket {
       double sY = l1.længdeY()/l1.længde()*collisionsLegeme.radius+collisionsLegeme.y;
       Punkt p = new Punkt(sX, sY);
       Linje l2 = new Linje(closestPoint, p);
-      println(l1.længdeX()/l1.længde()*collisionsLegeme.radius, sX);
       x += l2.længdeX()*0.99;
       y += l2.længdeY()*0.99;
     }

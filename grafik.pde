@@ -11,7 +11,9 @@ void simulationGrafik() {
   rotate(camRot);
   //tegnGrid();
   raket.tegnRaket();
-  jorden.tegn();
+  if(zoomConstrain == false){
+    jorden.tegn();
+  }
   måne.tegn();
   tegnHud();
 }
