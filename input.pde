@@ -131,9 +131,6 @@ void keyReleased() {
 }
 
 void mousePressed() {
-  if (jorden.mouseOver()) {
-    println("yes");
-  }
   if (hovedMenuStartKnap.mouseOverUdenTransform()) {
     skærm=simulationKører;
   }
@@ -144,15 +141,24 @@ void mousePressed() {
     skærm=editorSkærm;
   }
   if (skærm==editorSkærm) {
+    // Bearbejder interaktioner hvis en menu skal vises
+    if (visMenu) {
+      handleMenuInteractions();
+      checkClickOutsideMenu();
+    }
   }
   if (visMenu) {
     for (Textfield field : textfields) {
-      if (field.mouseOver()) {
-        if (activeField != null) {
-          activeField.deactivate(); // Deactivater alle felter hvis 'activeField' ikke er sat
+      if (field == VisesIMenu.navnField ||
+        field == VisesIMenu.masseField ||
+        field == VisesIMenu.radiusField) {
+        if (field.mouseOver()) {
+          if (activeField != null) {
+            activeField.deactivate();
+          }
+          field.activate();
+          return;
         }
-        field.activate(); // Activater det field man klikker på
-        return;
       }
     }
     if (activeField != null) {
@@ -169,4 +175,71 @@ void mouseWheel(MouseEvent event) {
     zoom *= pow(1.1, e);
     camSpeed /= pow(1.1, e);
   }
+}
+
+void handleMenuInteractions() {
+  if (visMenu) {
+    // Beregner menu størrelse baseret på tekstfelter
+    float menuWidth = VisesIMenu.navnField.sizeX + width/50;
+    float menuHeight = VisesIMenu.radiusField.posY + VisesIMenu.radiusField.sizeY + height/10 - menuY;
+
+
+    // Checker om luk knappen trykkes på
+    if (mouseX >= menuX + menuWidth - height/25 && mouseX <= menuX + menuWidth - height/25 + height/30 &&
+      mouseY >= menuY + height/100 && mouseY <= menuY + height/100 + height/30) {
+      hideMenu();
+      return;
+    }
+
+    // Check om tilføj knappen er blevet trykket på
+    if (mouseX >= menuX + menuWidth/2 - height/15 && mouseX <= menuX + menuWidth/2 - height/15 + height/7.5 &&
+      mouseY >= menuY + menuHeight - height/20 && mouseY <= menuY + menuHeight - height/20 + height/25) {
+      // kommer ændringerne på legemet
+      try {
+        VisesIMenu.navn = VisesIMenu.navnField.tekst;
+        VisesIMenu.masse = Double.parseDouble(VisesIMenu.masseField.tekst);
+        VisesIMenu.radius = Double.parseDouble(VisesIMenu.radiusField.tekst)/scale;
+        hideMenu();
+      }
+      catch (NumberFormatException e) {
+        // Handle invalid number input
+        println("Invalid number format in one of the fields");
+      }
+      return;
+    }
+  }
+}
+
+void checkClickOutsideMenu() {
+  if (visMenu && VisesIMenu != null) {
+    // Calculate menu boundaries
+    float menuWidth = VisesIMenu.navnField.sizeX + width/50;
+    float menuHeight = VisesIMenu.radiusField.posY + VisesIMenu.radiusField.sizeY + height/100 - menuY;
+
+    // Check if click is outside menu
+    if (mouseX < menuX || mouseX > menuX + menuWidth ||
+      mouseY < menuY || mouseY > menuY + menuHeight) {
+      // Check if we're not clicking on a text field
+      if (!(VisesIMenu.navnField.mouseOver() ||
+        VisesIMenu.masseField.mouseOver() ||
+        VisesIMenu.radiusField.mouseOver())) {
+        hideMenu();
+      }
+    }
+  }
+}
+
+void hideMenu() {
+  visMenu = false;
+  if (VisesIMenu != null) {
+    // Make sure the text fields are no longer active
+    VisesIMenu.navnField.deactivate();
+    VisesIMenu.masseField.deactivate();
+    VisesIMenu.radiusField.deactivate();
+  }
+  if (activeField != null) {
+    activeField.deactivate();
+    activeField = null;
+  }
+  VisesIMenu = null;
 }

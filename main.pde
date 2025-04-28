@@ -87,7 +87,4 @@ void draw() {
       k.tegnUdenTransform();
     }
   }
-  for (Textfield field : textfields) {
-    field.tegnPåSkærm();
-  }
 }
