@@ -191,9 +191,7 @@ class PauseKnap extends Knap {
       vertex(height/15, height/17*2);
       vertex(0, height/17);
       endShape(CLOSE);
-      arc(height/15, height/17*2, height/15*2, height/25*4, PI/2*3, PI*2);
-      fill(0);
-      arc(height/15, height/17*2, height/15*2, height/31*2, PI/2*3, PI*2);
+      rect(height/15,height/17-height/44,height/15,height/22);
       popMatrix();
     }
   }

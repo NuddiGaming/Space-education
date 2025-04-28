@@ -197,7 +197,7 @@ void handleMenuInteractions() {
       // kommer ændringerne på legemet
       try {
         VisesIMenu.navn = VisesIMenu.navnField.tekst;
-        VisesIMenu.masse = Double.parseDouble(VisesIMenu.masseField.tekst);
+        VisesIMenu.masse = Double.parseDouble(VisesIMenu.masseField.tekst)/Math.pow(scale, 2);
         VisesIMenu.radius = Double.parseDouble(VisesIMenu.radiusField.tekst)/scale;
         hideMenu();
       }
