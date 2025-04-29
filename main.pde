@@ -4,6 +4,7 @@ double camY = 0;
 float camRot = 0;
 //Kamera zoom
 float zoom = 10;
+boolean zoomConstrain = false;
 //Kamera hastighed
 float camSpeed = 30;
 
@@ -23,9 +24,14 @@ float delta;
 float deltaTime;
 float timestep = 1;
 
+float cx, cy, r;
+double pupDist;
+
 ArrayList<Legeme> legemer = new ArrayList<Legeme>();
 Legeme jorden = new Legeme(0, 6378000, 6378000, 5.972*Math.pow(10, 24), color(0, 150, 50));
 Legeme måne = new Legeme(0, -384400000, 1737400, 7.347*Math.pow(10, 22), color(100, 100, 100));
+
+Legeme zoomLegeme;
 //raket
 Raket raket;
 
@@ -60,12 +66,16 @@ void draw() {
     if (k.knapSkærm == hovedMenu && skærm==hovedMenu) {
       k.tegnUdenTransform();
     }
-    if(k.knapSkærm==simulationKører &&(skærm==simulationKører || skærm==simulationPauset)){
+    if (k.knapSkærm==simulationKører &&(skærm==simulationKører || skærm==simulationPauset)) {
       k.tegnUdenTransform();
     }
   }
   for (Textfield field : textfields) {
     field.tegnPåSkærm();
   }
-  println("vX: "+raket.vX+"   vY: "+raket.vY);
+
+  // Gør så man ikke kan zoom ud og se at planeten ikke bliver tegnet.
+  if (zoomConstrain) {
+    zoom = constrain(zoom, (float)zoomLegeme.radius/20000000, 1000);
+  }
 }
