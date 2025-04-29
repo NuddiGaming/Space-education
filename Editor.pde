@@ -121,40 +121,40 @@ void tegnMenu(Legeme legeme) {
 }
 
 void tegnRocketMenu() {
-  // Calculate menu position and size
+  // Beregner menu position
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
   float menuWidth = width/4;
   float menuHeight = height/3;
 
-  // Draw menu background
+  // tegner menu baggrund
   fill(30, 30, 30, 220);
   stroke(100);
   strokeWeight(2);
   rectMode(CORNER);
   rect(menuX, menuY, menuWidth, menuHeight, 10);
 
-  // Draw title
+  // tegner titel
   fill(255);
   textAlign(CENTER, TOP);
   textSize(24);
-  text("Rocket Properties", menuX + menuWidth/2, menuY + height/50);
+  text("Raket egenskaber", menuX + menuWidth/2, menuY + height/50);
 
-  // Draw close button
+  // tegner luk knap
   fill(200, 50, 50);
   rect(menuX + menuWidth - height/25, menuY + height/100, height/30, height/30, 5);
   fill(255);
   textAlign(CENTER, CENTER);
   text("X", menuX + menuWidth - height/25 + height/60, menuY + height/100 + height/60);
 
-  // Draw apply button
+  // tegner tilføj knap
   fill(50, 200, 50);
   rect(menuX + menuWidth/2 - height/15, menuY + menuHeight - height/20, height/7.5, height/25, 5);
   fill(255);
   textAlign(CENTER, CENTER);
-  text("Apply", menuX + menuWidth/2, menuY + menuHeight - height/20 + height/50);
+  text("Tilføj", menuX + menuWidth/2, menuY + menuHeight - height/20 + height/50);
 
-  // Draw labels
+  // tegenr titler
   fill(255);
   textAlign(LEFT, CENTER);
   textSize(16);
@@ -163,45 +163,45 @@ void tegnRocketMenu() {
 }
 
 void tegnUniverseMenu() {
-  // Calculate menu position and size
+  // Beregner menu position
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
   float menuWidth = width/4;
   float menuHeight = height/3;
 
-  // Draw menu background
+  // tegner menu baggrund
   fill(30, 30, 30, 220);
   stroke(100);
   strokeWeight(2);
   rectMode(CORNER);
   rect(menuX, menuY, menuWidth, menuHeight, 10);
 
-  // Draw title
+  // tegner titel
   fill(255);
   textAlign(CENTER, TOP);
   textSize(24);
-  text("Universe Properties", menuX + menuWidth/2, menuY + height/50);
+  text("univers egenskaber", menuX + menuWidth/2, menuY + height/50);
 
-  // Draw close button
+  // tegner luk knap
   fill(200, 50, 50);
   rect(menuX + menuWidth - height/25, menuY + height/100, height/30, height/30, 5);
   fill(255);
   textAlign(CENTER, CENTER);
   text("X", menuX + menuWidth - height/25 + height/60, menuY + height/100 + height/60);
 
-  // Draw apply button
+  // tegner tilføj knap
   fill(50, 200, 50);
   rect(menuX + menuWidth/2 - height/15, menuY + menuHeight - height/20, height/7.5, height/25, 5);
   fill(255);
   textAlign(CENTER, CENTER);
-  text("Apply", menuX + menuWidth/2, menuY + menuHeight - height/20 + height/50);
+  text("Tilføj", menuX + menuWidth/2, menuY + menuHeight - height/20 + height/50);
 
-  // Draw labels
+  // tegner overskrifter
   fill(255);
   textAlign(LEFT, CENTER);
   textSize(16);
   text("Scale:", menuX + width/50, scaleField.posY - height/100);
-  text("Gravity Constant:", menuX + width/50, gravityField.posY - height/100);
+  text("Gravitations konstant:", menuX + width/50, gravityField.posY - height/100);
 }
 
 void startRocketMenu() {
@@ -209,7 +209,7 @@ void startRocketMenu() {
   visRocketMenu = true;
   visUniverseMenu = false;
 
-  // Set text field positions
+  // definer textfelt positioner
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
 
@@ -225,7 +225,7 @@ void startUniverseMenu() {
   visRocketMenu = false;
   visUniverseMenu = true;
 
-  // Set text field positions
+  // definer textfelt positioner
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
 
@@ -296,9 +296,9 @@ void hideMenu() {
 }
 
 void inputMenuer() {
-  // Handle rocket menu interactions
+  // Raket menu
   if (visRocketMenu) {
-    // Check for text field clicks
+    // De relevante textfelter
     if (motorKraftField.mouseOver()) {
       if (activeField != null) {
         activeField.deactivate();
@@ -314,13 +314,13 @@ void inputMenuer() {
       return;
     }
 
-    // Calculate menu position and size for hit testing
+    // Beregner textfelt position og størrelse til brug i click detection
     float menuX = width - width/4 - width/50;
     float menuY = height/4;
     float menuWidth = width/4;
     float menuHeight = height/3;
 
-    // Check for close button click
+    // Check for luk knap tryk
     if (mouseX >= menuX + menuWidth - height/25 &&
       mouseX <= menuX + menuWidth - height/25 + height/30 &&
       mouseY >= menuY + height/100 &&
@@ -333,7 +333,7 @@ void inputMenuer() {
       return;
     }
 
-    // Check for apply button click
+    // Check for tilføj knap tryk
     if (mouseX >= menuX + menuWidth/2 - height/15 &&
       mouseX <= menuX + menuWidth/2 - height/15 + height/7.5 &&
       mouseY >= menuY + menuHeight - height/20 &&
@@ -354,9 +354,9 @@ void inputMenuer() {
     }
   }
 
-  // Handle universe menu interactions
+  // universet menu
   if (visUniverseMenu) {
-    // Check for text field clicks
+    // Check for tekstfelt kliks
     if (scaleField.mouseOver()) {
       if (activeField != null) {
         activeField.deactivate();
@@ -372,13 +372,13 @@ void inputMenuer() {
       return;
     }
 
-    // Calculate menu position and size for hit testing
+    // Beregner menu position og størrelse til tryk tjek
     float menuX = width - width/4 - width/50;
     float menuY = height/4;
     float menuWidth = width/4;
     float menuHeight = height/3;
 
-    // Check for close button click
+    // Check for luk knap tryk
     if (mouseX >= menuX + menuWidth - height/25 &&
       mouseX <= menuX + menuWidth - height/25 + height/30 &&
       mouseY >= menuY + height/100 &&
@@ -391,13 +391,19 @@ void inputMenuer() {
       return;
     }
 
-    // Check for apply button click
+    // Check for tilføj knap tryk
     if (mouseX >= menuX + menuWidth/2 - height/15 &&
       mouseX <= menuX + menuWidth/2 - height/15 + height/7.5 &&
       mouseY >= menuY + menuHeight - height/20 &&
       mouseY <= menuY + menuHeight - height/20 + height/25) {
       try {
+        //ændrer scale og ændre den reale masse og radius så det passer
+        double scaleChange = scale/Double.parseDouble(scaleField.tekst);
         scale = Double.parseDouble(scaleField.tekst);
+        for (Legeme legeme : legemer) {
+          legeme.radius=legeme.radius*scaleChange;
+          legeme.masse=legeme.masse*Math.pow(scaleChange, 2);
+        }
         g = Float.parseFloat(gravityField.tekst);
         visUniverseMenu = false;
         if (activeField != null) {
