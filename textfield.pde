@@ -1,3 +1,19 @@
+void setupTextfields() {
+  // Create text fields for rocket properties
+  motorKraftField = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
+    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(raket.motorKraft), 5, editorSkærm, false);
+  
+  raketMasseField = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
+    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(raket.masse), 5, editorSkærm, false);
+  
+  // Create text fields for universe properties
+  scaleField = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
+    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(scale), 5, editorSkærm, false);
+  
+  gravityField = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
+    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(g), 5, editorSkærm, false);
+}
+
 class Textfield {
   float posX, posY, sizeX, sizeY, rundhed;
   color tekstFarve, activeFarve, outlineFarve, baggrundsFarve;

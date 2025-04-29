@@ -191,7 +191,7 @@ class PauseKnap extends Knap {
       vertex(height/15, height/17*2);
       vertex(0, height/17);
       endShape(CLOSE);
-      rect(height/15,height/17-height/44,height/15,height/22);
+      rect(height/15, height/17-height/44, height/15, height/22);
       popMatrix();
     }
   }
@@ -329,11 +329,11 @@ class Legeme {
     this.masse = masse/Math.pow(scale, 2);
     this.farve = farve;
     this.navn=navn;
-    
-    masseField= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15,Double.toString(masse), 10, editorSkærm, false);
-    
+
+    masseField= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, Double.toString(masse), 10, editorSkærm, false);
+
     radiusField= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, Double.toString(radius), 10, editorSkærm, false);
-    
+
     navnField= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, navn, 10, editorSkærm, false);
     legemer.add(this);
   }
@@ -343,17 +343,22 @@ class Legeme {
   }
 
   boolean mouseOver() {
+    // Omregner musens koordinater til nogen der passer til translationen af disse
     double mx = mouseX - width / 2;
     double my = mouseY - height / 2;
     double cosR = cos(-camRot);
     double sinR = sin(-camRot);
     double rotx = mx * cosR - my * sinR;
     double roty = mx * sinR + my * cosR;
-    double worldMouseX = rotx / (scale * zoom) + camX;
-    double worldMouseY = roty / (scale * zoom) + camY;
-    double dx = (float)x - worldMouseX;
-    double dy = (float)y - worldMouseY;
+    double globalX = rotx / zoom + camX;
+    double globalY = roty / zoom + camY;
+
+    // beregner global afstand mellem musen og legemets center
+    double dx = x - globalX;
+    double dy = y - globalY;
     double afstand = Math.sqrt(dx * dx + dy * dy);
+
+    // hvis afstand er mindre end radius true
     return afstand <= radius;
   }
 }
