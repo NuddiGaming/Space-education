@@ -13,11 +13,11 @@ void simulationGrafik() {
   raket.tegnRaket();
   if(zoomConstrain == false){
     jorden.tegn();
+    måne.tegn();
   }
   else{
     tegnFlatWorld();
   }
-  måne.tegn();
   tegnHud();
 }
 
@@ -170,8 +170,8 @@ void tegnFlatWorld() {
   fill(zoomLegeme.farve);
   noStroke();
 
-  float halfWidth = (float) (zoomLegeme.radius / 200.0);
-  float thickness = (float) (zoomLegeme.radius / 200.0);
+  float halfWidth = (float) (zoomLegeme.radius / 190.0);
+  float thickness = (float) (zoomLegeme.radius / 190.0);
 
 
   double perpX = Math.cos(angleToPlane + Math.PI / 2.0);
@@ -203,5 +203,5 @@ void tegnFlatWorld() {
   popStyle();
 
   // Debug
-  println("Angle to plane  (rad) = " + nf((float) angleToPlane, 0, 3) + ", (deg) = " + nf((float) angleDeg, 0, 1));
+  println("rad = " + nf((float) angleToPlane, 0, 3) + ", deg = " + nf((float) angleDeg, 0, 1));
 }
