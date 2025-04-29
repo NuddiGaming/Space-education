@@ -11,8 +11,8 @@ class Raket {
   Punkt massemidtpunkt = new Punkt(0, -højde/2);
   Punkt rotationspunkt = new Punkt(massemidtpunkt.x, massemidtpunkt.y);
   //position
-  double x = jorden.radius+20;
-  double y = jorden.radius;
+  double x = 0;
+  double y = -2;
 
   double masse = 20000;
 

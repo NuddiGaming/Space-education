@@ -14,6 +14,9 @@ void simulationGrafik() {
   if(zoomConstrain == false){
     jorden.tegn();
   }
+  else{
+    tegnFlatWorld();
+  }
   måne.tegn();
   tegnHud();
 }
@@ -131,4 +134,74 @@ void tegnHudDel(String Titel,String enhed, float værdi,float posX,float posY){
   rect(posX+2,posY+3,width/4-4,height/60,1,0,0,0);
   */
   
+}
+
+// Tegner et fladt udsnit af planetens overflade lige under raketten
+void tegnFlatWorld() {
+  // Raket og planet pos
+  double rocketX = raket.massemidtpunkt.rotate(raket.rotationspunkt, raket.rot).x + raket.x;
+  double rocketY = raket.massemidtpunkt.rotate(raket.rotationspunkt, raket.rot).y + raket.y;
+
+  double planetX = zoomLegeme.x;
+  double planetY = zoomLegeme.y;
+
+  // Afstand og normalvektor
+  double dx   = planetX - rocketX;
+  double dy   = planetY - rocketY;
+  double dist = Math.hypot(dx, dy);
+
+  if (dist == 0) return;
+  double ux = dx / dist;
+  double uy = dy / dist;
+
+  // Skæringspunkt
+  double planeDistance = dist - zoomLegeme.radius;
+  if (planeDistance < 0) planeDistance = 0;
+
+  double planeCenterX = rocketX + ux * planeDistance;
+  double planeCenterY = rocketY + uy * planeDistance;
+
+  // Rotation af rect/quad
+  double angleToPlane = Math.atan2(planeCenterY - planetY, planeCenterX - planetX);
+  double angleDeg     = Math.toDegrees(angleToPlane);
+
+  // Matematik osv. til at tegne rect/quad
+  pushStyle();
+  fill(zoomLegeme.farve);
+  noStroke();
+
+  float halfWidth = (float) (zoomLegeme.radius / 200.0);
+  float thickness = (float) (zoomLegeme.radius / 200.0);
+
+
+  double perpX = Math.cos(angleToPlane + Math.PI / 2.0);
+  double perpY = Math.sin(angleToPlane + Math.PI / 2.0);
+  double dirX  = Math.cos(angleToPlane);
+  double dirY  = Math.sin(angleToPlane);
+
+  double[][] local = {{-halfWidth,  0},{ halfWidth,  0},{ halfWidth, -thickness},{-halfWidth, -thickness}};
+
+  float[] sx = new float[4];
+  float[] sy = new float[4];
+
+  for (int i = 0; i < 4; i++) {
+    double lx = local[i][0];
+    double ly = local[i][1];
+
+    double wx = planeCenterX + perpX * lx + dirX * ly;
+    double wy = planeCenterY + perpY * lx + dirY * ly;
+
+    sx[i] = (float) (wx - camX);
+    sy[i] = (float) (wy - camY);
+  }
+
+  // Tegner skæringspunkt og rect/quad
+  float dotSize = 10 / zoom;
+  //circle((float) (planeCenterX - camX), (float) (planeCenterY - camY), dotSize);
+  quad(sx[0], sy[0], sx[1], sy[1], sx[2], sy[2], sx[3], sy[3]);
+
+  popStyle();
+
+  // Debug
+  println("Angle to plane  (rad) = " + nf((float) angleToPlane, 0, 3) + ", (deg) = " + nf((float) angleDeg, 0, 1));
 }

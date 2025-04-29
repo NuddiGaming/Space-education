@@ -74,55 +74,8 @@ void draw() {
     field.tegnPåSkærm();
   }
 
-
+  // Gør så man ikke kan zoom ud og se at planeten ikke bliver tegnet.
   if (zoomConstrain) {
     zoom = constrain(zoom, (float)zoomLegeme.radius/200000000, 1000);
-
-
-    PVector rocketPos = new PVector((float)raket.massemidtpunkt.rotate(raket.rotationspunkt,raket.rot).x + (float) raket.x, (float) raket.massemidtpunkt.rotate(raket.rotationspunkt,raket.rot).y + (float)raket.y);
-    PVector planetPos = new PVector((float)zoomLegeme.x, (float)zoomLegeme.y);
-    PVector toCenter = PVector.sub(planetPos, rocketPos);
-    float dist = toCenter.mag();
-    toCenter.normalize();
-
-    float planeDistance = dist - (float)zoomLegeme.radius;
-    if (planeDistance < 0) planeDistance = 0;
-
-    PVector planeCenter = PVector.add(rocketPos, PVector.mult(toCenter, planeDistance));
-    
-    float angleToPlane = atan2(planeCenter.y - planetPos.y,planeCenter.x - planetPos.x);
-    float angleDeg = degrees(angleToPlane);
-
-    pushStyle();
-    fill(255, 0, 0);
-    noStroke();
-    
-    float halfWidth = (float) zoomLegeme.radius/1200;
-    float thickness = (float) zoomLegeme.radius/2000;
-    
-    PVector u = new PVector(cos(angleToPlane + HALF_PI), sin(angleToPlane + HALF_PI));
-    PVector v = new PVector(cos(angleToPlane),sin(angleToPlane));
-    
-    float[][] local = {{-halfWidth,0},{halfWidth,0},{halfWidth,-thickness},{-halfWidth,-thickness}};
-    
-    float[] sx = new float[4], sy = new float[4];
-    for (int i = 0; i < 4; i++) {
-      float lx = local[i][0];
-      float ly = local[i][1];
-
-      float wx = planeCenter.x + u.x * lx + v.x * ly;
-      float wy = planeCenter.y + u.y * lx + v.y * ly;
-
-      sx[i] = wx - (float)camX;
-      sy[i] = wy - (float)camY;
-    }
-    
-    float dotSize = 10 / zoom;
-    circle(planeCenter.x - (float)camX, planeCenter.y - (float)camY, dotSize);
-    
-    quad(sx[0], sy[0], sx[1], sy[1], sx[2], sy[2], sx[3], sy[3]);
-    popStyle();
-
-    println("Angle to plane  (rad) = " + nf(angleToPlane, 0, 3) + ", (deg) = "+ nf(angleDeg, 0, 1));
   }
 }
