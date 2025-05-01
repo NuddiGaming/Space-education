@@ -169,24 +169,31 @@ class PauseKnap extends Knap {
   }
   @Override
     void tegnUdenTransform() {
-    //Gemmer den nuværende translation scale og rotation
-    pushMatrix();
-    //Går tilbage til den standard af disse
-    resetMatrix();
-    strokeCap(SQUARE);
-    strokeWeight(sizeX/3);
-    tegner=true;
-    if (mouseOverUdenTransform()) {
+    if (knapSkærm==skærm) {
+      //Gemmer den nuværende translation scale og rotation
+      pushMatrix();
+      //Går tilbage til den standard af disse
+      resetMatrix();
+      rectMode(CORNER);
+      noStroke();
+      //Tegner selve knappen
+      translate(posX, posY);
+      tegner=true;
+      if (mouseOverUdenTransform()) {
+        fill(hoverFarve);
+      } else {
+        fill(knapFarve);
+      }
       tegner=false;
-      stroke(hoverFarve);
-    } else {
-      stroke(knapFarve);
+      noStroke();
+      beginShape();
+      vertex(height/15, 0);
+      vertex(height/15, height/17*2);
+      vertex(0, height/17);
+      endShape(CLOSE);
+      rect(height/15, height/17-height/44, height/15, height/22);
+      popMatrix();
     }
-    line(posX+sizeX/5, posY, posX+sizeX/5, posY+sizeY);
-    line(posX+sizeX/5*4, posY, posX+sizeX/5*4, posY+sizeY);
-
-    // Går tilbage til den tidligere translation scale og rotation
-    popMatrix();
   }
   @Override
     //Funktion til at bestemme om musen er over en knap uden translation scale og rotation
@@ -282,17 +289,45 @@ class Legeme {
   double radius;
   double masse;
   color farve;
-  Legeme(String navn, double x, double y, double radius, double masse, color farve) {
+  String navn;
+  Textfield masseFelt, radiusFelt, navnFelt;
+  Legeme(double x, double y, double radius, double masse, color farve, String navn) {
     this.x = x/scale;
     this.y = y/scale;
     this.radius = radius/scale;
     this.masse = masse/Math.pow(scale, 2);
     this.farve = farve;
-    this.navn = navn;
+    this.navn=navn;
+
+    masseFelt= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, Double.toString(masse), 10, editorSkærm, false);
+
+    radiusFelt= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, Double.toString(radius), 10, editorSkærm, false);
+
+    navnFelt= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, navn, 10, editorSkærm, false);
     legemer.add(this);
   }
   void tegn() {
     fill(farve);
     circle((float)(x-camX), (float)(y-camY), (float)radius*2);
+  }
+
+  boolean mouseOver() {
+    // Omregner musens koordinater til nogen der passer til translationen af disse
+    double mx = mouseX - width / 2;
+    double my = mouseY - height / 2;
+    double cosR = cos(-camRot);
+    double sinR = sin(-camRot);
+    double rotx = mx * cosR - my * sinR;
+    double roty = mx * sinR + my * cosR;
+    double globalX = rotx / zoom + camX;
+    double globalY = roty / zoom + camY;
+
+    // beregner global afstand mellem musen og legemets center
+    double dx = x - globalX;
+    double dy = y - globalY;
+    double afstand = Math.sqrt(dx * dx + dy * dy);
+
+    // hvis afstand er mindre end radius true
+    return afstand <= radius;
   }
 }

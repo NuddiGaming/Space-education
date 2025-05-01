@@ -371,4 +371,7 @@ class Raket {
     arc((float)massemidtpunkt.rotate(rotationspunkt, rot).x, (float)massemidtpunkt.rotate(rotationspunkt, rot).y, (float)bredde/5, (float)bredde/5, PI, 1.5*PI);
     popMatrix();
   }
+  boolean mouseOver(){
+    return true;
+  }
 }

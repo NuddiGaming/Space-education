@@ -1,14 +1,27 @@
-ArrayList<Textfield> textfields = new ArrayList<Textfield>();
-Textfield activeField = null; // Holder styr på hvilket felt der er aktivt
+void setupTextfields() {
+  // Create text fields for rocket properties
+  motorKraftFelt = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
+    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(raket.motorKraft), 5, editorSkærm, false);
+  
+  raketMasseFelt = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
+    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(raket.masse), 5, editorSkærm, false);
+  
+  // Create text fields for universe properties
+  scaleFelt = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
+    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(scale), 5, editorSkærm, false);
+  
+  gKonstantFelt = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
+    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(g), 5, editorSkærm, false);
+}
 
 class Textfield {
   float posX, posY, sizeX, sizeY, rundhed;
   color tekstFarve, activeFarve, outlineFarve, baggrundsFarve;
   int tekstSize, textfieldSkærm;
-  String startTekst, tekst;
+  String tekst;
   boolean active;
 
-  Textfield(float posX, float posY, float sizeX, float sizeY, color tekstFarve, color activeFarve, color outlineFarve, color baggrundsFarve, int tekstSize, String startTekst, String tekst, float rundhed, int textfieldSkærm, boolean active) {
+  Textfield(float posX, float posY, float sizeX, float sizeY, color tekstFarve, color activeFarve, color outlineFarve, color baggrundsFarve, int tekstSize, String tekst, float rundhed, int textfieldSkærm, boolean active) {
     this.posX = posX;
     this.posY = posY;
     this.sizeX = sizeX;
@@ -18,7 +31,6 @@ class Textfield {
     this.outlineFarve = outlineFarve;
     this.baggrundsFarve = baggrundsFarve;
     this.tekstSize = tekstSize;
-    this.startTekst = startTekst;
     this.tekst = tekst;
     this.rundhed = rundhed;
     this.textfieldSkærm = textfieldSkærm;
@@ -42,15 +54,8 @@ class Textfield {
       textSize(tekstSize);
       // Teksten som står i feltet
       String displayedText;
-      if (active) {
-        displayedText = tekst;
-      } else {
-        if (tekst.isEmpty()) {
-          displayedText = startTekst;
-        } else {
-          displayedText = tekst;
-        }
-      }
+      displayedText = tekst;
+
       text(displayedText, posX + sizeX / 2, (float)(posY-camY + sizeY / 2));
     }
   }
@@ -73,15 +78,7 @@ class Textfield {
       textSize(tekstSize);
       // Teksten som står i feltet
       String displayedText;
-      if (active) {
-        displayedText = tekst;
-      } else {
-        if (tekst.isEmpty()) {
-          displayedText = startTekst;
-        } else {
-          displayedText = tekst;
-        }
-      }
+      displayedText = tekst;
       text(displayedText, posX + sizeX / 2, posY + sizeY / 2);
     }
     popMatrix();
@@ -95,7 +92,7 @@ class Textfield {
   // Activate funktion
   void activate() {
     active = true;
-    activeField = this;
+    activeFelt = this;
   }
 
   // Deactivate funktion

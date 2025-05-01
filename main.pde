@@ -22,7 +22,32 @@ int gridSize = 5000;
 int hovedMenu=0;
 int simulationKører=1;
 int simulationPauset=2;
+int editorSkærm=3;
 int skærm=hovedMenu;
+
+Legeme draggingLegeme = null;
+double dragOffsetX = 0;
+double dragOffsetY = 0;
+
+
+Legeme VisesIMenu;
+int menuX;
+int menuY;
+boolean visMenu;
+
+boolean visRaketMenu;
+boolean visUniversMenu;
+
+// Text felter til raket editor
+Textfield motorKraftFelt;
+Textfield raketMasseFelt;
+
+// Text felter til univers editor
+Textfield scaleFelt;
+Textfield gKonstantFelt;
+
+ArrayList<Textfield> textfields = new ArrayList<Textfield>();
+Textfield activeFelt = null; // Holder styr på hvilket felt der er aktivt
 
 float delta;
 float deltaTime;
@@ -53,6 +78,7 @@ void setup() {
   setupKnapper();
   loadScenario("Jorden og månen");
   //textfields.add(new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, "Indtast navn", "", 10, 0, false));
+  setupTextfields();
 }
 
 void draw() {
@@ -62,14 +88,25 @@ void draw() {
     deltaTime = millis();
     //gør så selve simulation kun kører når den skal
     if (skærm == simulationKører) {
+
       fysik();
     }
     input();
   } else if (skærm == hovedMenu) {
     //Tegner grafikken i baggrunden
     simulationGrafik();
+    delta = (millis()-deltaTime)/1000*timestep;
+    deltaTime = millis();
     //laver hovedmenuen
     hovedMenu();
+  } else if (skærm==editorSkærm) {
+    input();
+    //Tegner grafikken i baggrunden
+    simulationGrafik();
+    delta = (millis()-deltaTime)/1000*timestep;
+    deltaTime = millis();
+    //laver hovedmenuen
+    editorSkærm();
   }
   // Tegner knapperne baseret på absolutte koordinater
   for (Knap k : knapper) {
@@ -79,9 +116,20 @@ void draw() {
     if (k.knapSkærm==simulationKører &&(skærm==simulationKører || skærm==simulationPauset)) {
       k.tegnUdenTransform();
     }
+    if (k.knapSkærm==skærm && k.knapSkærm==editorSkærm) {
+      k.tegnUdenTransform();
+    }
   }
-  for (Textfield field : textfields) {
-    field.tegnPåSkærm();
+  
+  // Viser hvilket legeme man trækker
+  if (draggingLegeme != null) {
+    pushMatrix();
+    resetMatrix();
+    fill(255, 255, 0, 100);
+    textAlign(CENTER);
+    textSize(16);
+    text("Trækker " + draggingLegeme.navn, width/2, height - 20);
+    popMatrix();
   }
 
   // Gør så man ikke kan zoom ud og se at planeten ikke bliver tegnet.

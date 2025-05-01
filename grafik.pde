@@ -10,7 +10,6 @@ void simulationGrafik() {
   translate(width/2, height/2);
   scale(zoom);
   rotate(camRot);
-  //tegnGrid();
   raket.tegnRaket();
   if(zoomConstrain == false){
     for(Legeme legeme : legemer){
@@ -54,33 +53,45 @@ void tegnGrid() {
 }
 
 void hovedMenu() {
-  //Gemmer den nuværende translation scale og rotation
-  pushMatrix(); 
-  //Går tilbage til den standard af disse
-  resetMatrix();
-  
+
   //Gør baggrunden mørkere
   fill(0, 150);
-  rect(0, 0, width, height); 
-  
-  // Går tilbage til den tidligere translation scale og rotation
-  popMatrix();
+  rect(0, 0, width, height);
+  fill(255);
+  textSize(100);
+  textAlign(CENTER);
+  text("space simulator", width/2, height/7);
+
 }
 
+//opretter knapperne
 Knap hovedMenuStartKnap;
 Knap hovedMenuEditorKnap;
-PauseKnap SimulationsHovedMenuKnap;
+PauseKnap simulationsHovedMenuKnap;
+PauseKnap editorTilbageKnap;
+Knap editorRocketKnap;
+Knap editorUniverseKnap;
 
 void setupKnapper() {
-  hovedMenuStartKnap = new Knap(width/3,height/2, width/16, height/16, color(0,0,0),"Start",
-    10, color(0,255,0),color(255,0,0),color(0,0,255),0,hovedMenu);
+  //kommer værdierne på knapperne
+  hovedMenuStartKnap = new Knap(width/3-width/16, height/2-height/5, width/8, height/8, color(0, 0, 0), "Start",
+    40, color(0, 255, 0), color(255, 0, 0), color(0, 0, 255), 0, hovedMenu);
   knapper.add(hovedMenuStartKnap);
-   hovedMenuEditorKnap = new Knap(width/3*2,height/2, width/16, height/16, color(0,0,0),"Editor",
-    10, color(0,255,0),color(255,0,0),color(0,0,255),0,hovedMenu);
+  hovedMenuEditorKnap = new Knap(width/3*2-width/16, height/2-height/5, width/8, height/8, color(0, 0, 0), "Editor",
+    40, color(0, 255, 0), color(255, 0, 0), color(0, 0, 255), 0, hovedMenu);
   knapper.add(hovedMenuEditorKnap);
-  SimulationsHovedMenuKnap = new PauseKnap(height/50,height/50, width/16, width/16, color(0,0,0),"",
-    10, color(255),color(0,255,0),color(0,0,255),0,simulationKører);
-  knapper.add(SimulationsHovedMenuKnap);
+  simulationsHovedMenuKnap = new PauseKnap(height/50, height/50, height/15*2, width/16, color(0, 0, 0), "",
+    10, color(255), color(0, 255, 0), color(0, 0, 255), 0, simulationKører);
+  knapper.add(simulationsHovedMenuKnap);
+  editorTilbageKnap = new PauseKnap(height/50, height/50, height/15*2, width/16, color(0, 0, 0), "",
+    10, color(255), color(0, 255, 0), color(0, 0, 255), 0, editorSkærm);
+  knapper.add(editorTilbageKnap);
+  editorRocketKnap = new Knap(width - width/8 - width/50, height/50, width/8, height/16, color(0, 0, 0), "Rocket",
+    20, color(0, 150, 255), color(100, 200, 255), color(0, 100, 200), 10, editorSkærm);
+  knapper.add(editorRocketKnap);
+  editorUniverseKnap = new Knap(width - width/8 - width/50, height/50 + height/14, width/8, height/16, color(0, 0, 0), "Universe",
+    20, color(0, 150, 255), color(100, 200, 255), color(0, 100, 200), 10, editorSkærm);
+  knapper.add(editorUniverseKnap);
 }
 
 
@@ -108,10 +119,8 @@ void setupStjerner(int antal) {
   }
 }
 
-void tegnHud(){
-  //Gemmer den nuværende translation scale og rotation
-  pushMatrix(); 
-  //Går tilbage til den standard af disse
+void tegnHud() {
+  pushMatrix();
   resetMatrix();
   tegnHudDel("Hastighed","m/s",(float)(Math.sqrt(Math.pow(raket.vX,2)+Math.pow(raket.vY,2))),width/4*3,height-height/20*4);
   tegnHudDel("MotorKraft","%",(float)(raket.brændMængde*100),width/4*3,height-height/20*3);
@@ -120,27 +129,20 @@ void tegnHud(){
   } else{
     tegnHudDel("Resulterende kraft","N",9.82,width/4*3,height-height/20*2);
   }
-   tegnHudDel("Tids scaling","s/s",timestep,width/4*3,height-height/20*1);
-  
+  tegnHudDel("Tids scaling", "s/s", timestep, width/4*3, height-height/20*1);
   popMatrix();
 }
 
-void tegnHudDel(String Titel,String enhed, float værdi,float posX,float posY){
+void tegnHudDel(String Titel, String enhed, float værdi, float posX, float posY) {
   rectMode(CORNER);
   fill(60);
   stroke(30);
   strokeWeight(3);
-  rect(posX,posY,width/4,height/20,5,5,0,0);
-  textAlign(CORNER,CENTER);
+  rect(posX, posY, width/4, height/20, 5, 5, 0, 0);
+  textAlign(CORNER, CENTER);
   textSize(30);
   fill(0);
-  text(Titel+": "+int(værdi)+enhed,posX+10,posY+height/40);
-  /*
-  noStroke();
-  fill(110);
-  rect(posX+2,posY+3,width/4-4,height/60,1,0,0,0);
-  */
-  
+  text(Titel+": "+int(værdi)+enhed, posX+10, posY+height/40);
 }
 
 // Tegner et fladt udsnit af planetens overflade lige under raketten

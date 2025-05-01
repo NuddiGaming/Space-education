@@ -56,14 +56,14 @@ void input() {
 
 //input...
 void keyPressed() {
-  if (activeField != null) {
+  if (activeFelt != null) {
     // Tjekker om det er slet man klikker på
-    if (key == BACKSPACE && activeField.tekst.length() > 0) {
-      activeField.tekst = activeField.tekst.substring(0, activeField.tekst.length() - 1);
+    if (key == BACKSPACE && activeFelt.tekst.length() > 0) {
+      activeFelt.tekst = activeFelt.tekst.substring(0, activeFelt.tekst.length() - 1);
     }
     // Normale tryk. Skal være normale keys, ikke backspace og ikke enter.
     else if (key != CODED && key != BACKSPACE && key != ENTER) {
-      activeField.tekst += key;
+      activeFelt.tekst += key;
     }
   } else {
     if (key == 'p') {
@@ -163,21 +163,39 @@ void mousePressed() {
   if (hovedMenuStartKnap.mouseOverUdenTransform()) {
     skærm=simulationKører;
   }
-  if (SimulationsHovedMenuKnap.mouseOverUdenTransform() && ((skærm==simulationKører)||(skærm==simulationPauset))) {
+  if (simulationsHovedMenuKnap.mouseOverUdenTransform()) {
     skærm=hovedMenu;
   }
-  for (Textfield field : textfields) {
-    if (field.mouseOver()) {
-      if (activeField != null) {
-        activeField.deactivate(); // Deactivater alle felter hvis 'activeField' ikke er sat
-      }
-      field.activate(); // Activater det field man klikker på
-      return;
-    }
+  if (hovedMenuEditorKnap.mouseOverUdenTransform()) {
+    skærm=editorSkærm;
   }
-  if (activeField != null) {
-    activeField.deactivate();
-    activeField = null;
+  if (editorRocketKnap.mouseOverUdenTransform()) {
+    startRaketMenu();
+  }
+  if (editorUniverseKnap.mouseOverUdenTransform()) {
+    startUniversMenu();
+  }
+  if (skærm==editorSkærm) {
+    inputMenuer();
+  }
+  if (visMenu) {
+    for (Textfield field : textfields) {
+      if (field == VisesIMenu.navnFelt ||
+        field == VisesIMenu.masseFelt ||
+        field == VisesIMenu.radiusFelt) {
+        if (field.mouseOver()) {
+          if (activeFelt != null) {
+            activeFelt.deactivate();
+          }
+          field.activate();
+          return;
+        }
+      }
+    }
+    if (activeFelt != null) {
+      activeFelt.deactivate();
+      activeFelt = null;
+    }
   }
 }
 
@@ -202,4 +220,27 @@ void mouseWheel(MouseEvent event) {
       camSpeed /= pow(1.1, e);
     }
   }
+}
+
+void mouseDragged() {
+  if (draggingLegeme != null && skærm == editorSkærm) {
+    // Convert mouse coordinates to world coordinates
+    double mx = mouseX - width / 2;
+    double my = mouseY - height / 2;
+    double cosR = cos(-camRot);
+    double sinR = sin(-camRot);
+    double rotx = mx * cosR - my * sinR;
+    double roty = mx * sinR + my * cosR;
+    double globalX = rotx / zoom + camX;
+    double globalY = roty / zoom + camY;
+    
+    // Update the legeme position with the offset
+    draggingLegeme.x = globalX + dragOffsetX;
+    draggingLegeme.y = globalY + dragOffsetY;
+  }
+}
+
+void mouseReleased() {
+  // Stop dragging
+  draggingLegeme = null;
 }
