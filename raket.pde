@@ -124,6 +124,11 @@ class Raket {
   //fysikken til raketen
   void fysik() {
     //rotation input
+    if(k == true && j == false && l == false){
+      raket.rotHast = lerp((float)tempRaketRot, 0, 0.1);
+      if (raket.rotHast >= 0.1 && raket.rotHast <= 0) {raket.rotHast = 0;}
+      else if (raket.rotHast >= 0 && raket.rotHast <=-0.1) {raket.rotHast = 0;}
+    }
     if (j) {
       raket.rotHast -= 0.05;
     } else if (l) {
