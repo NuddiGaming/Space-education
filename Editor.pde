@@ -1,8 +1,4 @@
 void editorSkærm() {
-  //Gemmer den nuværende translation scale og rotation
-  pushMatrix();
-  //Går tilbage til den standard af disse
-  resetMatrix();
 
   fill(255);
   textSize(100);
@@ -14,34 +10,38 @@ void editorSkærm() {
   textAlign(CENTER);
   text("Click on a planet in the view to edit its properties", width/2, height/7 + 60);
 
-  // Draw rocket menu if visible
-  if (visRocketMenu) {
-    tegnRocketMenu();
+  fill(255, 220, 150);
+  textSize(16);
+  text("Hold SHIFT and click on a planet to drag it", width/2, height/7 + 90);
+
+  // tegn raket menu hvis nødvændigt
+  if (visRaketMenu) {
+    tegnRaketMenu();
   }
 
-  // Draw universe menu if visible
-  if (visUniverseMenu) {
-    tegnUniverseMenu();
+  // tegn univers menu hvis nødvændigt
+  if (visUniversMenu) {
+    tegnUniversMenu();
   }
 
-  // Draw text fields
+  // tegn tekstfelter
   if (visMenu && VisesIMenu != null) {
-    // Only draw text fields for the currently visible menu
-    VisesIMenu.navnField.tegnPåSkærm();
-    VisesIMenu.masseField.tegnPåSkærm();
-    VisesIMenu.radiusField.tegnPåSkærm();
+    // Kun tegn tekstfelter for den menu som skal vises lige nu
+    VisesIMenu.navnFelt.tegnPåSkærm();
+    VisesIMenu.masseFelt.tegnPåSkærm();
+    VisesIMenu.radiusFelt.tegnPåSkærm();
   }
 
-  // Draw rocket text fields if visible
-  if (visRocketMenu) {
-    motorKraftField.tegnPåSkærm();
-    raketMasseField.tegnPåSkærm();
+  // Tegn raket menu textfelter hvis nødvændigt
+  if (visRaketMenu) {
+    motorKraftFelt.tegnPåSkærm();
+    raketMasseFelt.tegnPåSkærm();
   }
 
-  // Draw universe text fields if visible
-  if (visUniverseMenu) {
-    scaleField.tegnPåSkærm();
-    gravityField.tegnPåSkærm();
+  // Tegn univers menu tekstfelter hvis nødvændigt
+  if (visUniversMenu) {
+    scaleFelt.tegnPåSkærm();
+    gKonstantFelt.tegnPåSkærm();
   }
 
   // Tegner menuen  når man skal kunne se den
@@ -51,13 +51,10 @@ void editorSkærm() {
   // tegner tekstfelter
   if (visMenu && VisesIMenu != null) {
     // Tegner kun tekstfelterne som skal kunne ses lige nu
-    VisesIMenu.navnField.tegnPåSkærm();
-    VisesIMenu.masseField.tegnPåSkærm();
-    VisesIMenu.radiusField.tegnPåSkærm();
+    VisesIMenu.navnFelt.tegnPåSkærm();
+    VisesIMenu.masseFelt.tegnPåSkærm();
+    VisesIMenu.radiusFelt.tegnPåSkærm();
   }
-
-  // Går tilbage til den tidligere translation scale og rotation
-  popMatrix();
 }
 
 
@@ -66,30 +63,26 @@ void startMenu(Legeme legeme) {
   menuX = mouseX;
   menuY = mouseY;
   visMenu = true;
-  visRocketMenu = false;
-  visUniverseMenu = false;
+  visRaketMenu = false;
+  visUniversMenu = false;
   VisesIMenu = legeme;
 
   // Ændrer positionen af tekstfelterne så de er placeret rigtigt
-  legeme.navnField.posX = menuX + width/100;
-  legeme.navnField.posY = menuY + height/100+height/26;
+  legeme.navnFelt.posX = menuX + width/100;
+  legeme.navnFelt.posY = menuY + height/100+height/26;
 
-  legeme.masseField.posX = menuX + width/100;
-  legeme.masseField.posY = menuY + 4*height/100 + legeme.navnField.sizeY+height/26;
+  legeme.masseFelt.posX = menuX + width/100;
+  legeme.masseFelt.posY = menuY + 4*height/100 + legeme.navnFelt.sizeY+height/26;
 
-  legeme.radiusField.posX = menuX + width/100;
-  legeme.radiusField.posY = menuY + 7*height/100 + legeme.navnField.sizeY + legeme.masseField.sizeY+ height/26;
+  legeme.radiusFelt.posX = menuX + width/100;
+  legeme.radiusFelt.posY = menuY + 7*height/100 + legeme.navnFelt.sizeY + legeme.masseFelt.sizeY+ height/26;
 }
 
 void tegnMenu(Legeme legeme) {
-  // gemmer nuværende transformation
-  pushMatrix();
-  // går tilbage til en standard transformation
-  resetMatrix();
 
   // Beregner størrelsen af menuen
-  float menuWidth = legeme.navnField.sizeX + width/50;
-  float menuHeight = legeme.radiusField.posY + legeme.radiusField.sizeY + height/10 - menuY;
+  float menuWidth = legeme.navnFelt.sizeX + width/50;
+  float menuHeight = legeme.radiusFelt.posY + legeme.radiusFelt.sizeY + height/10 - menuY;
 
   // forbereder til tegning af baggrunden
   fill(30, 30, 30, 220);
@@ -105,9 +98,9 @@ void tegnMenu(Legeme legeme) {
   textSize(16);
 
   // titeler
-  text("Navn:", menuX + width/100, legeme.navnField.posY - height/100);
-  text("Masse:", menuX + width/100, legeme.masseField.posY - height/100);
-  text("Radius:", menuX + width/100, legeme.radiusField.posY - height/100);
+  text("Navn:", menuX + width/100, legeme.navnFelt.posY - height/100);
+  text("Masse:", menuX + width/100, legeme.masseFelt.posY - height/100);
+  text("Radius:", menuX + width/100, legeme.radiusFelt.posY - height/100);
 
   // Tegner tilføj knappen
   fill(50, 200, 50);
@@ -115,12 +108,9 @@ void tegnMenu(Legeme legeme) {
   fill(255);
   textAlign(CENTER, CENTER);
   text("Tilføj", menuX + menuWidth/2, menuY + menuHeight - height/20 + height/50);
-
-  // Går tilbage til den gamle transformation
-  popMatrix();
 }
 
-void tegnRocketMenu() {
+void tegnRaketMenu() {
   // Beregner menu position
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
@@ -158,11 +148,11 @@ void tegnRocketMenu() {
   fill(255);
   textAlign(LEFT, CENTER);
   textSize(16);
-  text("Motor Kraft:", menuX + width/50, motorKraftField.posY - height/100);
-  text("Masse:", menuX + width/50, raketMasseField.posY - height/100);
+  text("Motor Kraft:", menuX + width/50, motorKraftFelt.posY - height/100);
+  text("Masse:", menuX + width/50, raketMasseFelt.posY - height/100);
 }
 
-void tegnUniverseMenu() {
+void tegnUniversMenu() {
   // Beregner menu position
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
@@ -200,56 +190,56 @@ void tegnUniverseMenu() {
   fill(255);
   textAlign(LEFT, CENTER);
   textSize(16);
-  text("Scale:", menuX + width/50, scaleField.posY - height/100);
-  text("Gravitations konstant:", menuX + width/50, gravityField.posY - height/100);
+  text("Scale:", menuX + width/50, scaleFelt.posY - height/100);
+  text("Gravitations konstant:", menuX + width/50, gKonstantFelt.posY - height/100);
 }
 
-void startRocketMenu() {
+void startRaketMenu() {
   visMenu = false;
-  visRocketMenu = true;
-  visUniverseMenu = false;
+  visRaketMenu = true;
+  visUniversMenu = false;
 
   // definer textfelt positioner
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
 
-  motorKraftField.posX = menuX + width/50;
-  motorKraftField.posY = menuY + height/8;
+  motorKraftFelt.posX = menuX + width/50;
+  motorKraftFelt.posY = menuY + height/8;
 
-  raketMasseField.posX = menuX + width/50;
-  raketMasseField.posY = menuY + height/8 + height/16 + height/50;
+  raketMasseFelt.posX = menuX + width/50;
+  raketMasseFelt.posY = menuY + height/8 + height/16 + height/50;
 }
 
-void startUniverseMenu() {
+void startUniversMenu() {
   visMenu = false;
-  visRocketMenu = false;
-  visUniverseMenu = true;
+  visRaketMenu = false;
+  visUniversMenu = true;
 
   // definer textfelt positioner
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
 
-  scaleField.posX = menuX + width/50;
-  scaleField.posY = menuY + height/8;
+  scaleFelt.posX = menuX + width/50;
+  scaleFelt.posY = menuY + height/8;
 
-  gravityField.posX = menuX + width/50;
-  gravityField.posY = menuY + height/8 + height/16 + height/50;
+  gKonstantFelt.posX = menuX + width/50;
+  gKonstantFelt.posY = menuY + height/8 + height/16 + height/50;
 }
 
 void handleMenuInteractions() {
   if (visMenu) {
     // Beregner menu størrelse baseret på tekstfelter
-    float menuWidth = VisesIMenu.navnField.sizeX + width/50;
-    float menuHeight = VisesIMenu.radiusField.posY + VisesIMenu.radiusField.sizeY + height/10 - menuY;
+    float menuWidth = VisesIMenu.navnFelt.sizeX + width/50;
+    float menuHeight = VisesIMenu.radiusFelt.posY + VisesIMenu.radiusFelt.sizeY + height/10 - menuY;
 
     // Check om tilføj knappen er blevet trykket på
     if (mouseX >= menuX + menuWidth/2 - height/15 && mouseX <= menuX + menuWidth/2 - height/15 + height/7.5 &&
       mouseY >= menuY + menuHeight - height/20 && mouseY <= menuY + menuHeight - height/20 + height/25) {
       // kommer ændringerne på legemet
       try {
-        VisesIMenu.navn = VisesIMenu.navnField.tekst;
-        VisesIMenu.masse = Double.parseDouble(VisesIMenu.masseField.tekst)/Math.pow(scale, 2);
-        VisesIMenu.radius = Double.parseDouble(VisesIMenu.radiusField.tekst)/scale;
+        VisesIMenu.navn = VisesIMenu.navnFelt.tekst;
+        VisesIMenu.masse = Double.parseDouble(VisesIMenu.masseFelt.tekst)/Math.pow(scale, 2);
+        VisesIMenu.radius = Double.parseDouble(VisesIMenu.radiusFelt.tekst)/scale;
         hideMenu();
       }
       catch (NumberFormatException e) {
@@ -264,16 +254,16 @@ void handleMenuInteractions() {
 void checkClickOutsideMenu() {
   if (visMenu && VisesIMenu != null) {
     // Beregn kanten af menuen
-    float menuWidth = VisesIMenu.navnField.sizeX + width/50;
-    float menuHeight = VisesIMenu.radiusField.posY + VisesIMenu.radiusField.sizeY + height/100 - menuY;
+    float menuWidth = VisesIMenu.navnFelt.sizeX + width/50;
+    float menuHeight = VisesIMenu.radiusFelt.posY + VisesIMenu.radiusFelt.sizeY + height/100 - menuY;
 
     // Check om click er udenfor
     if (mouseX < menuX || mouseX > menuX + menuWidth ||
       mouseY < menuY || mouseY > menuY + menuHeight) {
       // Check om vi klikker uden for en menu
-      if (!(VisesIMenu.navnField.mouseOver() ||
-        VisesIMenu.masseField.mouseOver() ||
-        VisesIMenu.radiusField.mouseOver())) {
+      if (!(VisesIMenu.navnFelt.mouseOver() ||
+        VisesIMenu.masseFelt.mouseOver() ||
+        VisesIMenu.radiusFelt.mouseOver())) {
         hideMenu();
       }
     }
@@ -284,33 +274,33 @@ void hideMenu() {
   visMenu = false;
   if (VisesIMenu != null) {
     // Gør så tekstfelterne ikke er aktive længere
-    VisesIMenu.navnField.deactivate();
-    VisesIMenu.masseField.deactivate();
-    VisesIMenu.radiusField.deactivate();
+    VisesIMenu.navnFelt.deactivate();
+    VisesIMenu.masseFelt.deactivate();
+    VisesIMenu.radiusFelt.deactivate();
   }
-  if (activeField != null) {
-    activeField.deactivate();
-    activeField = null;
+  if (activeFelt != null) {
+    activeFelt.deactivate();
+    activeFelt = null;
   }
   VisesIMenu = null;
 }
 
 void inputMenuer() {
   // Raket menu
-  if (visRocketMenu) {
+  if (visRaketMenu) {
     // De relevante textfelter
-    if (motorKraftField.mouseOver()) {
-      if (activeField != null) {
-        activeField.deactivate();
+    if (motorKraftFelt.mouseOver()) {
+      if (activeFelt != null) {
+        activeFelt.deactivate();
       }
-      motorKraftField.activate();
+      motorKraftFelt.activate();
       return;
     }
-    if (raketMasseField.mouseOver()) {
-      if (activeField != null) {
-        activeField.deactivate();
+    if (raketMasseFelt.mouseOver()) {
+      if (activeFelt != null) {
+        activeFelt.deactivate();
       }
-      raketMasseField.activate();
+      raketMasseFelt.activate();
       return;
     }
 
@@ -325,10 +315,10 @@ void inputMenuer() {
       mouseX <= menuX + menuWidth - height/25 + height/30 &&
       mouseY >= menuY + height/100 &&
       mouseY <= menuY + height/100 + height/30) {
-      visRocketMenu = false;
-      if (activeField != null) {
-        activeField.deactivate();
-        activeField = null;
+      visRaketMenu = false;
+      if (activeFelt != null) {
+        activeFelt.deactivate();
+        activeFelt = null;
       }
       return;
     }
@@ -339,12 +329,12 @@ void inputMenuer() {
       mouseY >= menuY + menuHeight - height/20 &&
       mouseY <= menuY + menuHeight - height/20 + height/25) {
       try {
-        raket.motorKraft = Double.parseDouble(motorKraftField.tekst);
-        raket.masse = Double.parseDouble(raketMasseField.tekst);
-        visRocketMenu = false;
-        if (activeField != null) {
-          activeField.deactivate();
-          activeField = null;
+        raket.motorKraft = Double.parseDouble(motorKraftFelt.tekst);
+        raket.masse = Double.parseDouble(raketMasseFelt.tekst);
+        visRaketMenu = false;
+        if (activeFelt != null) {
+          activeFelt.deactivate();
+          activeFelt = null;
         }
       }
       catch (NumberFormatException e) {
@@ -355,20 +345,20 @@ void inputMenuer() {
   }
 
   // universet menu
-  if (visUniverseMenu) {
+  if (visUniversMenu) {
     // Check for tekstfelt kliks
-    if (scaleField.mouseOver()) {
-      if (activeField != null) {
-        activeField.deactivate();
+    if (scaleFelt.mouseOver()) {
+      if (activeFelt != null) {
+        activeFelt.deactivate();
       }
-      scaleField.activate();
+      scaleFelt.activate();
       return;
     }
-    if (gravityField.mouseOver()) {
-      if (activeField != null) {
-        activeField.deactivate();
+    if (gKonstantFelt.mouseOver()) {
+      if (activeFelt != null) {
+        activeFelt.deactivate();
       }
-      gravityField.activate();
+      gKonstantFelt.activate();
       return;
     }
 
@@ -383,10 +373,10 @@ void inputMenuer() {
       mouseX <= menuX + menuWidth - height/25 + height/30 &&
       mouseY >= menuY + height/100 &&
       mouseY <= menuY + height/100 + height/30) {
-      visUniverseMenu = false;
-      if (activeField != null) {
-        activeField.deactivate();
-        activeField = null;
+      visUniversMenu = false;
+      if (activeFelt != null) {
+        activeFelt.deactivate();
+        activeFelt = null;
       }
       return;
     }
@@ -398,17 +388,21 @@ void inputMenuer() {
       mouseY <= menuY + menuHeight - height/20 + height/25) {
       try {
         //ændrer scale og ændre den reale masse og radius så det passer
-        double scaleChange = scale/Double.parseDouble(scaleField.tekst);
-        scale = Double.parseDouble(scaleField.tekst);
+        double scaleChange = scale/Double.parseDouble(scaleFelt.tekst);
+        scale = Double.parseDouble(scaleFelt.tekst);
         for (Legeme legeme : legemer) {
           legeme.radius=legeme.radius*scaleChange;
           legeme.masse=legeme.masse*Math.pow(scaleChange, 2);
+          legeme.x=legeme.x*scaleChange;
+          legeme.y=legeme.y*scaleChange;
         }
-        g = Float.parseFloat(gravityField.tekst);
-        visUniverseMenu = false;
-        if (activeField != null) {
-          activeField.deactivate();
-          activeField = null;
+        raket.x=raket.x*scaleChange;
+        raket.y=raket.y*scaleChange;
+        g = Float.parseFloat(gKonstantFelt.tekst);
+        visUniversMenu = false;
+        if (activeFelt != null) {
+          activeFelt.deactivate();
+          activeFelt = null;
         }
       }
       catch (NumberFormatException e) {
@@ -419,10 +413,44 @@ void inputMenuer() {
   }
 
   // If we clicked outside any menu, deactivate text fields
-  if (visRocketMenu || visUniverseMenu) {
-    if (activeField != null) {
-      activeField.deactivate();
-      activeField = null;
+  if (visRaketMenu || visUniversMenu) {
+    if (activeFelt != null) {
+      activeFelt.deactivate();
+      activeFelt = null;
+    }
+  }
+  // Bearbejder interaktioner hvis en menu skal vises
+  if (visMenu) {
+    handleMenuInteractions();
+    checkClickOutsideMenu();
+  }
+  // Check om der er blevet trykket på en planet
+  if (!visMenu) {
+    for (Legeme legeme : legemer) {
+      if (legeme.mouseOver()) {
+        // Hvis der trykkes på shift trækkes legemet
+        if (keyPressed && keyCode == SHIFT) {
+          draggingLegeme = legeme;
+
+          // Beregner musens position i globale koordinater
+          double mx = mouseX - width / 2;
+          double my = mouseY - height / 2;
+          double cosR = cos(-camRot);
+          double sinR = sin(-camRot);
+          double rotx = mx * cosR - my * sinR;
+          double roty = mx * sinR + my * cosR;
+          double globalX = rotx / zoom + camX;
+          double globalY = roty / zoom + camY;
+
+          // Beregner offset så det ikke ser mærkeligt ud når man trækker
+          dragOffsetX = legeme.x - globalX;
+          dragOffsetY = legeme.y - globalY;
+        } else {
+          // åben menuen hvis ikke shift er trykket
+          startMenu(legeme);
+        }
+        return;
+      }
     }
   }
 }

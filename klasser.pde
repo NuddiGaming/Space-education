@@ -321,7 +321,7 @@ class Legeme {
   double masse;
   color farve;
   String navn;
-  Textfield masseField, radiusField, navnField;
+  Textfield masseFelt, radiusFelt, navnFelt;
   Legeme(double x, double y, double radius, double masse, color farve, String navn) {
     this.x = x/scale;
     this.y = y/scale;
@@ -330,11 +330,11 @@ class Legeme {
     this.farve = farve;
     this.navn=navn;
 
-    masseField= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, Double.toString(masse), 10, editorSkærm, false);
+    masseFelt= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, Double.toString(masse), 10, editorSkærm, false);
 
-    radiusField= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, Double.toString(radius), 10, editorSkærm, false);
+    radiusFelt= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, Double.toString(radius), 10, editorSkærm, false);
 
-    navnField= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, navn, 10, editorSkærm, false);
+    navnFelt= new Textfield(width/2, height/2, 200, 30, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 15, navn, 10, editorSkærm, false);
     legemer.add(this);
   }
   void tegn() {

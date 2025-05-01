@@ -20,24 +20,29 @@ int simulationPauset=2;
 int editorSkærm=3;
 int skærm=hovedMenu;
 
+Legeme draggingLegeme = null;
+double dragOffsetX = 0;
+double dragOffsetY = 0;
+
+
 Legeme VisesIMenu;
 int menuX;
 int menuY;
 boolean visMenu;
 
-boolean visRocketMenu;
-boolean visUniverseMenu;
+boolean visRaketMenu;
+boolean visUniversMenu;
 
-// Text fields for rocket properties
-Textfield motorKraftField;
-Textfield raketMasseField;
+// Text felter til raket editor
+Textfield motorKraftFelt;
+Textfield raketMasseFelt;
 
-// Text fields for universe properties
-Textfield scaleField;
-Textfield gravityField;
+// Text felter til univers editor
+Textfield scaleFelt;
+Textfield gKonstantFelt;
 
 ArrayList<Textfield> textfields = new ArrayList<Textfield>();
-Textfield activeField = null; // Holder styr på hvilket felt der er aktivt
+Textfield activeFelt = null; // Holder styr på hvilket felt der er aktivt
 
 float delta;
 float deltaTime;
@@ -98,5 +103,16 @@ void draw() {
     if (k.knapSkærm==skærm && k.knapSkærm==editorSkærm) {
       k.tegnUdenTransform();
     }
+  }
+  
+  // Viser hvilket legeme man trækker
+  if (draggingLegeme != null) {
+    pushMatrix();
+    resetMatrix();
+    fill(255, 255, 0, 100);
+    textAlign(CENTER);
+    textSize(16);
+    text("Trækker " + draggingLegeme.navn, width/2, height - 20);
+    popMatrix();
   }
 }

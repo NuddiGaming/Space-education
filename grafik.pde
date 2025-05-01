@@ -13,13 +13,11 @@ void simulationGrafik() {
   jorden.tegn();
   måne.tegn();
   tegnHud();
+  //Går tilbage til den standard af disse
+  resetMatrix();
 }
 
 void hovedMenu() {
-  //Gemmer den nuværende translation scale og rotation
-  pushMatrix();
-  //Går tilbage til den standard af disse
-  resetMatrix();
 
   //Gør baggrunden mørkere
   fill(0, 150);
@@ -29,8 +27,6 @@ void hovedMenu() {
   textAlign(CENTER);
   text("space simulator", width/2, height/7);
 
-  // Går tilbage til den tidligere translation scale og rotation
-  popMatrix();
 }
 
 //opretter knapperne
@@ -89,9 +85,7 @@ void setupStjerner(int antal) {
 }
 
 void tegnHud() {
-  //Gemmer den nuværende translation scale og rotation
   pushMatrix();
-  //Går tilbage til den standard af disse
   resetMatrix();
   tegnHudDel("Hastighed", "m/s", (float)(Math.sqrt(Math.pow(raket.vX, 2)+Math.pow(raket.vY, 2))), width/4*3, height-height/20*4);
   tegnHudDel("MotorKraft", "%", int(brænder)*100, width/4*3, height-height/20*3);
@@ -101,7 +95,6 @@ void tegnHud() {
     tegnHudDel("Resulterende kraft", "N", 9.82, width/4*3, height-height/20*2);
   }
   tegnHudDel("Tids scaling", "s/s", timestep, width/4*3, height-height/20*1);
-
   popMatrix();
 }
 

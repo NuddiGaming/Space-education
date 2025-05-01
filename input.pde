@@ -47,14 +47,14 @@ void input() {
 
 //input...
 void keyPressed() {
-  if (activeField != null) {
+  if (activeFelt != null) {
     // Tjekker om det er slet man klikker på
-    if (key == BACKSPACE && activeField.tekst.length() > 0) {
-      activeField.tekst = activeField.tekst.substring(0, activeField.tekst.length() - 1);
+    if (key == BACKSPACE && activeFelt.tekst.length() > 0) {
+      activeFelt.tekst = activeFelt.tekst.substring(0, activeFelt.tekst.length() - 1);
     }
     // Normale tryk. Skal være normale keys, ikke backspace og ikke enter.
     else if (key != CODED && key != BACKSPACE && key != ENTER) {
-      activeField.tekst += key;
+      activeFelt.tekst += key;
     }
   } else {
     if (key == 'p') {
@@ -141,45 +141,31 @@ void mousePressed() {
     skærm=editorSkærm;
   }
   if (editorRocketKnap.mouseOverUdenTransform()) {
-    startRocketMenu();
+    startRaketMenu();
   }
   if (editorUniverseKnap.mouseOverUdenTransform()) {
-    startUniverseMenu();
+    startUniversMenu();
   }
   if (skærm==editorSkærm) {
     inputMenuer();
-    // Bearbejder interaktioner hvis en menu skal vises
-    if (visMenu) {
-      handleMenuInteractions();
-      checkClickOutsideMenu();
-    }
-    // Check om der er blevet trykket på en planet
-    if (!visMenu) {
-      for (Legeme legeme : legemer) {
-        if (legeme.mouseOver()) {
-          startMenu(legeme);
-          return;
-        }
-      }
-    }
   }
   if (visMenu) {
     for (Textfield field : textfields) {
-      if (field == VisesIMenu.navnField ||
-        field == VisesIMenu.masseField ||
-        field == VisesIMenu.radiusField) {
+      if (field == VisesIMenu.navnFelt ||
+        field == VisesIMenu.masseFelt ||
+        field == VisesIMenu.radiusFelt) {
         if (field.mouseOver()) {
-          if (activeField != null) {
-            activeField.deactivate();
+          if (activeFelt != null) {
+            activeFelt.deactivate();
           }
           field.activate();
           return;
         }
       }
     }
-    if (activeField != null) {
-      activeField.deactivate();
-      activeField = null;
+    if (activeFelt != null) {
+      activeFelt.deactivate();
+      activeFelt = null;
     }
   }
 }
@@ -191,4 +177,27 @@ void mouseWheel(MouseEvent event) {
     zoom *= pow(1.1, e);
     camSpeed /= pow(1.1, e);
   }
+}
+
+void mouseDragged() {
+  if (draggingLegeme != null && skærm == editorSkærm) {
+    // Convert mouse coordinates to world coordinates
+    double mx = mouseX - width / 2;
+    double my = mouseY - height / 2;
+    double cosR = cos(-camRot);
+    double sinR = sin(-camRot);
+    double rotx = mx * cosR - my * sinR;
+    double roty = mx * sinR + my * cosR;
+    double globalX = rotx / zoom + camX;
+    double globalY = roty / zoom + camY;
+    
+    // Update the legeme position with the offset
+    draggingLegeme.x = globalX + dragOffsetX;
+    draggingLegeme.y = globalY + dragOffsetY;
+  }
+}
+
+void mouseReleased() {
+  // Stop dragging
+  draggingLegeme = null;
 }
