@@ -46,7 +46,7 @@ JSONObject JSONFromLegeme(Legeme legeme) {
 }
 
 Legeme legemeFromJSON(JSONObject legemeJSON) {
-  Legeme legeme = new Legeme(legemeJSON.getString("navn"), legemeJSON.getDouble("x"), legemeJSON.getDouble("y"), legemeJSON.getDouble("radius"), legemeJSON.getDouble("masse"), color(legemeJSON.getJSONObject("farve").getInt("r"), legemeJSON.getJSONObject("farve").getInt("g"), legemeJSON.getJSONObject("farve").getInt("b")));
+  Legeme legeme = new Legeme(legemeJSON.getDouble("x"), legemeJSON.getDouble("y"), legemeJSON.getDouble("radius"), legemeJSON.getDouble("masse"), color(legemeJSON.getJSONObject("farve").getInt("r"), legemeJSON.getJSONObject("farve").getInt("g"), legemeJSON.getJSONObject("farve").getInt("b")),legemeJSON.getString("navn"));
   return legeme;
 }
 

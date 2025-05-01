@@ -283,7 +283,6 @@ class Linje {
 
 //Legeme class til planeter/måner/whatever der skal have tyngdekraft
 class Legeme {
-  String navn;
   double x;
   double y;
   double radius;
