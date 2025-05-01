@@ -11,18 +11,20 @@ void simulationGrafik() {
   scale(zoom);
   rotate(camRot);
   raket.tegnRaket();
-  if(zoomConstrain == false || skærm==editorSkærm){
-    for(Legeme legeme : legemer){
+  for (PhysicsObject obj : physicsObjects) {
+    obj.tegn();
+  }
+  if (zoomConstrain == false || skærm==editorSkærm) {
+    for (Legeme legeme : legemer) {
       legeme.tegn();
     }
-  }
-  else{
+  } else {
     tegnFlatWorld();
   }
-  tegnHud();
   popMatrix();
+  tegnHud();
   resetMatrix();
-  if(zoom < 0.8){
+  if (zoom < 0.8) {
     tegnPil(new Punkt(width/2, height/2), 100, 30, 30, raket.rot, color(255, 0, 0, (1-(zoom-0.1)/(0.8-0.1))*255));
   }
 }
@@ -36,7 +38,6 @@ void hovedMenu() {
   textSize(100);
   textAlign(CENTER);
   text("space simulator", width/2, height/7);
-
 }
 
 //opretter knapperne
@@ -95,17 +96,14 @@ void setupStjerner(int antal) {
 }
 
 void tegnHud() {
-  pushMatrix();
-  resetMatrix();
-  tegnHudDel("Hastighed","m/s",(float)(Math.sqrt(Math.pow(raket.vX,2)+Math.pow(raket.vY,2))),width/4*3,height-height/20*4);
-  tegnHudDel("MotorKraft","%",(float)(raket.brændMængde*100),width/4*3,height-height/20*3);
-  if(raket.resulterendeKraft!=null){
-    tegnHudDel("Resulterende kraft","N",(float)(raket.resulterendeKraft.størrelse()),width/4*3,height-height/20*2);
-  } else{
-    tegnHudDel("Resulterende kraft","N",9.82,width/4*3,height-height/20*2);
+  tegnHudDel("Hastighed", "m/s", (float)(Math.sqrt(Math.pow(raket.vX, 2)+Math.pow(raket.vY, 2))), width/4*3, height-height/20*4);
+  tegnHudDel("MotorKraft", "%", (float)(raket.brændMængde*100), width/4*3, height-height/20*3);
+  if (raket.resulterendeKraft!=null) {
+    tegnHudDel("Resulterende kraft", "N", (float)(raket.resulterendeKraft.størrelse()), width/4*3, height-height/20*2);
+  } else {
+    tegnHudDel("Resulterende kraft", "N", 9.82, width/4*3, height-height/20*2);
   }
   tegnHudDel("Tids scaling", "s/s", timestep, width/4*3, height-height/20*1);
-  popMatrix();
 }
 
 void tegnHudDel(String Titel, String enhed, float værdi, float posX, float posY) {
@@ -163,7 +161,7 @@ void tegnFlatWorld() {
   double dirX  = Math.cos(angleToPlane);
   double dirY  = Math.sin(angleToPlane);
 
-  double[][] local = {{-halfWidth,  0},{ halfWidth,  0},{ halfWidth, -thickness},{-halfWidth, -thickness}};
+  double[][] local = {{-halfWidth, 0}, { halfWidth, 0}, { halfWidth, -thickness}, {-halfWidth, -thickness}};
 
   float[] sx = new float[4];
   float[] sy = new float[4];

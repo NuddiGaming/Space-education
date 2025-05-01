@@ -110,10 +110,6 @@ class Knap {
   }
   //funktion til at tegne knapper uden camX og camY
   void tegnUdenTransform() {
-    //Gemmer den nuværende translation scale og rotation
-    pushMatrix();
-    //Går tilbage til den standard af disse
-    resetMatrix();
     // bestemmer farven ved musOver og klick
     tegner=true;
     if (mouseOverUdenTransform()) {
@@ -137,24 +133,13 @@ class Knap {
     textSize(tekstSize);
     text(tekst, posX + sizeX/2, posY + sizeY/2);
     // Går tilbage til den tidligere translation scale og rotation
-    popMatrix();
   }
 
   //Funktion til at bestemme om musen er over en knap uden translation scale og rotation
   boolean mouseOverUdenTransform() {
     if (knapSkærm==skærm) {
-      if (!tegner) {
-        //Gemmer den nuværende translation scale og rotation
-        pushMatrix();
-        //Går tilbage til den standard af disse
-        resetMatrix();
-      }
       if (posX < mouseX && mouseX < (posX + sizeX) &&
         posY < mouseY && mouseY < (posY + sizeY)) {
-        if (!tegner) {
-          // Går tilbage til den tidligere translation scale og rotation
-          popMatrix();
-        }
         return(true);
       }
     }
@@ -170,10 +155,6 @@ class PauseKnap extends Knap {
   @Override
     void tegnUdenTransform() {
     if (skærm==editorSkærm || skærm==simulationPauset || skærm==simulationKører) {
-      //Gemmer den nuværende translation scale og rotation
-      pushMatrix();
-      //Går tilbage til den standard af disse
-      resetMatrix();
       rectMode(CORNER);
       noStroke();
       //Tegner selve knappen
@@ -192,24 +173,13 @@ class PauseKnap extends Knap {
       vertex(0, height/17);
       endShape(CLOSE);
       rect(height/15, height/17-height/44, height/15, height/22);
-      popMatrix();
     }
   }
   @Override
     //Funktion til at bestemme om musen er over en knap uden translation scale og rotation
     boolean mouseOverUdenTransform() {
-    if (!tegner) {
-      //Gemmer den nuværende translation scale og rotation
-      pushMatrix();
-      //Går tilbage til den standard af disse
-      resetMatrix();
-    }
     if (posX < mouseX && mouseX < (posX + sizeX) &&
       posY < mouseY && mouseY < (posY + sizeY)) {
-      if (!tegner) {
-        // Går tilbage til den tidligere translation scale og rotation
-        popMatrix();
-      }
       return(true);
     }
     return(false);
@@ -246,10 +216,6 @@ class Punkt {
   }
   Punkt rotate(Punkt p, double v) {
     return new Punkt((x-p.x)*Math.cos(v) - (y-p.y)*Math.sin(v)+p.x, (x-p.x)*Math.sin(v) + (y-p.y)*Math.cos(v)+p.y);
-  }
-  void rotateFull(Punkt p, double v) {
-    x = (x-p.x)*Math.cos(v) - (y-p.y)*Math.sin(v)+p.x;
-    y = (x-p.x)*Math.sin(v) + (y-p.y)*Math.cos(v)+p.y;
   }
 }
 
@@ -330,7 +296,197 @@ class Legeme {
     return afstand <= radius;
   }
 }
+ArrayList<PhysicsObject> physicsObjects = new ArrayList<PhysicsObject>();
 
-class ExplosionParticle{
-  
+class PhysicsObject {
+  Punkt pos;
+  double vX;
+  double vY;
+  double rot;
+  double rotHast;
+  ArrayList<Punkt> grafikPunkter;
+  ArrayList<Punkt> kollisionsPunkter;
+  Punkt massemidtPunkt;
+  double masse;
+  color farve;
+  Punkt rotationsPunkt;
+  Punkt collisionsPunkt;
+  PhysicsObject(Punkt pos, double vX, double vY, double rot, double rotHast, ArrayList<Punkt> grafikPunkter, ArrayList<Punkt> kollisionsPunkter, Punkt massemidtPunkt, double masse, color farve) {
+    this.pos = pos;
+    this.vX = vX;
+    this.vY = vY;
+    this.rot = rot;
+    this.rotHast = rotHast;
+    this.grafikPunkter = grafikPunkter;
+    this.kollisionsPunkter = kollisionsPunkter;
+    this.massemidtPunkt = massemidtPunkt;
+    this.masse = masse;
+    rotationsPunkt = massemidtPunkt;
+    this.farve = farve;
+    physicsObjects.add(this);
+  }
+  void fysik() {
+    ArrayList<Kraft> krafter = new ArrayList<Kraft>();
+    collisionsPunkt = null;
+    double sumX = 0;
+    double sumY = 0;
+    int m = 0;
+    Legeme collisionsLegeme = null;
+    Punkt closestPoint = massemidtPunkt;
+    //tyngdekraft funktionalitet og collision med legemer
+    for (Legeme legeme : legemer) {
+      double dX = legeme.x-(massemidtPunkt.rotate(rotationsPunkt, rot).x+pos.x);
+      double dY = legeme.y-(massemidtPunkt.rotate(rotationsPunkt, rot).y+pos.y);
+      double dist = Math.sqrt(Math.pow(dX, 2)+Math.pow(dY, 2));
+      double tyngdekraft = g*legeme.masse*masse/Math.pow(dist, 2);
+      double rX = dX/dist;
+      double rY = dY/dist;
+      Kraft gravity = new Kraft(rX*tyngdekraft, rY*tyngdekraft, massemidtPunkt);
+      krafter.add(gravity);
+      //collisionen mellem legemer
+      for (Punkt p : kollisionsPunkter) {
+        Punkt pCopy = new Punkt(p.x, p.y);
+        pCopy = pCopy.rotate(new Punkt(rotationsPunkt.x, rotationsPunkt.y), rot);
+        pCopy.x += pos.x;
+        pCopy.y += pos.y;
+        double legemeDist = Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2));
+        if (legemeDist <= legeme.radius) {
+          if (Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2)) < Math.sqrt(Math.pow(closestPoint.x-legeme.x, 2)+Math.pow(closestPoint.y-legeme.y, 2))) {
+            closestPoint = pCopy;
+          }
+          fill(255, 0, 0);
+          if (collisionsLegeme == null) {
+            collisionsLegeme = legeme;
+            collisionsPunkt = new Punkt(0, 0);
+          }
+          sumX += p.x;
+          sumY += p.y;
+          m++;
+        } else {
+          fill(255);
+        }
+        //circle((float)(pCopy.x-camX), (float)(pCopy.y-camY), 1);
+      }
+      float zoomDist = (float) legeme.radius + (float) legeme.radius/1200;
+      if (dist <= zoomDist && scale <= 3 && skærm!=editorSkærm) {
+        zoomConstrain = true;
+        zoomLegeme = legeme;
+        pupDist = dist;
+      } else if (dist > zoomDist && zoomLegeme == legeme) {
+        zoomConstrain = false;
+      }
+    }
+    //her tilføjes alle kræfter
+    for (Kraft kraft : krafter) {
+      tilføjKraft(kraft);
+    }
+    if (collisionsPunkt != null) {
+      collisionsPunkt.x = sumX/m;
+      collisionsPunkt.y = sumY/m;
+      Linje l2 = new Linje(rotationsPunkt, collisionsPunkt);
+      Punkt oldPos = massemidtPunkt.rotate(rotationsPunkt, rot);
+      if (rotationsPunkt != collisionsPunkt) {
+        rotationsPunkt = new Punkt(collisionsPunkt.x, collisionsPunkt.y);
+      }
+      Punkt newPos = massemidtPunkt.rotate(rotationsPunkt, rot);
+      double dX = oldPos.x-newPos.x;
+      double dY = oldPos.y-newPos.y;
+      pos.x += dX;
+      pos.y += dY;
+      Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), new Punkt(collisionsPunkt.x+pos.x, collisionsPunkt.y+pos.y));
+      double v = rotHast*l2.længde()+Math.sqrt(Math.pow(vX, 2)+Math.pow(vY, 2));
+      double kraft = masse*v;
+      double kX = l1.længdeX()/l1.længde()*kraft;
+      double kY = l1.længdeY()/l1.længde()*kraft;
+      tilføjKraft(new Kraft(kX, kY, collisionsPunkt));
+      rotHast *= 0.99;
+      vY *= 0.99;
+      vX *= 0.99;
+    } else if (rotationsPunkt != massemidtPunkt) {
+      Punkt oldPos = massemidtPunkt.rotate(rotationsPunkt, rot);
+      rotationsPunkt = massemidtPunkt;
+      Punkt newPos = massemidtPunkt.rotate(rotationsPunkt, rot);
+      double dX = oldPos.x-newPos.x;
+      double dY = oldPos.y-newPos.y;
+      pos.x += dX;
+      pos.y += dY;
+    }
+    //tilføj hastigheden på x og y
+    pos.x += vX*delta;
+    pos.y += vY*delta;
+    rot += rotHast*delta;
+    if (collisionsLegeme != null) {
+      for (Punkt p : kollisionsPunkter) {
+        Punkt pCopy = new Punkt(p.x, p.y);
+        pCopy = pCopy.rotate(new Punkt(rotationsPunkt.x, rotationsPunkt.y), rot);
+        pCopy.x += pos.x;
+        pCopy.y += pos.y;
+        if (Math.sqrt(Math.pow(pCopy.x-collisionsLegeme.x, 2)+Math.pow(pCopy.y-collisionsLegeme.y, 2)) <= collisionsLegeme.radius) {
+          if (Math.sqrt(Math.pow(pCopy.x-collisionsLegeme.x, 2)+Math.pow(pCopy.y-collisionsLegeme.y, 2)) < Math.sqrt(Math.pow(closestPoint.x-collisionsLegeme.x, 2)+Math.pow(closestPoint.y-collisionsLegeme.y, 2))) {
+            closestPoint = pCopy;
+          }
+        }
+      }
+      Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), closestPoint);
+      double sX = l1.længdeX()/l1.længde()*collisionsLegeme.radius+collisionsLegeme.x;
+      double sY = l1.længdeY()/l1.længde()*collisionsLegeme.radius+collisionsLegeme.y;
+      Punkt p = new Punkt(sX, sY);
+      Linje l2 = new Linje(closestPoint, p);
+      pos.x += l2.længdeX()*0.99;
+      pos.y += l2.længdeY()*0.99;
+    }
+  }
+  void tilføjKraft(Kraft kraft) {
+    //jeg finder vektoren der peger fra påvirkningspunktet til massemidtpunktet
+    Punkt a = new Punkt(kraft.p.x, kraft.p.y);
+    Linje l = new Linje(a, massemidtPunkt);
+    l = l.rotate(rotationsPunkt, rot);
+    Punkt d = new Punkt(l.længdeX(), l.længdeY());
+    //find distancen til massemidtpunkt
+    double dist = Math.sqrt(Math.pow(d.x, 2) + Math.pow(d.y, 2));
+    //regn vinklen mellem kraftvektoren og vektoren der peger mod massemidtpunkt
+    double v = Math.acos((kraft.x*d.x + kraft.y*d.y) / (kraft.størrelse()*dist));
+    //sikrer at v ikke er lig NaN
+    if (v != v) {
+      v = 0;
+    }
+    //tilføj kraften på hastigheden
+    vX += kraft.x/masse*Math.abs(Math.cos(v))*delta;
+    vY += kraft.y/masse*Math.abs(Math.cos(v))*delta;
+    //find determinanten
+    double det = d.x*kraft.y - d.y*kraft.x;
+    //hvis determinanten er negativ så er kraft vektoren med uret rundt om vektoren der peger mod massemidtpunktet og derfor skal objektet rotere mod uret rundt, basic stuff lol B)
+    if (det < 0) {
+      rotHast += kraft.størrelse()/masse/5*Math.abs(Math.sin(v))*delta;
+    } else { //og hvis den er positiv så er det omvendt
+      rotHast -= kraft.størrelse()/masse/5*Math.abs(Math.sin(v))*delta;
+    }
+  }
+  void tegn() {
+    pushMatrix();
+
+    //flyt objekt position til 0, 0
+    translate((float)(pos.x-camX), (float)(pos.y-camY));
+
+    noStroke();
+
+    //tegn objekt
+    fill(farve);
+    beginShape();
+    for (Punkt p : grafikPunkter) {
+      vertex((float)p.rotate(rotationsPunkt, rot).x, (float)p.rotate(rotationsPunkt, rot).y);
+    }
+    endShape(CLOSE);
+    fill(0, 255, 0);
+    for (Punkt p : kollisionsPunkter) {
+      circle((float)p.rotate(rotationsPunkt, rot).x, (float)p.rotate(rotationsPunkt, rot).y, 0.5);
+    }
+    //tegn massemidtpunkt indikatoren
+    fill(255, 255, 0);
+    circle((float)massemidtPunkt.rotate(rotationsPunkt, rot).x, (float)massemidtPunkt.rotate(rotationsPunkt, rot).y, 0.5);
+    fill(0);
+    arc((float)massemidtPunkt.rotate(rotationsPunkt, rot).x, (float)massemidtPunkt.rotate(rotationsPunkt, rot).y, 0.5, 0.5, 0, PI/2);
+    arc((float)massemidtPunkt.rotate(rotationsPunkt, rot).x, (float)massemidtPunkt.rotate(rotationsPunkt, rot).y, 0.5, 0.5, PI, 1.5*PI);
+    popMatrix();
+  }
 }

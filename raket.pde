@@ -27,7 +27,7 @@ class Raket {
   double rotHast = 0;
 
   int punktMængde = 10;
-  
+
   boolean exploded = false;
 
   //listen med alle collision punkter
@@ -86,20 +86,20 @@ class Raket {
         }
       }
     }
-    punktMængde = round(punktMængde*0.5);
-    for (int i=0; i<=punktMængde; i++) {
-      collisionPunkter.add(new Punkt(højreSideBundEnde.x+(venstreSideBundEnde.x-højreSideBundEnde.x)*i/punktMængde, højreSideBundEnde.y));
+    int halvPunktMængde = round(punktMængde*0.5);
+    for (int i=0; i<=halvPunktMængde; i++) {
+      collisionPunkter.add(new Punkt(højreSideBundEnde.x+(venstreSideBundEnde.x-højreSideBundEnde.x)*i/halvPunktMængde, højreSideBundEnde.y));
       if (i > 0) {
         l1 = new Linje(højreVingeEnde, new Punkt(0, højreVingeStart.y*0.8));
         l2 = new Linje(højreSideBundStart, højreSideBundEnde);
         s = skæringspunkt(l1, l2);
         l1 = new Linje(højreVingeEnde, s);
-        collisionPunkter.add(new Punkt(højreVingeEnde.x+l1.længdeX()*i/punktMængde, højreVingeEnde.y+l1.a()*l1.længdeX()*i/punktMængde));
+        collisionPunkter.add(new Punkt(højreVingeEnde.x+l1.længdeX()*i/halvPunktMængde, højreVingeEnde.y+l1.a()*l1.længdeX()*i/halvPunktMængde));
         l1 = new Linje(venstreVingeEnde, new Punkt(0, venstreVingeStart.y*0.8));
         l2 = new Linje(venstreSideBundStart, venstreSideBundEnde);
         s = skæringspunkt(l1, l2);
         l1 = new Linje(venstreVingeEnde, s);
-        collisionPunkter.add(new Punkt(venstreVingeEnde.x+l1.længdeX()*i/punktMængde, venstreVingeEnde.y+l1.a()*l1.længdeX()*i/punktMængde));
+        collisionPunkter.add(new Punkt(venstreVingeEnde.x+l1.længdeX()*i/halvPunktMængde, venstreVingeEnde.y+l1.a()*l1.længdeX()*i/halvPunktMængde));
       }
     }
     for (int i=0; i<=grafikPunktMængde; i++) {
@@ -125,9 +125,12 @@ class Raket {
   }
   //fysikken til raketen
   void fysik() {
-    if(exploded){
+    if (exploded) {
       return;
     }
+    vX = 10;
+    rot = 1;
+    explode();
     //rotation input
     if (j) {
       raket.rotHast -= 0.05;
@@ -163,11 +166,8 @@ class Raket {
         pCopy.y += y;
         double legemeDist = Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2));
         if (legemeDist <= legeme.radius) {
-          if(Math.sqrt(Math.pow(vX, 2)+Math.pow(vY, 2)) > 100 && exploded == false){
-            følgerRaket = false;
-            engineSound.pause();
-            explosionSounds.get(round(random(0, explosionSounds.size()-1))).play();
-            exploded = true;
+          if (Math.sqrt(Math.pow(vX, 2)+Math.pow(vY, 2)) > 100 && exploded == false) {
+            explode();
           }
           if (Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2)) < Math.sqrt(Math.pow(closestPoint.x-legeme.x, 2)+Math.pow(closestPoint.y-legeme.y, 2))) {
             closestPoint = pCopy;
@@ -186,12 +186,11 @@ class Raket {
         //circle((float)(pCopy.x-camX), (float)(pCopy.y-camY), 1);
       }
       float zoomDist = (float) legeme.radius + (float) legeme.radius/1200;
-      if (dist <= zoomDist && scale <= 3 && skærm!=editorSkærm){
+      if (dist <= zoomDist && scale <= 3 && skærm!=editorSkærm) {
         zoomConstrain = true;
         zoomLegeme = legeme;
         pupDist = dist;
-      }
-      else if(dist > zoomDist && zoomLegeme == legeme){
+      } else if (dist > zoomDist && zoomLegeme == legeme) {
         zoomConstrain = false;
       }
     }
@@ -287,7 +286,7 @@ class Raket {
   }
 
   void tegnRaket() {
-    if(exploded){
+    if (exploded) {
       return;
     }
     pushMatrix();
@@ -365,7 +364,7 @@ class Raket {
 
     fill(0, 255, 0);
     for (Punkt p : collisionPunkter) {
-      circle((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y, (float)bredde/10);
+      //circle((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y, (float)bredde/10);
     }
     fill(0, 255, 255);
     if (collisionsPunkt != null) {
@@ -380,7 +379,55 @@ class Raket {
     arc((float)massemidtpunkt.rotate(rotationspunkt, rot).x, (float)massemidtpunkt.rotate(rotationspunkt, rot).y, (float)bredde/5, (float)bredde/5, PI, 1.5*PI);
     popMatrix();
   }
-  boolean mouseOver(){
+  boolean mouseOver() {
     return true;
+  }
+  void explode() {
+    følgerRaket = false;
+    engineSound.pause();
+    explosionSounds.get(round(random(0, explosionSounds.size()-1))).play();
+    exploded = true;
+    //top del fragment
+    ArrayList<Punkt> topDelPunkter = new ArrayList<Punkt>();
+    for(int i=0;i<punktMængde+1;i++){
+      double p = float(i)/punktMængde;
+      double v = p*PI;
+      topDelPunkter.add(new Punkt(Math.cos(v)*bredde/2, -Math.sin(v)*højde*(1-topProcent)));
+    }
+    for(int i=1;i<round(punktMængde/2);i++){
+      double p = float(i)/round(punktMængde/2);
+      topDelPunkter.add(new Punkt(p*bredde-bredde/2, 0));
+    }
+    Punkt topDelPos = new Punkt(x, y-topProcent*højde);
+    topDelPos = topDelPos.rotate(rotationspunkt, rot);
+    PhysicsObject topDel = new PhysicsObject(topDelPos, vX, vY, rot, 0, topDelPunkter, topDelPunkter, new Punkt(0, -(1-topProcent)/2*højde), masse/20, color(255, 0, 0));
+    //hoved del fragment
+    ArrayList<Punkt> hovedDelPunkter = new ArrayList<Punkt>();
+    for(int i=0;i<punktMængde+1;i++){
+      double p = float(i)/punktMængde;
+      hovedDelPunkter.add(new Punkt(-bredde/2, -højde*Math.abs(topProcent-bundProcent)*p));
+    }
+    for(int i=1;i<round(punktMængde/2);i++){
+      double p = float(i)/round(punktMængde/2);
+      hovedDelPunkter.add(new Punkt(p*bredde-bredde/2, -højde*Math.abs(topProcent-bundProcent)));
+    }
+    for(int i=0;i<punktMængde+1;i++){
+      double p = 1-float(i)/punktMængde;
+      hovedDelPunkter.add(new Punkt(bredde/2, -højde*Math.abs(topProcent-bundProcent)*p));
+    }
+    for(int i=1;i<round(punktMængde/2);i++){
+      double p = 1-float(i)/round(punktMængde/2);
+      hovedDelPunkter.add(new Punkt(p*bredde-bredde/2, 0));
+    }
+    Punkt hovedDelPos = new Punkt(x, y-højde*bundProcent);
+    Punkt hovedDelMassemidtPunkt = new Punkt(0, -højde*Math.abs(topProcent-bundProcent)/2);
+    PhysicsObject hovedDel = new PhysicsObject(hovedDelPos, vX, vY, rot, 0, hovedDelPunkter, hovedDelPunkter, hovedDelMassemidtPunkt, masse/5, color(150));
+    //vinger
+    ArrayList<Punkt> vinge1DelPunkter = new ArrayList<Punkt>();
+    ArrayList<Punkt> vinge2DelPunkter = new ArrayList<Punkt>();
+    
+    Punkt vinge1DelPos = new Punkt(x, y-højde*bundProcent);
+    Punkt vinge2DelPos = new Punkt(x, y-højde*bundProcent);
+    //PhysicsObject hovedDel = new PhysicsObject(hovedDelPos, vX, vY, rot, 0, hovedDelPunkter, hovedDelPunkter, new Punkt(0, -højde*Math.abs(topProcent-bundProcent)/2), masse/5, color(150));
   }
 }

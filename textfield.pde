@@ -61,8 +61,6 @@ class Textfield {
   }
 
   void tegnPåSkærm() {
-    pushMatrix();
-    resetMatrix();
     if (textfieldSkærm == skærm) { // Tjekker skærm
       rectMode(CORNER);
       // Sætte den rigtige farve ud fra om det er active
@@ -81,7 +79,6 @@ class Textfield {
       displayedText = tekst;
       text(displayedText, posX + sizeX / 2, posY + sizeY / 2);
     }
-    popMatrix();
   }
 
   // Tjekker om mus er over knap
