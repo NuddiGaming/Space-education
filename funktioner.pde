@@ -71,12 +71,12 @@ void saveScenario(String name) {
   scenario.setJSONObject("raket", raketJSON);
   scenario.setDouble("scale", scale);
 
-  saveJSONObject(scenario, "data/"+name+".json");
+  saveJSONObject(scenario, "data/scenarios/"+name+".json");
 }
 
 void loadScenario(String navn) {
   legemer.clear();
-  JSONObject scenario = loadJSONObject("data/"+navn+".json");
+  JSONObject scenario = loadJSONObject("data/scenarios/"+navn+".json");
   
   JSONObject raketJSON = scenario.getJSONObject("raket");
   raket.x = raketJSON.getDouble("x");

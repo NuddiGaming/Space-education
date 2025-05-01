@@ -1,3 +1,5 @@
+import processing.sound.*;
+
 //Kamera position
 double camX = 0;
 double camY = 0;
@@ -33,14 +35,21 @@ Legeme zoomLegeme;
 //raket
 Raket raket;
 
+ArrayList<SoundFile> explosionSounds = new ArrayList<SoundFile>();
+SoundFile engineSound;
+
 
 void setup() {
   fullScreen();
+  for(int i=0;i<4;i++){
+    explosionSounds.add(new SoundFile(this, "data/sounds/explosion_"+str(i+1)+".mp3"));
+  }
+  engineSound = new SoundFile(this, "data/sounds/engine_sound.mp3");
   //lav raket
   raket = new Raket();
   setupStjerner(200);
   setupKnapper();
-  loadScenario("save");
+  loadScenario("Jorden og månen");
   //textfields.add(new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, "Indtast navn", "", 10, 0, false));
 }
 
