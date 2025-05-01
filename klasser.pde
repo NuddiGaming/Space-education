@@ -296,3 +296,7 @@ class Legeme {
     circle((float)(x-camX), (float)(y-camY), (float)radius*2);
   }
 }
+
+class ExplosionParticle{
+  
+}
