@@ -42,7 +42,7 @@ void setup() {
   raket = new Raket();
   setupStjerner(200);
   setupKnapper();
-  loadScenario("save");
+  loadScenario("Jorden og månen");
   //textfields.add(new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, "Indtast navn", "", 10, 0, false));
 }
 
