@@ -330,3 +330,7 @@ class Legeme {
     return afstand <= radius;
   }
 }
+
+class ExplosionParticle{
+  
+}
