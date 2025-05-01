@@ -4,6 +4,7 @@ double camY = 0;
 float camRot = 0;
 //Kamera zoom
 float zoom = 10;
+boolean zoomConstrain = false;
 //Kamera hastighed
 float camSpeed = 30;
 
@@ -24,8 +25,11 @@ float deltaTime;
 float timestep = 1;
 
 JSONObject scenario;
+float cx, cy, r;
+double pupDist;
 
 ArrayList<Legeme> legemer = new ArrayList<Legeme>();
+Legeme zoomLegeme;
 //raket
 Raket raket;
 
@@ -61,12 +65,16 @@ void draw() {
     if (k.knapSkærm == hovedMenu && skærm==hovedMenu) {
       k.tegnUdenTransform();
     }
-    if(k.knapSkærm==simulationKører &&(skærm==simulationKører || skærm==simulationPauset)){
+    if (k.knapSkærm==simulationKører &&(skærm==simulationKører || skærm==simulationPauset)) {
       k.tegnUdenTransform();
     }
   }
   for (Textfield field : textfields) {
     field.tegnPåSkærm();
   }
-  println("vX: "+raket.vX+"   vY: "+raket.vY);
+
+  // Gør så man ikke kan zoom ud og se at planeten ikke bliver tegnet.
+  if (zoomConstrain && scale <= 3) {
+    zoom = constrain(zoom, (float)zoomLegeme.radius/20000000, 1000);
+  }
 }

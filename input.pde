@@ -175,7 +175,21 @@ void mousePressed() {
 void mouseWheel(MouseEvent event) {
   float e = -event.getCount();
   if (zoom > 0.0001 && e == -1 || zoom < 1000 && e == 1) {
-    zoom *= pow(1.1, e);
-    camSpeed /= pow(1.1, e);
+    if (zoomConstrain == true){
+      if (zoom > zoomLegeme.radius/20000000) {
+        zoom *= pow(1.1, e);
+        camSpeed /= pow(1.1, e);
+        zoom = constrain(zoom, (float) zoomLegeme.radius/20000000, 1000);
+      }
+      else if (zoom <= zoomLegeme.radius/20000000 && e == 1){
+        zoom *= pow(1.1, e);
+        camSpeed /= pow(1.1, e);
+        zoom = constrain(zoom, (float) zoomLegeme.radius/20000000, 1000);
+      }
+    }
+    else{
+      zoom *= pow(1.1, e);
+      camSpeed /= pow(1.1, e);
+    }
   }
 }
