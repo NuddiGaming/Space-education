@@ -148,12 +148,14 @@ void keyReleased() {
   }
   if (key == 'j') {
     j = false;
+    tempRaketRot = raket.rotHast;
   }
   if (key == 'k'){
     k = false;
   }
   if (key == 'l') {
     l = false;
+    tempRaketRot = raket.rotHast;
   }
 }
 
