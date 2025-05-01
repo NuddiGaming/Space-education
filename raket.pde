@@ -174,7 +174,7 @@ class Raket {
         //circle((float)(pCopy.x-camX), (float)(pCopy.y-camY), 1);
       }
       float zoomDist = (float) legeme.radius + (float) legeme.radius/1200;
-      if (dist <= zoomDist){
+      if (dist <= zoomDist && scale <= 3){
         zoomConstrain = true;
         zoomLegeme = legeme;
         pupDist = dist;
