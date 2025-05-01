@@ -2,6 +2,8 @@
 double camX = 0;
 double camY = 0;
 float camRot = 0;
+//Raket rot
+double tempRaketRot;
 //Kamera zoom
 float zoom = 10;
 boolean zoomConstrain = false;

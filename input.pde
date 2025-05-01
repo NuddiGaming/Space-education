@@ -3,6 +3,7 @@ boolean a = false;
 boolean s = false;
 boolean d = false;
 boolean j = false;
+boolean k = false;
 boolean l = false;
 boolean shift = false;
 boolean ctrl = false;
@@ -99,6 +100,10 @@ void keyPressed() {
     if (key == 'j') {
       j = true;
     }
+    if (key == 'k'){
+      k = true;
+      tempRaketRot = raket.rotHast;
+    }
     if (key == 'l') {
       l = true;
     }
@@ -140,6 +145,9 @@ void keyReleased() {
   }
   if (key == 'j') {
     j = false;
+  }
+  if (key == 'k'){
+    k = false;
   }
   if (key == 'l') {
     l = false;
