@@ -133,7 +133,7 @@ void draw() {
   }
 
   // Gør så man ikke kan zoom ud og se at planeten ikke bliver tegnet.
-  if (zoomConstrain && scale <= 3) {
+  if (zoomConstrain && scale <= 3 && skærm!=editorSkærm) {
     zoom = constrain(zoom, (float)zoomLegeme.radius/20000000, 1000);
   }
 }

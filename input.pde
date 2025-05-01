@@ -202,7 +202,7 @@ void mousePressed() {
 //ændre zoom værdien når man skrållar med musen
 void mouseWheel(MouseEvent event) {
   float e = -event.getCount();
-  if (zoom > 0.0001 && e == -1 || zoom < 1000 && e == 1) {
+  if (zoom > 0.0001 && e == -1 || zoom < 1000 && e == 1 && skærm!=editorSkærm) {
     if (zoomConstrain == true){
       if (zoom > zoomLegeme.radius/20000000) {
         zoom *= pow(1.1, e);

@@ -169,7 +169,7 @@ class PauseKnap extends Knap {
   }
   @Override
     void tegnUdenTransform() {
-    if (knapSkærm==skærm) {
+    if (skærm==editorSkærm || skærm==simulationPauset || skærm==simulationKører) {
       //Gemmer den nuværende translation scale og rotation
       pushMatrix();
       //Går tilbage til den standard af disse
