@@ -1,17 +1,17 @@
 void setupTextfields() {
   // Create text fields for rocket properties
-  motorKraftFelt = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
-    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(raket.motorKraft), 5, editorSkærm, false);
+  motorKraftFelt = new Textfield(width/2, height/2, width/6, height/20, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), 
+  color(255, 255, 0), 16, String.valueOf(raket.motorKraft), 5, editorSkærm, false);
   
-  raketMasseFelt = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
-    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(raket.masse), 5, editorSkærm, false);
+  raketMasseFelt = new Textfield(width/2, height/2, width/6, height/20, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), 
+  color(255, 255, 0), 16, String.valueOf(raket.masse), 5, editorSkærm, false);
   
   // Create text fields for universe properties
-  scaleFelt = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
-    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(scale), 5, editorSkærm, false);
+  scaleFelt = new Textfield(width/2, height/2, width/6, height/20, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), 
+  color(255, 255, 0), 16, String.valueOf(scale), 5, editorSkærm, false);
   
-  gKonstantFelt = new Textfield(width/2, height/2, width/6, height/20, color(255), color(200, 255, 200), 
-    color(100, 200, 100), color(40, 40, 40), 16, String.valueOf(g), 5, editorSkærm, false);
+  gKonstantFelt = new Textfield(width/2, height/2, width/6, height/20, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), 
+  color(255, 255, 0), 16, String.valueOf(g), 5, editorSkærm, false);
 }
 
 class Textfield {
