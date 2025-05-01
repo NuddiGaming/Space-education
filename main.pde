@@ -14,10 +14,6 @@ float camSpeed = 30;
 
 double scale=1;
 
-//grid
-int gridDist = 100;
-int gridSize = 5000;
-
 //statemachine med hvor man er henne i programmet
 int hovedMenu=0;
 int simulationKører=1;
@@ -72,6 +68,8 @@ void setup() {
     explosionSounds.add(new SoundFile(this, "data/sounds/explosion_"+str(i+1)+".mp3"));
   }
   engineSound = new SoundFile(this, "data/sounds/engine_sound.mp3");
+  engineSound.loop();
+  engineSound.amp(0);
   //lav raket
   raket = new Raket();
   setupStjerner(200);
@@ -82,10 +80,10 @@ void setup() {
 }
 
 void draw() {
+  delta = (millis()-deltaTime)/1000*timestep;
+  deltaTime = millis();
   if (skærm == simulationKører || skærm == simulationPauset) {
     simulationGrafik();
-    delta = (millis()-deltaTime)/1000*timestep;
-    deltaTime = millis();
     //gør så selve simulation kun kører når den skal
     if (skærm == simulationKører) {
 
@@ -133,7 +131,7 @@ void draw() {
   }
 
   // Gør så man ikke kan zoom ud og se at planeten ikke bliver tegnet.
-  if (zoomConstrain && scale <= 3 && skærm!=editorSkærm) {
+  if (zoomConstrain == true && scale <= 3 && skærm!=editorSkærm) {
     zoom = constrain(zoom, (float)zoomLegeme.radius/20000000, 1000);
   }
 }

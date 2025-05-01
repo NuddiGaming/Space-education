@@ -27,6 +27,8 @@ class Raket {
   double rotHast = 0;
 
   int punktMængde = 10;
+  
+  boolean exploded = false;
 
   //listen med alle collision punkter
   ArrayList<Punkt> collisionPunkter = new ArrayList<Punkt>();
@@ -123,13 +125,10 @@ class Raket {
   }
   //fysikken til raketen
   void fysik() {
-    //rotation input
-    println(raket.rotHast);
-    if(k == true && j == false && l == false){
-      raket.rotHast = lerp((float)tempRaketRot, 0, 0.1);
-      if (raket.rotHast <= 0.01 && raket.rotHast >= 0) {raket.rotHast = 0;}
-      else if (raket.rotHast <= 0 && raket.rotHast >=-0.01) {raket.rotHast = 0;}
+    if(exploded){
+      return;
     }
+    //rotation input
     if (j) {
       raket.rotHast -= 0.05;
     } else if (l) {
@@ -139,6 +138,7 @@ class Raket {
     ArrayList<Kraft> krafter = new ArrayList<Kraft>();
     //tjek om motoren brænder og hvis ja så tilføj motorkraften i krafter
     krafter.add(new Kraft(motorKraft*brændMængde*Math.sin(rot), -motorKraft*brændMængde*Math.cos(rot), new Punkt(0, 0)));
+    engineSound.amp((float) brændMængde);
     collisionsPunkt = null;
     double sumX = 0;
     double sumY = 0;
@@ -163,6 +163,12 @@ class Raket {
         pCopy.y += y;
         double legemeDist = Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2));
         if (legemeDist <= legeme.radius) {
+          if(Math.sqrt(Math.pow(vX, 2)+Math.pow(vY, 2)) > 100 && exploded == false){
+            følgerRaket = false;
+            engineSound.pause();
+            explosionSounds.get(round(random(0, explosionSounds.size()-1))).play();
+            exploded = true;
+          }
           if (Math.sqrt(Math.pow(pCopy.x-legeme.x, 2)+Math.pow(pCopy.y-legeme.y, 2)) < Math.sqrt(Math.pow(closestPoint.x-legeme.x, 2)+Math.pow(closestPoint.y-legeme.y, 2))) {
             closestPoint = pCopy;
           }
@@ -180,7 +186,7 @@ class Raket {
         //circle((float)(pCopy.x-camX), (float)(pCopy.y-camY), 1);
       }
       float zoomDist = (float) legeme.radius + (float) legeme.radius/1200;
-      if (dist <= zoomDist && scale <= 3){
+      if (dist <= zoomDist && scale <= 3 && skærm!=editorSkærm){
         zoomConstrain = true;
         zoomLegeme = legeme;
         pupDist = dist;
@@ -281,6 +287,9 @@ class Raket {
   }
 
   void tegnRaket() {
+    if(exploded){
+      return;
+    }
     pushMatrix();
 
     //flyt raket position til 0, 0
@@ -356,7 +365,7 @@ class Raket {
 
     fill(0, 255, 0);
     for (Punkt p : collisionPunkter) {
-      //circle((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y, (float)bredde/10);
+      circle((float)p.rotate(rotationspunkt, rot).x, (float)p.rotate(rotationspunkt, rot).y, (float)bredde/10);
     }
     fill(0, 255, 255);
     if (collisionsPunkt != null) {
