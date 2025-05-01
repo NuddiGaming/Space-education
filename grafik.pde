@@ -11,7 +11,7 @@ void simulationGrafik() {
   scale(zoom);
   rotate(camRot);
   raket.tegnRaket();
-  if(zoomConstrain == false){
+  if(zoomConstrain == false || skærm==editorSkærm){
     for(Legeme legeme : legemer){
       legeme.tegn();
     }
