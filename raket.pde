@@ -428,6 +428,13 @@ class Raket {
     
     Punkt vinge1DelPos = new Punkt(x, y-højde*bundProcent);
     Punkt vinge2DelPos = new Punkt(x, y-højde*bundProcent);
+    Linje l1 = new Linje(højreVingeStart, højreVingeEnde);
+    Linje l2 = new Linje(venstreVingeStart, venstreVingeEnde);
+    for(int i=0;i<punktMængde+1;i++){
+      double p = float(i)/punktMængde;
+      vinge1DelPunkter.add(new Punkt(højreVingeEnde.x*p, l1.a()*højreVingeEnde.x*p-højreVingeStart.y));
+      vinge2DelPunkter.add(new Punkt(venstreVingeEnde.x*p, -l2.a()*venstreVingeEnde.x*p-venstreVingeStart.y));
+    }
     //PhysicsObject hovedDel = new PhysicsObject(hovedDelPos, vX, vY, rot, 0, hovedDelPunkter, hovedDelPunkter, new Punkt(0, -højde*Math.abs(topProcent-bundProcent)/2), masse/5, color(150));
   }
 }
