@@ -85,6 +85,9 @@ void keyPressed() {
     if (key == 'd') {
       d = true;
     }
+    if (key == 't'){
+      loadScenario("Jorden og månen");
+    }
     if (key == ' ' && skærm == simulationKører) {
       raket.brændMængde = 1;
     }
