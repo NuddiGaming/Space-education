@@ -384,6 +384,13 @@ class Raket {
     engineSound.pause();
     explosionSounds.get(round(random(0, explosionSounds.size()-1))).play();
     exploded = true;
+    for(int i=0;i<30;i++){
+      double d = random(1, 10);
+      double v = random(0, 2*PI);
+      double dX = Math.cos(v)*d;
+      double dY = Math.sin(v)*d;
+      explosionSmoke smoke = new explosionSmoke(massemidtpunkt.x+x+dX, massemidtpunkt.y+y+dY, color(100));
+    }
     
     //top del fragment
     ArrayList<Punkt> topDelPunkter = new ArrayList<Punkt>();

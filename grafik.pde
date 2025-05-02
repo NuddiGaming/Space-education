@@ -21,6 +21,10 @@ void simulationGrafik() {
   } else {
     tegnFlatWorld();
   }
+  for (int i=0;i<smokes.size();i++){
+    explosionSmoke smoke = smokes.get(i);
+    smoke.tegn();
+  }
   popMatrix();
   tegnHud();
   resetMatrix();

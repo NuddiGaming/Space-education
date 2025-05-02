@@ -296,6 +296,33 @@ class Legeme {
     return afstand <= radius;
   }
 }
+
+ArrayList<explosionSmoke> smokes = new ArrayList<explosionSmoke>();
+class explosionSmoke{
+  double x;
+  double y;
+  float lifeTime = random(2, 4);
+  float life = lifeTime;
+  float minSize = 5;
+  float maxSize = 20;
+  color farve;
+  explosionSmoke(double x, double y, color farve){
+    this.x = x;
+    this.y = y;
+    this.farve = farve;
+    smokes.add(this);
+  }
+  void tegn(){
+    float p = life/lifeTime;
+    fill(red(farve), green(farve), blue(farve), p*255);
+    circle((float)(x-camX), (float)(y-camY), (maxSize-minSize)*(1-p)+minSize);
+    life-=delta;
+    if(life <= 0){
+      smokes.remove(this);
+    }
+  }
+}
+
 ArrayList<PhysicsObject> physicsObjects = new ArrayList<PhysicsObject>();
 
 class PhysicsObject {
