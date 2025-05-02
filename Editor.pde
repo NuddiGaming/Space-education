@@ -286,6 +286,10 @@ void hideMenu() {
 }
 
 void inputMenuer() {
+  // tilføjer planet hvis man trykker på knappen
+  if (tilføjPlanetKnap.mouseOverUdenTransform()) {
+    tilføjNyPlanet();
+  }
   // Raket menu
   if (visRaketMenu) {
     // De relevante textfelter
@@ -453,4 +457,28 @@ void inputMenuer() {
       }
     }
   }
+}
+
+void tilføjNyPlanet() {
+  // Beregner hvor midten af skærmen er i globale koordinater
+  double mx = width / 2 - width / 2;
+  double my = height / 2 - height / 2;
+  double cosR = cos(-camRot);
+  double sinR = sin(-camRot);
+  double rotx = mx * cosR - my * sinR;
+  double roty = mx * sinR + my * cosR;
+  double globalX = rotx / zoom + camX;
+  double globalY = roty / zoom + camY;
+  
+  // Laver en ny default planet med en radius der gør at den kan ses på skærmen med det samme
+  double defaultRadius = scale*50/zoom;
+  double defaultMass = 1.0; //masse som kan justeres i programmet
+  //Giver det en tilfældig farve
+  color defaultColor = color(random(100, 255), random(100, 255), random(100, 255));
+  
+  // laver planeten og gemmer den i legeme arrayet
+  Legeme newPlanet = new Legeme(globalX * scale, globalY * scale, defaultRadius, defaultMass, defaultColor, "Ny Planet " + (legemer.size()));
+  
+  // Åbner menuen så man med det samme kan ændre i de tilhørende variabler
+  startMenu(newPlanet);
 }

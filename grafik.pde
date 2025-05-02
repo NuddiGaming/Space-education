@@ -28,7 +28,7 @@ void simulationGrafik() {
   popMatrix();
   tegnHud();
   resetMatrix();
-  if (zoom < 0.8) {
+  if(zoom < 0.8 && skærm!=editorSkærm){
     tegnPil(new Punkt(width/2, height/2), 100, 30, 30, raket.rot, color(255, 0, 0, (1-(zoom-0.1)/(0.8-0.1))*255));
   }
 }
@@ -51,6 +51,7 @@ PauseKnap simulationsHovedMenuKnap;
 PauseKnap editorTilbageKnap;
 Knap editorRocketKnap;
 Knap editorUniverseKnap;
+Knap tilføjPlanetKnap;
 
 void setupKnapper() {
   //kommer værdierne på knapperne
@@ -72,6 +73,9 @@ void setupKnapper() {
   editorUniverseKnap = new Knap(width - width/8 - width/50, height/50 + height/14, width/8, height/16, color(0, 0, 0), "Universe",
     20, color(0, 150, 255), color(100, 200, 255), color(0, 100, 200), 10, editorSkærm);
   knapper.add(editorUniverseKnap);
+  tilføjPlanetKnap = new Knap(width - width/8 - width/50, height/50 + height/14*2, width/8, height/16, color(0, 0, 0), "Add Planet",
+    20, color(50, 200, 50), color(100, 255, 100), color(0, 150, 0), 10, editorSkærm);
+  knapper.add(tilføjPlanetKnap);
 }
 
 
