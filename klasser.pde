@@ -477,16 +477,17 @@ class PhysicsObject {
       vertex((float)p.rotate(rotationsPunkt, rot).x, (float)p.rotate(rotationsPunkt, rot).y);
     }
     endShape(CLOSE);
-    fill(0, 255, 0);
-    for (Punkt p : kollisionsPunkter) {
-      circle((float)p.rotate(rotationsPunkt, rot).x, (float)p.rotate(rotationsPunkt, rot).y, 0.5);
+    for (int i=0;i<kollisionsPunkter.size();i++) {
+      Punkt p = kollisionsPunkter.get(i);
+      fill(0, float(i+1)/kollisionsPunkter.size()*255, 0);
+      //circle((float)p.rotate(rotationsPunkt, rot).x, (float)p.rotate(rotationsPunkt, rot).y, 0.5);
     }
     //tegn massemidtpunkt indikatoren
-    fill(255, 255, 0);
+    /*fill(255, 255, 0);
     circle((float)massemidtPunkt.rotate(rotationsPunkt, rot).x, (float)massemidtPunkt.rotate(rotationsPunkt, rot).y, 0.5);
     fill(0);
     arc((float)massemidtPunkt.rotate(rotationsPunkt, rot).x, (float)massemidtPunkt.rotate(rotationsPunkt, rot).y, 0.5, 0.5, 0, PI/2);
-    arc((float)massemidtPunkt.rotate(rotationsPunkt, rot).x, (float)massemidtPunkt.rotate(rotationsPunkt, rot).y, 0.5, 0.5, PI, 1.5*PI);
+    arc((float)massemidtPunkt.rotate(rotationsPunkt, rot).x, (float)massemidtPunkt.rotate(rotationsPunkt, rot).y, 0.5, 0.5, PI, 1.5*PI);*/
     popMatrix();
   }
 }

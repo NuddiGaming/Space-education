@@ -59,6 +59,7 @@ Legeme zoomLegeme;
 Raket raket;
 
 ArrayList<SoundFile> explosionSounds = new ArrayList<SoundFile>();
+Sound sound;
 SoundFile engineSound;
 
 
@@ -67,6 +68,7 @@ void setup() {
   for (int i=0; i<4; i++) {
     explosionSounds.add(new SoundFile(this, "data/sounds/explosion_"+str(i+1)+".mp3"));
   }
+  sound.volume(0.05);
   engineSound = new SoundFile(this, "data/sounds/engine_sound.mp3");
   engineSound.loop();
   engineSound.amp(0);
@@ -77,23 +79,10 @@ void setup() {
   loadScenario("Jorden og månen");
   //textfields.add(new Textfield(width/2, height/2, 200, 50, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0), 20, "Indtast navn", "", 10, 0, false));
   setupTextfields();
-  ArrayList<Punkt> grafikKassePunkter = new ArrayList<Punkt>();
-  ArrayList<Punkt> kollisionKassePunkter = new ArrayList<Punkt>();
-  
-  grafikKassePunkter.add(new Punkt(0, 0));
-  grafikKassePunkter.add(new Punkt(0, -20));
-  grafikKassePunkter.add(new Punkt(20, -20));
-  grafikKassePunkter.add(new Punkt(20, 0));
-  
-  kollisionKassePunkter.add(new Punkt(0, 0));
-  kollisionKassePunkter.add(new Punkt(0, -20));
-  kollisionKassePunkter.add(new Punkt(20, -20));
-  kollisionKassePunkter.add(new Punkt(20, 0));
-  PhysicsObject kasse = new PhysicsObject(new Punkt(0, -100), 200, -50, 0, 0.1, grafikKassePunkter, kollisionKassePunkter, new Punkt(10, -10), 1000000000, color(255));
 }
 
 void draw() {
-  delta = (millis()-deltaTime)/1000*timestep*0.2;
+  delta = (millis()-deltaTime)/1000*timestep;
   deltaTime = millis();
   if (skærm == simulationKører || skærm == simulationPauset) {
     simulationGrafik();

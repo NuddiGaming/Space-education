@@ -128,9 +128,6 @@ class Raket {
     if (exploded) {
       return;
     }
-    //vX = 10;
-    //rot = 1;
-    //explode();
     //rotation input
     if (j) {
       raket.rotHast -= 0.05;
@@ -387,42 +384,25 @@ class Raket {
     engineSound.pause();
     explosionSounds.get(round(random(0, explosionSounds.size()-1))).play();
     exploded = true;
+    
     //top del fragment
     ArrayList<Punkt> topDelPunkter = new ArrayList<Punkt>();
-    for(int i=0;i<punktMængde+1;i++){
-      double p = float(i)/punktMængde;
+    for(int i=0;i<punktMængde*2+1;i++){
+      double p = float(i)/(punktMængde*2);
       double v = p*PI;
-      topDelPunkter.add(new Punkt(Math.cos(v)*bredde/2, -Math.sin(v)*højde*(1-topProcent)));
+      topDelPunkter.add(new Punkt(Math.cos(v)*bredde/2, -Math.sin(v)*højde*(1-topProcent)-højde*topProcent));
     }
     for(int i=1;i<round(punktMængde/2);i++){
       double p = float(i)/round(punktMængde/2);
-      topDelPunkter.add(new Punkt(p*bredde-bredde/2, 0));
+      topDelPunkter.add(new Punkt(p*bredde-bredde/2, -højde*topProcent));
     }
-    Punkt topDelPos = new Punkt(x, y-topProcent*højde);
-    topDelPos = topDelPos.rotate(rotationspunkt, rot);
-    PhysicsObject topDel = new PhysicsObject(topDelPos, vX, vY, rot, 0, topDelPunkter, topDelPunkter, new Punkt(0, -(1-topProcent)/2*højde), masse/20, color(255, 0, 0));
-    //hoved del fragment
-    ArrayList<Punkt> hovedDelPunkter = new ArrayList<Punkt>();
-    for(int i=0;i<punktMængde+1;i++){
-      double p = float(i)/punktMængde;
-      hovedDelPunkter.add(new Punkt(-bredde/2, -højde*Math.abs(topProcent-bundProcent)*p));
-    }
-    for(int i=1;i<round(punktMængde/2);i++){
-      double p = float(i)/round(punktMængde/2);
-      hovedDelPunkter.add(new Punkt(p*bredde-bredde/2, -højde*Math.abs(topProcent-bundProcent)));
-    }
-    for(int i=0;i<punktMængde+1;i++){
-      double p = 1-float(i)/punktMængde;
-      hovedDelPunkter.add(new Punkt(bredde/2, -højde*Math.abs(topProcent-bundProcent)*p));
-    }
-    for(int i=1;i<round(punktMængde/2);i++){
-      double p = 1-float(i)/round(punktMængde/2);
-      hovedDelPunkter.add(new Punkt(p*bredde-bredde/2, 0));
-    }
-    Punkt hovedDelPos = new Punkt(x, y-højde*bundProcent);
-    Punkt hovedDelMassemidtPunkt = new Punkt(0, -højde*Math.abs(topProcent-bundProcent)/2);
-    PhysicsObject hovedDel = new PhysicsObject(hovedDelPos, vX, vY, rot, 0, hovedDelPunkter, hovedDelPunkter, hovedDelMassemidtPunkt, masse/5, color(150));
-    //vinger
+    Punkt topDelMassemidtPunkt = new Punkt(0, -højde*(1-topProcent)/2-højde*topProcent);
+    Punkt topDelPos = topDelMassemidtPunkt.rotate(rotationspunkt, rot);
+    topDelPos.x = topDelPos.x+x-topDelMassemidtPunkt.x;
+    topDelPos.y = topDelPos.y+y-topDelMassemidtPunkt.y;
+    PhysicsObject topDel = new PhysicsObject(topDelPos, vX, vY, rot, 0, topDelPunkter, topDelPunkter, topDelMassemidtPunkt, masse/20, color(255, 0, 0));
+    
+    //vinger fragmenter
     ArrayList<Punkt> vinge1DelPunkter = new ArrayList<Punkt>();
     ArrayList<Punkt> vinge2DelPunkter = new ArrayList<Punkt>();
     
@@ -430,11 +410,98 @@ class Raket {
     Punkt vinge2DelPos = new Punkt(x, y-højde*bundProcent);
     Linje l1 = new Linje(højreVingeStart, højreVingeEnde);
     Linje l2 = new Linje(venstreVingeStart, venstreVingeEnde);
+    double avgX1 = l1.længdeX()/2+højreVingeStart.x;
+    double avgY1 = l1.længdeY()/2+højreVingeStart.y;
+    double avgX2 = l2.længdeX()/2+venstreVingeStart.x;
+    double avgY2 = l2.længdeY()/2+venstreVingeStart.y;
     for(int i=0;i<punktMængde+1;i++){
       double p = float(i)/punktMængde;
-      vinge1DelPunkter.add(new Punkt(højreVingeEnde.x*p, l1.a()*højreVingeEnde.x*p-højreVingeStart.y));
-      vinge2DelPunkter.add(new Punkt(venstreVingeEnde.x*p, -l2.a()*venstreVingeEnde.x*p-venstreVingeStart.y));
+      vinge1DelPunkter.add(new Punkt(l1.længdeX()*p+højreVingeStart.x, l1.længdeX()*p*l1.a()+højreVingeStart.y));
+      vinge2DelPunkter.add(new Punkt(l2.længdeX()*p+venstreVingeStart.x, l2.længdeX()*p*l2.a()+venstreVingeStart.y));
     }
-    //PhysicsObject hovedDel = new PhysicsObject(hovedDelPos, vX, vY, rot, 0, hovedDelPunkter, hovedDelPunkter, new Punkt(0, -højde*Math.abs(topProcent-bundProcent)/2), masse/5, color(150));
+    l1 = new Linje(højreVingeEnde, new Punkt(0, højreVingeStart.y*0.8));
+    l2 = new Linje(venstreVingeEnde, new Punkt(0, venstreVingeStart.y*0.8));
+    avgX1 = (avgX1 + (l1.længdeX()/2+højreVingeEnde.x))/2;
+    avgY1 = (avgY1 + (l1.længdeY()/2+højreVingeEnde.y))/2;
+    avgX2 = (avgX2 + (l2.længdeX()/2+venstreVingeEnde.x))/2;
+    avgY2 = (avgY2 + (l2.længdeY()/2+venstreVingeEnde.y))/2;
+    for(int i=0;i<punktMængde+1;i++){
+      double p = float(i)/punktMængde;
+      vinge1DelPunkter.add(new Punkt(l1.længdeX()*p+højreVingeEnde.x, l1.længdeX()*p*l1.a()+højreVingeEnde.y));
+      vinge2DelPunkter.add(new Punkt(l2.længdeX()*p+venstreVingeEnde.x, l2.længdeX()*p*l2.a()+venstreVingeEnde.y));
+    }
+    l1 = new Linje(new Punkt(0, højreVingeStart.y*0.8), højreVingeStart);
+    l2 = new Linje(new Punkt(0, venstreVingeStart.y*0.8), venstreVingeStart);
+    for(int i=0;i<round(punktMængde/2);i++){
+      double p = float(i)/round(punktMængde/2);
+      vinge1DelPunkter.add(new Punkt(l1.længdeX()*p+l1.p1.x, l1.længdeX()*p*l1.a()+l1.p1.y));
+      vinge2DelPunkter.add(new Punkt(l2.længdeX()*p+l2.p1.x, l2.længdeX()*p*l2.a()+l2.p1.y));
+    }
+    Punkt vinge1DelMassemidtPunkt = new Punkt(avgX1, avgY1);
+    Punkt vinge2DelMassemidtPunkt = new Punkt(avgX2, avgY2);
+    vinge1DelPos = vinge1DelMassemidtPunkt.rotate(rotationspunkt, rot);
+    vinge1DelPos.x = vinge1DelPos.x+x-vinge1DelMassemidtPunkt.x;
+    vinge1DelPos.y = vinge1DelPos.y+y-vinge1DelMassemidtPunkt.y;
+    vinge2DelPos = vinge2DelMassemidtPunkt.rotate(rotationspunkt, rot);
+    vinge2DelPos.x = vinge2DelPos.x+x-vinge2DelMassemidtPunkt.x;
+    vinge2DelPos.y = vinge2DelPos.y+y-vinge2DelMassemidtPunkt.y;
+    PhysicsObject vinge1Del = new PhysicsObject(vinge1DelPos, vX, vY, rot, 0, vinge1DelPunkter, vinge1DelPunkter, vinge1DelMassemidtPunkt, masse/30, color(50));
+    PhysicsObject vinge2Del = new PhysicsObject(vinge2DelPos, vX, vY, rot, 0, vinge2DelPunkter, vinge2DelPunkter, vinge2DelMassemidtPunkt, masse/30, color(50));
+    
+    //bund delen
+    ArrayList<Punkt> bundDelPunkter = new ArrayList<Punkt>();
+    l1 = new Linje(venstreSideBundStart, venstreSideBundEnde);
+    for(int i=1;i<round(punktMængde/4)+1;i++){
+      double p = float(i)/round(punktMængde/4);
+      bundDelPunkter.add(new Punkt(l1.længdeX()*p+l1.p1.x, l1.længdeX()*p*l1.a()+l1.p1.y));
+    }
+    l1 = new Linje(venstreSideBundEnde, højreSideBundEnde);
+    for(int i=1;i<round(punktMængde/2)+1;i++){
+      double p = float(i)/round(punktMængde/2);
+      bundDelPunkter.add(new Punkt(l1.længdeX()*p+l1.p1.x, l1.længdeX()*p*l1.a()+l1.p1.y));
+    }
+    l1 = new Linje(højreSideBundEnde, højreSideBundStart);
+    for(int i=1;i<round(punktMængde/4)+1;i++){
+      double p = float(i)/round(punktMængde/4);
+      bundDelPunkter.add(new Punkt(l1.længdeX()*p+l1.p1.x, l1.længdeX()*p*l1.a()+l1.p1.y));
+    }
+    l1 = new Linje(højreSideBundStart, venstreSideBundStart);
+    for(int i=1;i<round(punktMængde/2)+1;i++){
+      double p = float(i)/round(punktMængde/2);
+      bundDelPunkter.add(new Punkt(l1.længdeX()*p+l1.p1.x, l1.længdeX()*p*l1.a()+l1.p1.y));
+    }
+    Punkt bundDelMassemidtPunkt = new Punkt(0, -højde*bundProcent/2);
+    Punkt bundDelPos = bundDelMassemidtPunkt.rotate(rotationspunkt, rot);
+    bundDelPos.x = bundDelPos.x+x-bundDelMassemidtPunkt.x;
+    bundDelPos.y = bundDelPos.y+y-bundDelMassemidtPunkt.y;
+    PhysicsObject bundDel = new PhysicsObject(bundDelPos, vX, vY, rot, 0, bundDelPunkter, bundDelPunkter, bundDelMassemidtPunkt, masse/30, color(75));
+    
+    //hoved del fragment
+    ArrayList<Punkt> hovedDelPunkter = new ArrayList<Punkt>();
+    l1 = new Linje(venstreSideTop, venstreSideBundStart);
+    for(int i=1;i<punktMængde+1;i++){
+      double p = float(i)/punktMængde;
+      hovedDelPunkter.add(new Punkt(l1.længdeX()*p+l1.p1.x, l1.længdeY()*p+l1.p1.y));
+    }
+    l1 = new Linje(venstreSideBundStart, højreSideBundStart);
+    for(int i=1;i<round(punktMængde/2)+1;i++){
+      double p = float(i)/round(punktMængde/2);
+      hovedDelPunkter.add(new Punkt(l1.længdeX()*p+l1.p1.x, l1.længdeX()*p*l1.a()+l1.p1.y));
+    }
+    l1 = new Linje(højreSideBundStart, højreSideTop);
+    for(int i=1;i<punktMængde+1;i++){
+      double p = float(i)/punktMængde;
+      hovedDelPunkter.add(new Punkt(l1.længdeX()*p+l1.p1.x, l1.længdeY()*p+l1.p1.y));
+    }
+    l1 = new Linje(højreSideTop, venstreSideTop);
+    for(int i=1;i<round(punktMængde/2)+1;i++){
+      double p = float(i)/round(punktMængde/2);
+      hovedDelPunkter.add(new Punkt(l1.længdeX()*p+l1.p1.x, l1.længdeX()*p*l1.a()+l1.p1.y));
+    }
+    Punkt hovedDelMassemidtPunkt = new Punkt(0, -højde*Math.abs(topProcent-bundProcent)/2);
+    Punkt hovedDelPos = hovedDelMassemidtPunkt.rotate(rotationspunkt, rot);
+    hovedDelPos.x = hovedDelPos.x+x-hovedDelMassemidtPunkt.x;
+    hovedDelPos.y = hovedDelPos.y+y-hovedDelMassemidtPunkt.y;
+    PhysicsObject hovedDel = new PhysicsObject(hovedDelPos, vX, vY, rot, 0, hovedDelPunkter, hovedDelPunkter, hovedDelMassemidtPunkt, masse/5, color(150));
   }
 }
