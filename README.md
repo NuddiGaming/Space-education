@@ -35,3 +35,5 @@ Højre: 'd'
 
 Zoom 'scroll' eller 'mousePad "zoom"'
 
+Editor
+Drag and drop planet: 'shift'
