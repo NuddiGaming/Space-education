@@ -16,7 +16,7 @@ Andre
 restart: 't'
 
 Motor kontrol
-Max motor: ' '
+Max motor: 'space'
 Skru ned for motor: 'crtl'
 Skru op for motor: 'shift'
 
@@ -26,6 +26,7 @@ sæt vinkelhastighed mod højre op: 'l'
 Skru ned for vinkelhastighed uanset retning som den går mod: 'k'
 
 Kamera kontrol
+zoom 'mussehjul'
 Giv slip eller centrer på rakketten: 'r'
 (Flyt kameraet når givet slip)
 opad: 'w'
