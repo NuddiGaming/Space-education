@@ -23,7 +23,7 @@ Skru op for motor: 'shift'
 Rotations kontrol (Rotere I den givne retning som set fra delen af rakketten som er tættest på toppen af skærmen)
 Sæt vinkelhastighed mod venstre op: 'j'
 sæt vinkelhastighed mod højre op: 'l'
-Skru ned for vinkelhast uanset retning som den går: 'k'
+Skru ned for vinkelhastighed uanset retning som den går mod: 'k'
 
 Kamera kontrol
 Giv slip eller centrer på rakketten: 'r'
