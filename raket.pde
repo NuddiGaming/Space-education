@@ -128,9 +128,9 @@ class Raket {
     if (exploded) {
       return;
     }
-    vX = 10;
-    rot = 1;
-    explode();
+    //vX = 10;
+    //rot = 1;
+    //explode();
     //rotation input
     if (j) {
       raket.rotHast -= 0.05;
