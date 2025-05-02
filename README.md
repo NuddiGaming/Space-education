@@ -8,3 +8,30 @@ Kilder:
 1 - https://www.videnskabsklubben.dk/debatindlaeg/debatindlaeg-boerns-interesse-for-naturfag-skal-ogsaa-plejes-i-fritiden/ 
 
 2 - https://www.reddit.com/r/learntofly/comments/3mf5vu/learn_to_fly3_is_unrefined_physics_are/ 
+
+
+Tastatur kontrol:
+
+Andre
+restart: 't'
+
+Motor kontrol
+Max motor: ' '
+Skru ned for motor: 'crtl'
+Skru op for motor: 'shift'
+
+Rotations kontrol (Rotere I den givne retning som set fra delen af rakketten som er tættest på toppen af skærmen)
+Sæt vinkelhastighed mod venstre op: 'j'
+sæt vinkelhastighed mod højre op: 'l'
+Skru ned for vinkelhast uanset retning som den går: 'k'
+
+Kamera kontrol
+Giv slip eller centrer på rakketten: 'r'
+(Flyt kameraet når givet slip)
+opad: 'w'
+Venstre: 'a'
+Nedad: 's'
+Højre: 'd'
+
+Zoom 'scroll' eller 'mousePad "zoom"'
+
