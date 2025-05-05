@@ -14,6 +14,7 @@ Tastatur kontrol:
 
 Andre
 restart: 't'
+pause: 'p'
 
 Motor kontrol
 Max motor: 'space'
