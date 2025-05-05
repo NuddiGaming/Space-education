@@ -25,6 +25,13 @@ Sæt vinkelhastighed mod venstre op: 'j'
 sæt vinkelhastighed mod højre op: 'l'
 Skru ned for vinkelhastighed uanset retning som den går mod: 'k'
 
+Time warp
+1s/s: '1'
+5s/s: '2'
+10s/s: '3'
+100s/s: '4'
+1000s/s: '5'
+
 Kamera kontrol
 zoom 'mussehjul'
 Giv slip eller centrer på rakketten: 'r'
