@@ -14,6 +14,11 @@ void simulationGrafik() {
   for (PhysicsObject obj : physicsObjects) {
     obj.tegn();
   }
+  for (Legeme legeme : legemer) {
+    if (legeme.radius<50000) {
+      legeme.tegn();
+    }
+  }
   if (zoomConstrain == false || skærm==editorSkærm) {
     for (Legeme legeme : legemer) {
       legeme.tegn();
@@ -21,14 +26,14 @@ void simulationGrafik() {
   } else {
     tegnFlatWorld();
   }
-  for (int i=0;i<smokes.size();i++){
+  for (int i=0; i<smokes.size(); i++) {
     explosionSmoke smoke = smokes.get(i);
     smoke.tegn();
   }
   popMatrix();
   tegnHud();
   resetMatrix();
-  if(zoom < 0.8 && skærm!=editorSkærm){
+  if (zoom < 0.8 && skærm!=editorSkærm) {
     tegnPil(new Punkt(width/2, height/2), 100, 30, 30, raket.rot, color(255, 0, 0, (1-(zoom-0.1)/(0.8-0.1))*255));
   }
 }
