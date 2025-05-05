@@ -49,7 +49,7 @@ Knap hovedMenuStartKnap;
 Knap hovedMenuEditorKnap;
 PauseKnap simulationsHovedMenuKnap;
 PauseKnap editorTilbageKnap;
-Knap editorRocketKnap;
+Knap editorRaketKnap;
 Knap editorUniverseKnap;
 Knap tilføjPlanetKnap;
 
@@ -67,13 +67,13 @@ void setupKnapper() {
   editorTilbageKnap = new PauseKnap(height/50, height/50, height/15*2, width/16, color(0, 0, 0), "",
     10, color(255), color(0, 255, 0), color(0, 0, 255), 0, editorSkærm);
   knapper.add(editorTilbageKnap);
-  editorRocketKnap = new Knap(width - width/8 - width/50, height/50, width/8, height/16, color(0, 0, 0), "Rocket",
+  editorRaketKnap = new Knap(width - width/8 - width/50, height/50, width/8, height/16, color(0, 0, 0), "Raket",
     20, color(0, 150, 255), color(100, 200, 255), color(0, 100, 200), 10, editorSkærm);
-  knapper.add(editorRocketKnap);
-  editorUniverseKnap = new Knap(width - width/8 - width/50, height/50 + height/14, width/8, height/16, color(0, 0, 0), "Universe",
+  knapper.add(editorRaketKnap);
+  editorUniverseKnap = new Knap(width - width/8 - width/50, height/50 + height/14, width/8, height/16, color(0, 0, 0), "Univers",
     20, color(0, 150, 255), color(100, 200, 255), color(0, 100, 200), 10, editorSkærm);
   knapper.add(editorUniverseKnap);
-  tilføjPlanetKnap = new Knap(width - width/8 - width/50, height/50 + height/14*2, width/8, height/16, color(0, 0, 0), "Add Planet",
+  tilføjPlanetKnap = new Knap(width - width/8 - width/50, height/50 + height/14*2, width/8, height/16, color(0, 0, 0), "Tilføj planet",
     20, color(50, 200, 50), color(100, 255, 100), color(0, 150, 0), 10, editorSkærm);
   knapper.add(tilføjPlanetKnap);
 }

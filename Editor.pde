@@ -8,11 +8,11 @@ void editorSkærm() {
   fill(200, 200, 255);
   textSize(20);
   textAlign(CENTER);
-  text("Click on a planet in the view to edit its properties", width/2, height/7 + 60);
+  text("Click på en planet for at ændre dens værdier", width/2, height/7 + 60);
 
   fill(255, 220, 150);
   textSize(16);
-  text("Hold SHIFT and click on a planet to drag it", width/2, height/7 + 90);
+  text("Hold SHIFT for at trække en planet", width/2, height/7 + 90);
 
   // tegn raket menu hvis nødvændigt
   if (visRaketMenu) {
@@ -342,7 +342,7 @@ void inputMenuer() {
         }
       }
       catch (NumberFormatException e) {
-        println("Invalid number format in rocket fields");
+        println("Fokert tal format");
       }
       return;
     }

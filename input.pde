@@ -172,7 +172,7 @@ void mousePressed() {
   if (hovedMenuEditorKnap.mouseOverUdenTransform()) {
     skærm=editorSkærm;
   }
-  if (editorRocketKnap.mouseOverUdenTransform()) {
+  if (editorRaketKnap.mouseOverUdenTransform()) {
     startRaketMenu();
   }
   if (editorUniverseKnap.mouseOverUdenTransform()) {
