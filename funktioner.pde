@@ -78,6 +78,7 @@ void saveScenario(String name) {
 
 void loadScenario(String navn) {
   følgerRaket = true;
+  engineSound.loop();
   physicsObjects.clear();
   legemer.clear();
   JSONObject scenario = loadJSONObject("data/scenarios/"+navn+".json");
