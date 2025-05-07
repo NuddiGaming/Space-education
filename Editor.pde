@@ -6,16 +6,15 @@ void editorSkærm() {
   textAlign(CENTER);
   text("Raket editor", width/2, height/7);
 
-//==========Følgende kode er skrevet af v0.dev
+  //==========Følgende kode er skrevet af v0.dev
   fill(200, 200, 255);
   textSize(20);
-  textAlign(CENTER);
   text("Click på en planet for at ændre dens værdier", width/2, height/7 + 60);
 
   fill(255, 220, 150);
   textSize(16);
   text("Hold SHIFT for at trække en planet", width/2, height/7 + 90);
-//===========Her slutter koden skrevet af v0.dev
+  //===========Her slutter koden skrevet af v0.dev
   // tegn raket menu hvis nødvændigt
   if (visRaketMenu) {
     tegnRaketMenu();
@@ -230,7 +229,7 @@ void startUniversMenu() {
   gKonstantFelt.posY = menuY + height/8 + height/16 + height/50;
 }
 
-void handleMenuInteractions() {
+void menuInteraktioner() {
   if (visMenu) {
     // Beregner menu størrelse baseret på tekstfelter
     float menuWidth = VisesIMenu.navnFelt.sizeX + width/50;
@@ -239,7 +238,7 @@ void handleMenuInteractions() {
     // Check om tilføj knappen er blevet trykket på
     if (mouseX >= menuX + menuWidth/2 - height/15 && mouseX <= menuX + menuWidth/2 - height/15 + height/7.5 &&
       mouseY >= menuY + menuHeight - height/20 && mouseY <= menuY + menuHeight - height/20 + height/25) {
-        //try og catch er foreslået af chatGPT til at komme af med en error som kom
+      //try og catch er foreslået af chatGPT til at komme af med en error som kom
       // kommer ændringerne på legemet
       try {
         VisesIMenu.navn = VisesIMenu.navnFelt.tekst;
@@ -430,7 +429,7 @@ void inputMenuer() {
   }
   // Bearbejder interaktioner hvis en menu skal vises
   if (visMenu) {
-    handleMenuInteractions();
+    menuInteraktioner();
     checkClickOutsideMenu();
   }
   // Check om der er blevet trykket på en planet
@@ -474,16 +473,16 @@ void tilføjNyPlanet() {
   double roty = mx * sinR + my * cosR;
   double globalX = rotx / zoom + camX;
   double globalY = roty / zoom + camY;
-  
+
   // Laver en ny default planet med en radius der gør at den kan ses på skærmen med det samme
-  double defaultRadius = scale*50/zoom;
-  double defaultMass = 1.0; //masse som kan justeres i programmet
+  double standardRadius = scale*50/zoom;
+  double standardMass = 1.0; //masse som kan justeres i programmet
   //Giver det en tilfældig farve
-  color defaultColor = color(random(100, 255), random(100, 255), random(100, 255));
-  
+  color standardColor = color(random(100, 255), random(100, 255), random(100, 255));
+
   // laver planeten og gemmer den i legeme arrayet
-  Legeme newPlanet = new Legeme(globalX * scale, globalY * scale, defaultRadius, defaultMass, defaultColor, "Ny Planet " + (legemer.size()));
-  
+  Legeme newPlanet = new Legeme(globalX * scale, globalY * scale, standardRadius, standardMass, standardColor, "Ny Planet " + (legemer.size()));
+
   // Åbner menuen så man med det samme kan ændre i de tilhørende variabler
   startMenu(newPlanet);
 }
