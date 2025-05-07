@@ -210,6 +210,7 @@ class Raket {
       resulterendeKraft.x+=kraft.x;
       resulterendeKraft.y+=kraft.y;
     }
+    //kollision
     if (collisionsPunkt != null) {
       collisionsPunkt.x = sumX/m;
       collisionsPunkt.y = sumY/m;
@@ -218,11 +219,13 @@ class Raket {
       if (rotationspunkt != collisionsPunkt) {
         rotationspunkt = new Punkt(collisionsPunkt.x, collisionsPunkt.y);
       }
+      //sikrer at rakketen ikke flytter sig når rotationspunktet flytter sig
       Punkt newPos = massemidtpunkt.rotate(rotationspunkt, rot);
       double dX = oldPos.x-newPos.x;
       double dY = oldPos.y-newPos.y;
       x += dX;
       y += dY;
+      //tilføjer kollision kraft
       Linje l1 = new Linje(new Punkt(collisionsLegeme.x, collisionsLegeme.y), new Punkt(collisionsPunkt.x+x, collisionsPunkt.y+y));
       double v = rotHast*l2.længde()+Math.sqrt(Math.pow(vX, 2)+Math.pow(vY, 2));
       double kraft = masse*v;
@@ -232,7 +235,7 @@ class Raket {
       rotHast *= 0.99;
       vY *= 0.99;
       vX *= 0.99;
-    } else if (rotationspunkt != massemidtpunkt) {
+    } else if (rotationspunkt != massemidtpunkt) { //flytter rotationspunktet tilbage til massemidtpunktet når rakketen forlader overfladen.
       Punkt oldPos = massemidtpunkt.rotate(rotationspunkt, rot);
       rotationspunkt = massemidtpunkt;
       Punkt newPos = massemidtpunkt.rotate(rotationspunkt, rot);
@@ -245,6 +248,7 @@ class Raket {
     x += vX*delta;
     y += vY*delta;
     rot += rotHast*delta;
+    //sikrer at rakketen står på overfladen
     if (collisionsLegeme != null) {
       for (Punkt p : collisionPunkter) {
         Punkt pCopy = new Punkt(p.x, p.y);
@@ -391,11 +395,13 @@ class Raket {
   boolean mouseOver() {
     return true;
   }
+  //logikken bag rakketen når den eksplodere
   void explode() {
     følgerRaket = false;
     engineSound.pause();
     explosionSounds.get(round(random(0, explosionSounds.size()-1))).play();
     exploded = true;
+    //tilføj røg
     for (int i=0; i<30; i++) {
       double d = random(1, 10);
       double v = random(0, 2*PI);
@@ -403,7 +409,9 @@ class Raket {
       double dY = Math.sin(v)*d;
       explosionSmoke smoke = new explosionSmoke(massemidtpunkt.x+x+dX, massemidtpunkt.y+y+dY, color(100));
     }
-
+    
+    //alt nedenunder er til at tilføje raketfragmenterne når den springer i luften.
+    
     //top del fragment
     ArrayList<Punkt> topDelPunkter = new ArrayList<Punkt>();
     for (int i=0; i<punktMængde*2+1; i++) {
