@@ -1,12 +1,15 @@
 void setupTextfields() {
-  // Create text fields for rocket properties
+  //=========== Føgende kode er skrevet af v0.dev
+  // laver tekstfelterne til at kunne ændre rakttens værdier
   motorKraftFelt = new Textfield(width/2, height/2, width/6, height/20, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), 
   color(255, 255, 0), 16, String.valueOf(raket.motorKraft), 5, editorSkærm, false);
   
   raketMasseFelt = new Textfield(width/2, height/2, width/6, height/20, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), 
   color(255, 255, 0), 16, String.valueOf(raket.masse), 5, editorSkærm, false);
+  //========== her slutter koden skrevet af v0.dev
   
-  // Create text fields for universe properties
+  //Koden her er kopieret fra koden lige over skrevet af v0.dev men fået ændret navn og start teksten
+  // laver tekstfelterne tila t kunne ændre universets værdier
   scaleFelt = new Textfield(width/2, height/2, width/6, height/20, color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), 
   color(255, 255, 0), 16, String.valueOf(scale), 5, editorSkærm, false);
   
