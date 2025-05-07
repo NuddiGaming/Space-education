@@ -132,6 +132,7 @@ void tegnHudDel(String Titel, String enhed, float værdi, float posX, float posY
 }
 
 // Tegner et fladt udsnit af planetens overflade lige under raketten
+//==========Følgende kode er originalt skrevet af os men optimeret af ChatGPT
 void tegnFlatWorld() {
   // Raket og planet pos
   double rocketX = raket.massemidtpunkt.rotate(raket.rotationspunkt, raket.rot).x + raket.x;
@@ -196,4 +197,5 @@ void tegnFlatWorld() {
   quad(sx[0], sy[0], sx[1], sy[1], sx[2], sy[2], sx[3], sy[3]);
 
   popStyle();
+//===========Her slutter koden optimeret af ChatGPT
 }
