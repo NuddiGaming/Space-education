@@ -30,6 +30,7 @@ Punkt skæringspunkt(Linje l1, Linje l2) {
   return new Punkt(x, y);
 }
 
+//konveter et legeme objekt til et json objekt
 JSONObject JSONFromLegeme(Legeme legeme) {
   JSONObject j = new JSONObject();
   j.setString("navn", legeme.navn);
@@ -45,6 +46,7 @@ JSONObject JSONFromLegeme(Legeme legeme) {
   return j;
 }
 
+//konveter et json objekt til et legeme objekt
 Legeme legemeFromJSON(JSONObject legemeJSON) {
   Legeme legeme = new Legeme(legemeJSON.getDouble("x"), legemeJSON.getDouble("y"), legemeJSON.getDouble("radius"), 
   legemeJSON.getDouble("masse"), color(legemeJSON.getJSONObject("farve").getInt("r"), 
@@ -52,6 +54,7 @@ Legeme legemeFromJSON(JSONObject legemeJSON) {
   return legeme;
 }
 
+//gem nuværende tilstand som et scenarie i form af en json fil med navn save.json
 void saveScenario(String name) {
   JSONArray legemerJSON = new JSONArray();
   for (Legeme legeme : legemer) {
@@ -76,6 +79,7 @@ void saveScenario(String name) {
   saveJSONObject(scenario, "data/scenarios/"+name+".json");
 }
 
+//load et scenarie fra /data/scenarios ved givet navn.
 void loadScenario(String navn) {
   følgerRaket = true;
   engineSound.loop();
@@ -101,6 +105,7 @@ void loadScenario(String navn) {
   }
 }
 
+//tegn en pil
 void tegnPil(Punkt pos, double længde, double bredde, double pilHøjde, double v, color farve){
   Punkt pos2 = new Punkt(pos.x, pos.y-længde);
   Punkt pil1 = new Punkt(pos.x-bredde/2, pos2.y+pilHøjde);
