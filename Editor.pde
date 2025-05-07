@@ -1,10 +1,12 @@
 void editorSkærm() {
 
+
   fill(255);
   textSize(100);
   textAlign(CENTER);
   text("Raket editor", width/2, height/7);
 
+//==========Følgende kode er skrevet af v0.dev
   fill(200, 200, 255);
   textSize(20);
   textAlign(CENTER);
@@ -13,7 +15,7 @@ void editorSkærm() {
   fill(255, 220, 150);
   textSize(16);
   text("Hold SHIFT for at trække en planet", width/2, height/7 + 90);
-
+//===========Her slutter koden skrevet af v0.dev
   // tegn raket menu hvis nødvændigt
   if (visRaketMenu) {
     tegnRaketMenu();
@@ -111,12 +113,12 @@ void tegnMenu(Legeme legeme) {
 }
 
 void tegnRaketMenu() {
+  //============Følgende kode er skrevet af v0.dev
   // Beregner menu position
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
   float menuWidth = width/4;
   float menuHeight = height/3;
-
   // tegner menu baggrund
   fill(30, 30, 30, 220);
   stroke(100);
@@ -144,15 +146,17 @@ void tegnRaketMenu() {
   textAlign(CENTER, CENTER);
   text("Tilføj", menuX + menuWidth/2, menuY + menuHeight - height/20 + height/50);
 
-  // tegenr titler
+  // tegener titler
   fill(255);
   textAlign(LEFT, CENTER);
   textSize(16);
   text("Motor Kraft:", menuX + width/50, motorKraftFelt.posY - height/100);
   text("Masse:", menuX + width/50, raketMasseFelt.posY - height/100);
+  //=========== Her stopper koden skrevet af v0.dev
 }
 
 void tegnUniversMenu() {
+  // koden her i er kopieret fra koden i funktionen ovenover skrevtet af v0.dev og konverteret til at passe til denne funktion
   // Beregner menu position
   float menuX = width - width/4 - width/50;
   float menuY = height/4;
@@ -235,6 +239,7 @@ void handleMenuInteractions() {
     // Check om tilføj knappen er blevet trykket på
     if (mouseX >= menuX + menuWidth/2 - height/15 && mouseX <= menuX + menuWidth/2 - height/15 + height/7.5 &&
       mouseY >= menuY + menuHeight - height/20 && mouseY <= menuY + menuHeight - height/20 + height/25) {
+        //try og catch er foreslået af chatGPT til at komme af med en error som kom
       // kommer ændringerne på legemet
       try {
         VisesIMenu.navn = VisesIMenu.navnFelt.tekst;
@@ -243,7 +248,7 @@ void handleMenuInteractions() {
         hideMenu();
       }
       catch (NumberFormatException e) {
-        // Handle invalid number input
+        // Teger sig af hvis der er tastet ugyldig værdig i et tekstfelt
         println("Invalid number format in one of the fields");
       }
       return;
@@ -410,13 +415,13 @@ void inputMenuer() {
         }
       }
       catch (NumberFormatException e) {
-        println("Invalid number format in universe fields");
+        println("Fokert tal format");
       }
       return;
     }
   }
 
-  // If we clicked outside any menu, deactivate text fields
+  // Hvis der blev trykket udenfor et textfelt deaktiveres det
   if (visRaketMenu || visUniversMenu) {
     if (activeFelt != null) {
       activeFelt.deactivate();
