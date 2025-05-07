@@ -475,13 +475,13 @@ void tilføjNyPlanet() {
   double globalY = roty / zoom + camY;
 
   // Laver en ny default planet med en radius der gør at den kan ses på skærmen med det samme
-  double defaultRadius = scale*50/zoom;
-  double defaultMass = 1.0; //masse som kan justeres i programmet
+  double standardRadius = scale*50/zoom;
+  double standardMass = 1.0; //masse som kan justeres i programmet
   //Giver det en tilfældig farve
-  color defaultColor = color(random(100, 255), random(100, 255), random(100, 255));
+  color standardColor = color(random(100, 255), random(100, 255), random(100, 255));
 
   // laver planeten og gemmer den i legeme arrayet
-  Legeme newPlanet = new Legeme(globalX * scale, globalY * scale, defaultRadius, defaultMass, defaultColor, "Ny Planet " + (legemer.size()));
+  Legeme newPlanet = new Legeme(globalX * scale, globalY * scale, standardRadius, standardMass, standardColor, "Ny Planet " + (legemer.size()));
 
   // Åbner menuen så man med det samme kan ændre i de tilhørende variabler
   startMenu(newPlanet);
